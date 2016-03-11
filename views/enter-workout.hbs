@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/enter-workout.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+    <script src="javascript/enterWorkout.js"></script>
+    <title>Stronglifts Workout Tracker</title>
+  </head>
+  <body>
+    <h1>
+      Enter a <a href="http://stronglifts.com">Stronglifts</a> Workout
+    </h1>
+    <p>
+      Select Workout A or Workout B
+    </p>
+    <button class="workout-selector" name="button-a">Workout A</button>
+    <button class="workout-selector" name="button-b">Workout B</button>
+    <form class="workout-form" id="form-a" style="display: none">
+      <label>Squats: <input type="text" id="squats-a" required/></label>
+      <label>Bench Press: <input type="text" id="bench-press" required/></label>
+      <label>Overhead Rows: <input type="text" id="overhead-rows" required/></label>
+      <button>Submit</button>
+    </form>
+    <form class="workout-form" id="form-b" style="display: none">
+      <label>Squats: <input type="text" id="squats-b" required/></label>
+      <label>Overhead Press: <input type="text" id="overhead-press" required/></label>
+      <label>Deadlifts: <input type="text" id="deadlifts" required/></label>
+      <button>Submit</button>
+    </form>
+    <span id="failure"></span>
+    <span id="success"></span>
+  </body>
+</html>

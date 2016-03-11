@@ -1,0 +1,24 @@
+body {
+  text-align: center;
+}
+
+.workout-form {
+  display: flex;
+  width: 50%;
+  margin: auto;
+  flex-direction: column;
+}
+
+.workout-selector {
+  width: 200;
+  margin-bottom: 20;
+}
+
+button {
+  width: 20%;
+  align-self: center;
+}
+
+#failure {
+  color: red;
+}
