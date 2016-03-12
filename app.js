@@ -1,10 +1,10 @@
 'use strict';
 
-var bodyParser = require('body-parser');
-var express = require('express');
-var hbs = require('hbs');
-var mysql = require('mysql');
-var app = express();
+var bodyParser = require('body-parser'),
+    express = require('express');
+    hbs = require('hbs'),
+    mysql = require('mysql'),
+    app = express();
 
 // Views setup
 app.set('views', './views');
