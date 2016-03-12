@@ -3,6 +3,7 @@
 var bodyParser = require('body-parser');
 var express = require('express');
 var hbs = require('hbs');
+var mysql = require('mysql');
 var app = express();
 
 // Views setup
@@ -14,7 +15,40 @@ app.use(express.static('./public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-var workouts = [];
+// Database setup
+// For local development only
+// TODO: create module for models/db connections
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'workout_tracker',
+  password: 'abc123',
+  database: 'workouts'
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.log('Error connecting to db: ' + err.stack);
+    return;
+  }
+  console.log('Connected with ID ' + connection.threadId);
+});
+
+function addWorkout(db, workout, res) {
+  // TODO: If workout for a certain date already exists, update it instead of inserting.
+  var queryStatement = 'INSERT INTO workouts SET ?;';
+  db.query(queryStatement, workout, (err, result) => {
+    if (err) {
+      console.log('Encountered db err: ' + err.message);
+      res.json({
+        'status': 'failure',
+        'message': err.message
+      });
+      return;
+    }
+    console.log('Successfully added workout.');
+    res.json({'status': 'success'});
+  });
+}
 
 app.get('/', (req, res) => {
   console.log('Request for index page');
@@ -28,8 +62,7 @@ app.get('/enter-workout', (req, res) => {
 
 app.post('/enter-workout', (req, res) => {
   console.log('Post from enter-workout page');
-  // TODO: Process data
-  res.json({'status': 'success'});
+  addWorkout(connection, req.body, res);
 });
 
 app.get('/workouts', (req, res) => {
