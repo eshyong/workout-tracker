@@ -87,7 +87,7 @@ $(document).ready(() => {
     $.post(settings).done((response) => {
       if (response['status'] === 'success') {
         $('#success').text('Successfully entered workout! ')
-          .append('<a href="workouts">View submitted workouts</a>.')
+          .append('<a href="/view-workouts">View submitted workouts</a>.')
           .fadeIn()
           .delay(5000)
           .fadeOut();

@@ -3,7 +3,6 @@
 // Third party packages
 let bodyParser = require('body-parser'),
     express = require('express'),
-    hbs = require('hbs'),
     app = express();
 
 // Local packages
@@ -11,9 +10,9 @@ let db = require('./db'),
     workouts = require('./workouts'),
     conn = db.conn;
 
-// Views setup
-app.set('views', './views');
-app.set('view engine', 'hbs');
+let sendFileOpts = {
+  root: __dirname + '/public/views'
+}
 
 // Middleware setup
 app.use(express.static('./public'));
@@ -22,12 +21,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/', (req, res) => {
   console.log('Request for index page');
-  res.render('index');
+  res.sendFile('index.html', sendFileOpts);
 });
 
 app.get('/enter-workout', (req, res) => {
   console.log('Request for enter-workout page');
-  res.render('enter-workout');
+  res.sendFile('enter-workout.html', sendFileOpts);
 });
 
 app.post('/submit-workout', (req, res) => {
@@ -35,9 +34,9 @@ app.post('/submit-workout', (req, res) => {
   workouts.submitWorkout(conn, req.body, res);
 });
 
-app.get('/workouts', (req, res) => {
-  console.log('Request for workouts page');
-  res.render('workouts');
+app.get('/view-workouts', (req, res) => {
+  console.log('Request for view-workouts page');
+  res.sendFile('view-workouts.html', sendFileOpts);
 });
 
 app.listen(8080, '127.0.0.1');
