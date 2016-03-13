@@ -46,5 +46,10 @@ app.get('/get-workouts', (req, res) => {
   workouts.getWorkouts(conn, res);
 });
 
+app.post('/delete-workout', (req, res) => {
+  console.log('User wants to delete workout');
+  workouts.deleteWorkout(conn, req.body, res);
+});
+
 app.listen(8080, '127.0.0.1');
 console.log('Listening on http://127.0.0.1:8080');

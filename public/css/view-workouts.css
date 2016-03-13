@@ -12,3 +12,7 @@ ol {
   width: 33%;
   margin-left: 33%;
 }
+
+.failure {
+  color: red;
+}
