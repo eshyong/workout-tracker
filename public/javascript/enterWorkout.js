@@ -89,16 +89,16 @@ $(document).ready(() => {
     };
     $.post(settings).done((response) => {
       if (response['status'] === 'success') {
+        $('#failure').hide();
         $('#success').text('Successfully entered workout! ')
           .append('<a href="/view-workouts">View submitted workouts</a>.')
-          .fadeIn()
-          .delay(5000)
-          .fadeOut();
+          .fadeIn();
+        $('button').attr('disabled', true);
       } else if (response['status'] === 'failure') {
         $('#failure').text('Sorry, we failed to process your workout. Reason: ' +
             response['message'])
           .fadeIn()
-          .delay(5000)
+          .delay(3000)
           .fadeOut();
       }
     });

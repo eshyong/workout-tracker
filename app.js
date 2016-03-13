@@ -42,7 +42,7 @@ app.get('/view-workouts', (req, res) => {
 app.get('/get-workouts', (req, res) => {
   console.log('User requested workouts');
   workouts.getWorkouts(conn, res);
-})
+});
 
 app.listen(8080, '127.0.0.1');
 console.log('Listening on http://127.0.0.1:8080');
