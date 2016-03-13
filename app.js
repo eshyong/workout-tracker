@@ -2,13 +2,13 @@
 
 // Third party packages
 let bodyParser = require('body-parser'),
-    express = require('express'),
-    app = express();
+  express = require('express'),
+  app = express();
 
 // Local packages
 let db = require('./db'),
-    workouts = require('./workouts'),
-    conn = db.conn;
+  workouts = require('./workouts'),
+  conn = db.conn;
 
 let sendFileOpts = {
   root: __dirname + '/public/views'
@@ -17,7 +17,9 @@ let sendFileOpts = {
 // Middleware setup
 app.use(express.static('./public'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 app.get('/', (req, res) => {
   console.log('Request for index page');
