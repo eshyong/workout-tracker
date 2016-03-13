@@ -16,15 +16,16 @@ $(document).ready(() => {
 
   $('#workout-form').submit((event) => {
     console.log('Submitting workout');
+    event.preventDefault();
 
     // Get input numbers for each exercise, as well as the date of the workout, from the form.
-    var target = event.target,
+    let target = event.target,
         squats = Number.parseInt($(target).find('#squats').val()),
         benchPress = Number.parseInt($(target).find('#bench-press').val()),
         barbellRows = Number.parseInt($(target).find('#barbell-rows').val()),
         overheadPress = Number.parseInt($(target).find('#overhead-press').val()),
         deadlifts = Number.parseInt($(target).find('#deadlifts').val()),
-        date = $(target).find('#date').val() || moment().format('YYYY-MM-DD');
+        workoutDate = $(target).find('#date').val() || moment().format('YYYY-MM-DD');
     console.log('Squats: ' + squats + ', Bench Press: ' + benchPress +
                 ', Barbell Rows: ' + barbellRows +
                 ', Overhead Press: ' + overheadPress +
@@ -40,47 +41,48 @@ $(document).ready(() => {
     }
 
     if (!validateIntegerOrShowError(squats, 'Squats')) {
-      event.preventDefault();
       return;
     }
     if (!validateIntegerOrShowError(benchPress, 'Bench Press')) {
-      event.preventDefault();
       return;
     }
     if (!validateIntegerOrShowError(barbellRows, 'Barbell Rows')) {
-      event.preventDefault();
       return;
     }
     if (!validateIntegerOrShowError(overheadPress, 'Overhead Press')) {
-      event.preventDefault();
       return;
     }
     if (!validateIntegerOrShowError(deadlifts, 'Deadlifts')) {
-      event.preventDefault();
       return;
     }
 
+    // At least one exercise should be non-zero
     if (squats === 0 && benchPress === 0 && barbellRows === 0 &&
         overheadPress === 0 && deadlifts === 0) {
       showError('Please enter at least one non-zero exercise weight.');
-      event.preventDefault();
+      return;
+    }
+
+    // Make sure date isn't in the future
+    if (moment(workoutDate).unix() > moment().unix()) {
+      showError('Workout date must not be in the future, unless you are marty mcfly');
       return;
     }
 
     // Send information to server
-    var data = JSON.stringify({
+    let data = JSON.stringify({
       squats: squats,
       bench_press: benchPress,
       barbell_rows: barbellRows,
       overhead_press: overheadPress,
       deadlifts: deadlifts,
-      date: date
+      workout_date: workoutDate
     });
-    var settings = {
+    let settings = {
       contentType: 'application/json',
       data: data,
       dataType: 'json',
-      url: '/enter-workout'
+      url: '/submit-workout'
     };
     $.post(settings).done((response) => {
       if (response['status'] === 'success') {
@@ -93,6 +95,5 @@ $(document).ready(() => {
         $('#failure').fadeIn().delay(5000).fadeOut();
       }
     });
-    event.preventDefault();
   });
 });
