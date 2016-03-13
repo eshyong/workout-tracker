@@ -3,7 +3,7 @@
 module.exports = {
   submitWorkout: (dbConn, workout, res) => {
     // If a workout for a given date already exists, replace it instead.
-    var query = dbConn.query('REPLACE INTO workouts SET ?', workout, (err) => {
+    let query = dbConn.query('REPLACE INTO workouts SET ?', workout, (err) => {
       if (err) {
         console.log('Encountered database err: ' + err.message);
         res.json({

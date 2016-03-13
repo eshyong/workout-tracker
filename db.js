@@ -1,10 +1,10 @@
 'use strict';
 
-var mysql = require('mysql');
+let mysql = require('mysql');
 
 // Database setup for local development only
 // TODO: Deploy app to the **cloud**
-var connection = mysql.createConnection({
+let connection = mysql.createConnection({
   host: 'localhost',
   user: 'workout_tracker',
   password: 'abc123',

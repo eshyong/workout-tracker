@@ -4,7 +4,7 @@ $(document).ready(() => {
   console.log('ready!');
 
   // Error function for form submission
-  var showError = (message) => {
+  let showError = (message) => {
     $('#failure').text(message)
       .fadeIn()
       .delay(2000)
@@ -32,7 +32,7 @@ $(document).ready(() => {
       ', Deadlifts: ' + deadlifts);
 
     // Confirm that inputs are positive integers
-    var validateIntegerOrShowError = (exerciseWeight, exerciseName) => {
+    let validateIntegerOrShowError = (exerciseWeight, exerciseName) => {
       if (isNaN(exerciseWeight) || exerciseWeight < 0) {
         showError('Please enter a positive number in the "' + exerciseName + '" field.');
         return false;

@@ -1,13 +1,13 @@
 'use strict';
 
 // Third party packages
-var bodyParser = require('body-parser'),
+let bodyParser = require('body-parser'),
     express = require('express'),
     hbs = require('hbs'),
     app = express();
 
 // Local packages
-var db = require('./db'),
+let db = require('./db'),
     workouts = require('./workouts'),
     conn = db.conn;
 
