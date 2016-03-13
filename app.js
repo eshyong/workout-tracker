@@ -30,7 +30,7 @@ app.get('/enter-workout', (req, res) => {
 });
 
 app.post('/submit-workout', (req, res) => {
-  console.log('Post for submit-workout page');
+  console.log('User submitted workout');
   workouts.submitWorkout(conn, req.body, res);
 });
 
@@ -38,6 +38,11 @@ app.get('/view-workouts', (req, res) => {
   console.log('Request for view-workouts page');
   res.sendFile('view-workouts.html', sendFileOpts);
 });
+
+app.get('/get-workouts', (req, res) => {
+  console.log('User requested workouts');
+  workouts.getWorkouts(conn, res);
+})
 
 app.listen(8080, '127.0.0.1');
 console.log('Listening on http://127.0.0.1:8080');

@@ -1,7 +1,7 @@
 'use strict';
 
 $(document).ready(() => {
-  console.log('ready!');
+  console.log('enterWorkouts ready!');
 
   // Error function for form submission
   let showError = (message) => {
@@ -18,17 +18,20 @@ $(document).ready(() => {
     console.log('Submitting workout');
     event.preventDefault();
 
+    let tryParseInt = (string) => {
+      return Number.parseInt(string) || 0;
+    };
+
     // Get input numbers for each exercise, as well as the date of the workout, from the form.
     let target = event.target,
-      squats = Number.parseInt($(target).find('#squats').val()),
-      benchPress = Number.parseInt($(target).find('#bench-press').val()),
-      barbellRows = Number.parseInt($(target).find('#barbell-rows').val()),
-      overheadPress = Number.parseInt($(target).find('#overhead-press').val()),
-      deadlifts = Number.parseInt($(target).find('#deadlifts').val()),
+      squats = tryParseInt($('#squats').val()),
+      benchPress = tryParseInt($('#bench-press').val()),
+      barbellRows = tryParseInt($('#barbell-rows').val()),
+      overheadPress = tryParseInt($('#overhead-press').val()),
+      deadlifts = tryParseInt($('#deadlifts').val()),
       workoutDate = $(target).find('#date').val() || moment().format('YYYY-MM-DD');
     console.log('Squats: ' + squats + ', Bench Press: ' + benchPress +
-      ', Barbell Rows: ' + barbellRows +
-      ', Overhead Press: ' + overheadPress +
+      ', Barbell Rows: ' + barbellRows + ', Overhead Press: ' + overheadPress +
       ', Deadlifts: ' + deadlifts);
 
     // Confirm that inputs are positive integers

@@ -1,17 +1,20 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/view-workouts.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+    <script src="javascript/viewWorkouts.js"></script>
     <title>Stronglifts Workout Tracker</title>
   </head>
   <body>
     <h1>
       View Workouts
     </h1>
-    <span>Loading workouts...</span>
-    <ul>
-    </ul>
+    <span id="loading">Loading workouts...</span>
+    <span id="failure" style="display: none"></span>
+    <ol>
+    </ol>
   </body>
 </html>

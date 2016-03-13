@@ -1,0 +1,14 @@
+h1 {
+  display: flex;
+  justify-content: center;
+}
+
+span {
+  display: flex;
+  justify-content: center;
+}
+
+ol {
+  width: 33%;
+  margin-left: 33%;
+}
