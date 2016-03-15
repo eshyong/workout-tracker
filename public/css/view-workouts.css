@@ -18,3 +18,8 @@ ol {
 .load-failure {
   color: red;
 }
+
+.delete-failure {
+  color: red;
+  display: none;
+}

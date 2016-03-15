@@ -41,15 +41,28 @@ $(document).ready(() => {
       $('#loading-message').hide();
       response['workouts'].forEach((row) => {
         let formattedDate = moment(row['workout_date']).format('YYYY-MM-DD'),
-          workoutItem = $('<li>')
-          .append(`<div id="date" class="workout-row">Date of workout: ${formattedDate}</div>`)
-          .append(`<div class="workout-row">Squats: ${row['squats']}`)
-          .append(`<div class="workout-row">Bench Press: ${row['bench_press']}`)
-          .append(`<div class="workout-row">Barbell Rows: ${row['barbell_rows']}`)
-          .append(`<div class="workout-row">Overhead Press: ${row['overhead_press']}`)
-          .append(`<div class="workout-row">Deadlifts: ${row['deadlifts']}`)
-          .append('<div class="workout-row"><button class="btn btn-default" onclick="deleteWorkout(event)">Delete</a></div>')
-          .append('<span id="delete-failure" style="display:none"></span>');
+          squats = row.squats,
+          benchPress = row.bench_press,
+          barbellRows = row.barbell_rows,
+          overheadPress = row.overhead_press,
+          deadlifts = row.deadlifts;
+        let dateRow = $('<div>').addClass('workout-row').attr('id', 'date').html(`Date of workout: ${formattedDate}`),
+          squatsRow = $('<div>').addClass('workout-row').html(`Squats: ${squats}`),
+          benchPressRow = $('<div>').addClass('workout-row').html(`Bench Press: ${benchPress}`),
+          barbellRowsRow = $('<div>').addClass('workout-row').html(`Barbell Rows: ${barbellRows}`),
+          overheadPressRow = $('<div>').addClass('workout-row').html(`Overhead Press: ${overheadPress}`),
+          deadliftsRow = $('<div>').addClass('workout-row').html(`Deadlifts: ${deadlifts}`),
+          deleteButton = $('<div>').addClass('btn btn-default').attr('onclick', 'deleteWorkout(event)').html('Delete'),
+          deleteFailure = $('<div>').attr('id', 'delete-failure');
+        let workoutItem = $('<li>')
+          .append(dateRow)
+          .append(squatsRow)
+          .append(benchPressRow)
+          .append(barbellRowsRow)
+          .append(overheadPressRow)
+          .append(deadliftsRow)
+          .append(deleteButton)
+          .append(deleteFailure);
         $('ol').append(workoutItem);
       });
     } else if (response.status === 'failure') {
