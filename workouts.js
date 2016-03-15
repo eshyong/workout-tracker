@@ -8,20 +8,20 @@ module.exports = {
         console.log('Encountered database err: ' + err.message);
         if (err.code === 'ER_DUP_ENTRY') {
           res.json({
-            'status': 'failure',
-            'message': 'A workout with that date already exists.'
+            status: 'failure',
+            message: 'A workout with that date already exists.'
           });
         } else {
           res.json({
-            'status': 'failure',
-            'message': 'Unable to insert or replace workout.'
+            status: 'failure',
+            message: 'Unable to insert or replace workout.'
           });
         }
         return;
       }
       console.log('Successfully added workout.');
       res.json({
-        'status': 'success'
+        status: 'success'
       });
     });
     console.log(query.sql);
@@ -35,14 +35,14 @@ module.exports = {
       if (err) {
         console.log('Encountered database err: ' + err.message);
         res.json({
-          'status': 'failure',
-          'message': 'Unable to query workouts.'
+          status: 'failure',
+          message: 'Unable to query workouts.'
         });
         return;
       }
       res.json({
-        'status': 'success',
-        'workouts': results
+        status: 'success',
+        workouts: results
       });
     });
     console.log(query.sql);
@@ -57,13 +57,13 @@ module.exports = {
       if (err) {
         console.log('Encountered database err: ' + err.message);
         res.json({
-          'status': 'failure',
-          'message': 'Unable to delete workout.'
+          status: 'failure',
+          message: 'Unable to delete workout.'
         });
         return;
       }
       res.json({
-        'status': 'success'
+        status: 'success'
       });
     });
     console.log(query.sql);
