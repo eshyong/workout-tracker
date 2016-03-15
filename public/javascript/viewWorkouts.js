@@ -38,7 +38,7 @@ $(document).ready(() => {
   };
   $.get(settings, (response) => {
     if (response.status === 'success') {
-      $('#loading').hide();
+      $('#loading-message').hide();
       response['workouts'].forEach((row) => {
         let formattedDate = moment(row['workout_date']).format('YYYY-MM-DD'),
           workoutItem = $('<li>')
