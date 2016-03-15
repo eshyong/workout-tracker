@@ -19,7 +19,10 @@ $(document).ready(() => {
     event.preventDefault();
 
     let tryParseInt = (string) => {
-      return Number.parseInt(string) || 0;
+      if (string === '') {
+        return NaN;
+      }
+      return Number(string);
     };
 
     // Get input numbers for each exercise, as well as the date of the workout, from the form.
