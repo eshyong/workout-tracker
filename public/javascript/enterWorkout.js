@@ -88,7 +88,7 @@ $(document).ready(() => {
       contentType: 'application/json',
       data: data,
       dataType: 'json',
-      url: '/submit-workout'
+      url: '/api/submit-workout'
     };
     $.post(settings).done((response) => {
       if (response['status'] === 'success') {

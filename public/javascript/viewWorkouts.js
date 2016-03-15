@@ -12,7 +12,7 @@ let deleteWorkout = (event) => {
     contentType: 'application/json',
     data: data,
     dataType: 'json',
-    url: '/delete-workout'
+    url: '/api/delete-workout'
   }
   $.post(settings).done((response) => {
     if (response.status === 'success') {
@@ -34,18 +34,18 @@ $(document).ready(() => {
   // TODO: page workouts
   let settings = {
     dataType: 'json',
-    url: '/get-workouts'
+    url: '/api/get-workouts'
   };
   $.get(settings, (response) => {
     if (response.status === 'success') {
       $('#loading-message').hide();
-      response['workouts'].forEach((row) => {
+      response.workouts.forEach((row) => {
         let formattedDate = moment(row['workout_date']).format('YYYY-MM-DD'),
-          squats = row.squats,
-          benchPress = row.bench_press,
-          barbellRows = row.barbell_rows,
-          overheadPress = row.overhead_press,
-          deadlifts = row.deadlifts;
+          squats = row['squats'],
+          benchPress = row['bench_press'],
+          barbellRows = row['barbell_rows'],
+          overheadPress = row['overhead_press'],
+          deadlifts = row['deadlifts'];
         let dateRow = $('<div>').addClass('workout-row').attr('id', 'date').html(`Date of workout: ${formattedDate}`),
           squatsRow = $('<div>').addClass('workout-row').html(`Squats: ${squats}`),
           benchPressRow = $('<div>').addClass('workout-row').html(`Bench Press: ${benchPress}`),
