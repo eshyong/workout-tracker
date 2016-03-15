@@ -8,7 +8,7 @@ let bodyParser = require('body-parser'),
 // Local packages
 let db = require('./db'),
   workouts = require('./workouts'),
-  conn = db.conn;
+  conn = db.connect();
 
 let sendFileOpts = {
   root: __dirname + '/public/views'

@@ -11,14 +11,15 @@ let connection = mysql.createConnection({
   database: 'workouts'
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.log('Error connecting to db: ' + err.stack);
-    throw err;
-  }
-  console.log('Connected with ID ' + connection.threadId);
-});
-
 module.exports = {
-  conn: connection,
+  connect: () => {
+    connection.connect((err) => {
+      if (err) {
+        console.log('Error connecting to db: ' + err.stack);
+        throw err;
+      }
+      console.log('Connected with ID ' + connection.threadId);
+    });
+    return connection;
+  }
 };
