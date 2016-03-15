@@ -1,18 +1,15 @@
-h1 {
-  display: flex;
-  justify-content: center;
-}
-
-span {
-  display: flex;
-  justify-content: center;
+.view-header {
+  margin-left: 50;
 }
 
 ol {
-  width: 33%;
-  margin-left: 33%;
+  margin-left: 50;
 }
 
-.failure {
+.workout-row {
+  font-size: 18px;
+}
+
+.load-failure {
   color: red;
 }

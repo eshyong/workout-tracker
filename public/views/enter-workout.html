@@ -1,18 +1,26 @@
 <html>
   <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/enter-workout.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
-    <script src="javascript/enterWorkout.js"></script>
     <title>Stronglifts Workout Tracker</title>
   </head>
   <body>
-    <h1>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Workout tracker</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li class="active"><a href="/enter-workout">Enter a workout</a></li>
+          <li><a href="/view-workouts">View your workouts</a></li>
+        </ul>
+      </div>
+    </nav>
+    <h1 class="submit-header">
       Submit a <a href="http://stronglifts.com">Stronglifts</a> Workout
     </h1>
-    <p>Enter the weight of your exercises in lbs.</p>
+    <p class="submit-instructions">Enter the weight of your exercises in lbs.</p>
     <form class="workout-form" id="workout-form">
       <label>Squats: <input type="text" id="squats" value="0"></label>
       <label>Bench Press: <input type="text" id="bench-press" value="0"></label>
@@ -20,9 +28,13 @@
       <label>Overhead Press: <input type="text" id="overhead-press" value="0"></label>
       <label>Deadlifts: <input type="text" id="deadlifts" value="0"></label>
       <label>Date: <input type="date" id="date"></label>
-      <button>Submit</button>
+      <button class="btn btn-default">Submit</button>
     </form>
-    <span id="failure" style="display: none"></span>
-    <span id="success" style="display: none"></span>
+    <span id="failure"></span>
+    <span id="success"></span>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+    <script src="javascript/enterWorkout.js"></script>
   </body>
 </html>

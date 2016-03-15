@@ -1,3 +1,8 @@
-body {
-  text-align: center;
+.intro-header {
+  margin-left: 50;
+}
+
+.introduction {
+  margin-left: 50;
+  font-size: 18px;
 }

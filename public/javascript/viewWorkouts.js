@@ -42,13 +42,13 @@ $(document).ready(() => {
       response['workouts'].forEach((row) => {
         let formattedDate = moment(row['workout_date']).format('YYYY-MM-DD'),
           workoutItem = $('<li>')
-          .append(`<div id="date">Date of workout: ${formattedDate}</div>`)
-          .append(`<div>Squats: ${row['squats']}`)
-          .append(`<div>Bench Press: ${row['bench_press']}`)
-          .append(`<div>Barbell Rows: ${row['barbell_rows']}`)
-          .append(`<div>Overhead Press: ${row['overhead_press']}`)
-          .append(`<div>Deadlifts: ${row['deadlifts']}`)
-          .append('<div><a onclick="deleteWorkout(event)" href="#">Delete</a></div>')
+          .append(`<div id="date" class="workout-row">Date of workout: ${formattedDate}</div>`)
+          .append(`<div class="workout-row">Squats: ${row['squats']}`)
+          .append(`<div class="workout-row">Bench Press: ${row['bench_press']}`)
+          .append(`<div class="workout-row">Barbell Rows: ${row['barbell_rows']}`)
+          .append(`<div class="workout-row">Overhead Press: ${row['overhead_press']}`)
+          .append(`<div class="workout-row">Deadlifts: ${row['deadlifts']}`)
+          .append('<div class="workout-row"><button class="btn btn-default" onclick="deleteWorkout(event)">Delete</a></div>')
           .append('<span id="delete-failure" style="display:none"></span>');
         $('ol').append(workoutItem);
       });

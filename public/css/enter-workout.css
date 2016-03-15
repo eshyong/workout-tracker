@@ -1,24 +1,27 @@
-body {
-  text-align: center;
+.submit-header {
+  margin-left: 50;
+}
+
+.submit-instructions {
+  font-size: 18px;
+  margin-left: 50;
 }
 
 .workout-form {
   display: flex;
-  width: 50%;
-  margin: auto;
   flex-direction: column;
-}
-
-.workout-selector {
-  width: 200;
-  margin-bottom: 20;
-}
-
-button {
+  margin-left: 50;
   width: 20%;
-  align-self: center;
+}
+
+#success {
+  display: none;
+  font-size: 18px;
+  margin-left: 50;
 }
 
 #failure {
   color: red;
+  font-size: 18px;
+  margin-left: 50;
 }

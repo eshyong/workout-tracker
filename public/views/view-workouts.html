@@ -1,20 +1,32 @@
 <html>
   <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/view-workouts.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
-    <script src="javascript/viewWorkouts.js"></script>
     <title>Stronglifts Workout Tracker</title>
   </head>
   <body>
-    <h1>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Workout tracker</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/enter-workout">Enter a workout</a></li>
+          <li class="active"><a href="/view-workouts">View your workouts</a></li>
+        </ul>
+      </div>
+    </nav>
+    <h1 class="view-header">
       View Workouts
     </h1>
-    <span id="loading">Loading workouts...</span>
-    <span class="failure" id="load-failure" style="display: none"></span>
+    <div id="loading">Loading workouts...</div>
+    <div class="load-failure" id="load-failure"></div>
     <ol>
     </ol>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+    <script src="javascript/viewWorkouts.js"></script>
   </body>
 </html>

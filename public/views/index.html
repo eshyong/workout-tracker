@@ -1,17 +1,29 @@
 <html>
   <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/index.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
-    <title>Stronglifts Workout Tracker</title>
+    <title>Workout Tracker</title>
   </head>
   <body>
-    <h1>
-      Stronglifts Workout Tracker
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Workout tracker</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="/enter-workout">Enter a workout</a></li>
+          <li><a href="/view-workouts">View your workouts</a></li>
+        </ul>
+      </div>
+    </nav>
+    <h1 class="intro-header">
+      Workout Tracker
     </h1>
-    <h2>
-      <a href="/enter-workout">Enter a Workout</a>
-    </h2>
+    <p class="introduction">
+      Welcome! Currently, this site only supports the <a href="http://stronglifts.com">stronglifts</a> regimen. Click through the navigation bar to see more.
+    </p>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
   </body>
 </html>
