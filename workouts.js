@@ -31,7 +31,7 @@ module.exports = {
 
   getWorkouts: (dbConn, res) => {
     console.log('getWorkouts');
-    let queryString = 'SELECT squats, bench_press, barbell_rows, ' +
+    let queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
       'overhead_press, deadlifts, date FROM workouts';
     let query = dbConn.query(queryString, (err, results) => {
       if (err) {
