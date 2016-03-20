@@ -1,2 +1,5 @@
-# Node modules directory
+# Directory which contains npm packages
 node_modules
+
+# Used for debugging NPM
+npm-debug.log
