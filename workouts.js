@@ -4,7 +4,6 @@
 
 module.exports = {
   submitWorkout: (dbConn, workout, res) => {
-    console.log('submitWorkout');
     let query = dbConn.query('INSERT INTO workouts SET ?', workout, (err) => {
       if (err) {
         console.log('Encountered database err: ' + err.message);
@@ -26,11 +25,9 @@ module.exports = {
         status: 'success'
       });
     });
-    console.log(query.sql);
   },
 
   getWorkouts: (dbConn, res) => {
-    console.log('getWorkouts');
     let queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
       'overhead_press, deadlifts, date FROM workouts';
     let query = dbConn.query(queryString, (err, results) => {
@@ -47,11 +44,9 @@ module.exports = {
         workouts: results
       });
     });
-    console.log(query.sql);
   },
 
   deleteWorkout: (dbConn, workout, res) => {
-    console.log('deleteWorkout');
     let workoutDate = workout.date,
       queryString = 'DELETE FROM workouts WHERE date = ?';
 
@@ -68,6 +63,5 @@ module.exports = {
         status: 'success'
       });
     });
-    console.log(query.sql);
   }
 }
