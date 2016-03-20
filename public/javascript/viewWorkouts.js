@@ -40,7 +40,7 @@ $(document).ready(() => {
     if (response.status === 'success') {
       $('#loading-message').hide();
       response.workouts.forEach((row) => {
-        let formattedDate = moment(row['workout_date']).format('YYYY-MM-DD'),
+        let formattedDate = moment(row['date']).format('YYYY-MM-DD'),
           squats = row['squats'],
           benchPress = row['bench_press'],
           barbellRows = row['barbell_rows'],

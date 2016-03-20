@@ -82,7 +82,7 @@ $(document).ready(() => {
       barbell_rows: barbellRows,
       overhead_press: overheadPress,
       deadlifts: deadlifts,
-      workout_date: workoutDate
+      date: workoutDate
     });
     let settings = {
       contentType: 'application/json',
