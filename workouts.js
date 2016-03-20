@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: codify schema in a migrations script
+
 module.exports = {
   submitWorkout: (dbConn, workout, res) => {
     console.log('submitWorkout');
