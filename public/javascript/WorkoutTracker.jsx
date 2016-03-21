@@ -11,7 +11,9 @@ let WorkoutBox = React.createClass({
       url: this.props.getUrl,
       dataType: 'json',
       success: function(data) {
-        this.setState({data: data.workouts});
+        this.setState({
+          data: data.workouts
+        });
       }.bind(this),
       failure: function(xhr, status, err) {
         console.err(this.props.getUrl, status, err.toString());
