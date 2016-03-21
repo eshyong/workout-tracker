@@ -18,7 +18,7 @@ let WorkoutBox = React.createClass({
       }.bind(this)
     });
   },
-  handleWorkoutUpdate: function(workout, errCallback) {
+  handleWorkoutUpdate: function(workout, handleResponse) {
     $.ajax({
       url: this.props.updateUrl,
       method: 'POST',
@@ -27,10 +27,8 @@ let WorkoutBox = React.createClass({
       failure: function(xhr, status, err) {
         console.err(this.props.url, status, err.toString());
       }.bind(this)
-    }).done(function(response) {
-      if (response.status === 'failure') {
-        errCallback(response);
-      }
+    }).done(function(data) {
+      handleResponse(data);
     });
   },
   componentDidMount: function() {
@@ -146,12 +144,13 @@ let Workout = React.createClass({
       barbellRows: this.props.barbellRows,
       overheadPress: this.props.overheadPress,
       deadlifts: this.props.deadlifts,
-      errMessage: ''
+      updateSuccess: false
     };
   },
   toggleEditingMode: function(e) {
     this.setState({
-      editing: !this.state.editing
+      editing: !this.state.editing,
+      updateSuccess: false
     });
   },
   handleInputChange: function(e) {
@@ -171,9 +170,9 @@ let Workout = React.createClass({
       overhead_press: this.state.overheadPress,
       deadlifts: this.state.deadlifts,
       date: moment(this.state.date, 'MM-DD-YYYY').format('YYYY-MM-DD')
-    }, function(err) {
+    }, (response) => {
       this.setState({
-        errMessage: err.message
+        updateSuccess: true
       });
     });
   },
@@ -185,44 +184,59 @@ let Workout = React.createClass({
       <form className="workout">
         <div>Date: {this.props.date}</div>
         <div>Squats:
-          <input
-            readOnly={!this.state.editing}
-            defaultValue={this.props.squats}
-            onChange={this.handleInputChange}
-            id="squats"
-          />
+          {
+            this.state.editing ? (
+              <input
+                defaultValue={this.props.squats}
+                onChange={this.handleInputChange}
+                id="squats"
+              />
+            ) : ` ${this.state.squats}`
+          }
         </div>
         <div>Bench Press:
-          <input
-            readOnly={!this.state.editing}
-            defaultValue={this.props.benchPress}
-            onChange={this.handleInputChange}
-            id="benchPress"
-          />
+          {
+            this.state.editing ? (
+              <input
+                defaultValue={this.props.benchPress}
+                onChange={this.handleInputChange}
+                id="benchPress"
+              />
+            ) : ` ${this.state.benchPress}`
+          }
         </div>
         <div>Barbell Rows:
-          <input
-            readOnly={!this.state.editing}
-            defaultValue={this.props.barbellRows}
-            onChange={this.handleInputChange}
-            id="barbellRows"
-          />
+          {
+            this.state.editing ? (
+              <input
+                defaultValue={this.props.barbellRows}
+                onChange={this.handleInputChange}
+                id="barbellRows"
+              />
+            ) : ` ${this.state.barbellRows}`
+          }
         </div>
         <div>Overhead Press:
-          <input
-            readOnly={!this.state.editing}
-            defaultValue={this.props.overheadPress}
-            onChange={this.handleInputChange}
-            id="overheadPress"
-          />
+          {
+            this.state.editing ? (
+              <input
+                defaultValue={this.props.overheadPress}
+                onChange={this.handleInputChange}
+                id="overheadPress"
+              />
+            ) : ` ${this.state.overheadPress}`
+          }
         </div>
         <div>Deadlifts:
-          <input
-            readOnly={!this.state.editing}
-            defaultValue={this.props.deadlifts}
-            onChange={this.handleInputChange}
-            id="deadlifts"
-          />
+          {
+            this.state.editing ? (
+              <input
+                defaultValue={this.props.deadlifts}
+                onChange={this.handleInputChange}
+                id="deadlifts"
+              />
+            ) : ` ${this.state.deadlifts}`
+          }
         </div>
         <input
           className="btn btn-default"
@@ -249,6 +263,11 @@ let Workout = React.createClass({
               onClick={this.handleDelete}
             />
           ] : null
+        }
+        {
+          this.state.updateSuccess ? (
+            <div className="successBanner">Successfully updated workout!</div>
+          ) : null
         }
       </form>
     );
