@@ -137,20 +137,33 @@ let WorkoutList = React.createClass({
 let Workout = React.createClass({
   getInitialState: function() {
     return {
+      // A flag that specifies whether workout is in editing
+      // mode or not
       editing: false,
+
+      // The data fields of a workout
       date: this.props.date,
       squats: this.props.squats,
       benchPress: this.props.benchPress,
       barbellRows: this.props.barbellRows,
       overheadPress: this.props.overheadPress,
       deadlifts: this.props.deadlifts,
-      updateSuccess: false
+
+      // These are set whenever an operation on a workout is performed,
+      // such as an update or delete
+      success: false,
+      failure: false,
+      successMessage: '',
+      failureMessage: ''
     };
   },
   toggleEditingMode: function(e) {
     this.setState({
       editing: !this.state.editing,
-      updateSuccess: false
+      success: false,
+      failure: false,
+      successMessage: '',
+      failureMessage: ''
     });
   },
   handleInputChange: function(e) {
@@ -171,9 +184,21 @@ let Workout = React.createClass({
       deadlifts: this.state.deadlifts,
       date: moment(this.state.date, 'MM-DD-YYYY').format('YYYY-MM-DD')
     }, (response) => {
-      this.setState({
-        updateSuccess: true
-      });
+      if (response.status === 'failure') {
+        this.setState({
+          success: false,
+          failure: true,
+          failureMessage: response.message
+        });
+      } else if (response.status === 'success') {
+        this.setState({
+          success: true,
+          failure: false,
+          successMessage: 'Successfully updated workout!'
+        });
+      } else {
+        console.log(`Unknown status: ${response.status}`);
+      }
     });
   },
   handleDelete: function(e) {
@@ -265,8 +290,13 @@ let Workout = React.createClass({
           ] : null
         }
         {
-          this.state.updateSuccess ? (
-            <div className="successBanner">Successfully updated workout!</div>
+          this.state.success ? (
+            <div className="successMessage">{this.state.successMessage}</div>
+          ) : null
+        }
+        {
+          this.state.failure ? (
+            <div className="failureMessage">{this.state.failureMessage}</div>
           ) : null
         }
       </form>

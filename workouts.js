@@ -15,7 +15,7 @@ module.exports = {
         } else {
           res.json({
             status: 'failure',
-            message: 'Unable to insert or replace workout.'
+            message: 'Failed to insert workout.'
           });
         }
         return;
@@ -35,7 +35,7 @@ module.exports = {
         console.log('Encountered database err: ' + err.message);
         res.json({
           status: 'failure',
-          message: 'Unable to query workouts.'
+          message: 'Failed to query workouts.'
         });
         return;
       }
@@ -50,12 +50,12 @@ module.exports = {
     let workoutDate = workout.date,
       queryString = 'UPDATE workouts SET ? WHERE date = ?';
 
-    let query = dbConn.query(queryString, [workout, workoutDate], (err) => {
+    let query = dbConn.query(queryString, [workout, workoutDate], (err, result) => {
       if (err) {
         console.log('Encountered database err: ' + err.message);
         res.json({
           status: 'failure',
-          message: 'Unable to update workout.'
+          message: 'Failed to update workout.'
         });
         return;
       }
@@ -75,7 +75,7 @@ module.exports = {
         console.log('Encountered database err: ' + err.message);
         res.json({
           status: 'failure',
-          message: 'Unable to delete workout.'
+          message: 'Failed to delete workout.'
         });
         return;
       }
