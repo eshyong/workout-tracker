@@ -66,7 +66,7 @@ let WorkoutForm = React.createClass({
       <form className="workoutForm" onSubmit={this.handleSubmit}>
         <div>Workout Date:
           <input
-            type="text"
+            type="date"
             defaultValue={this.state.date}
           />
         </div>
