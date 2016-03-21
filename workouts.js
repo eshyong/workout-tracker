@@ -57,6 +57,7 @@ module.exports = {
           status: 'failure',
           message: 'Unable to update workout.'
         });
+        return;
       }
       res.json({
         status: 'success',
