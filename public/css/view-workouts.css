@@ -1,25 +1,15 @@
-.loading-message {
-  margin-left: 50;
-  font-size: 18px;
-}
-
 .view-header {
   margin-left: 50;
 }
 
-ol {
+.workoutBox {
   margin-left: 50;
 }
 
-.workout-row {
-  font-size: 18px;
+.workout {
+  margin-bottom: 10;
 }
 
-.load-failure {
-  color: red;
-}
-
-.delete-failure {
-  color: red;
-  display: none;
+#submitWorkout {
+  width: 100;
 }

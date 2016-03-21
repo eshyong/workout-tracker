@@ -46,6 +46,25 @@ module.exports = {
     });
   },
 
+  updateWorkout: (dbConn, workout, res) => {
+    let workoutDate = workout.date,
+      queryString = 'UPDATE workouts SET ? WHERE date = ?';
+
+    let query = dbConn.query(queryString, [workout, workoutDate], (err) => {
+      if (err) {
+        console.log('Encountered database err: ' + err.message);
+        res.json({
+          status: 'failure',
+          message: 'Unable to update workout.'
+        });
+      }
+      res.json({
+        status: 'success',
+        message: 'Successfully updated workout.'
+      })
+    });
+  },
+
   deleteWorkout: (dbConn, workout, res) => {
     let workoutDate = workout.date,
       queryString = 'DELETE FROM workouts WHERE date = ?';

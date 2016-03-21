@@ -35,12 +35,16 @@ app.get('/view-workouts', (req, res) => {
 });
 
 // API endpoints
+app.get('/api/get-workouts', (req, res) => {
+  workouts.getWorkouts(conn, res);
+});
+
 app.post('/api/submit-workout', (req, res) => {
   workouts.submitWorkout(conn, req.body, res);
 });
 
-app.get('/api/get-workouts', (req, res) => {
-  workouts.getWorkouts(conn, res);
+app.post('/api/update-workout', (req, res) => {
+  workouts.updateWorkout(conn, req.body, res);
 });
 
 app.post('/api/delete-workout', (req, res) => {
