@@ -1,8 +1,23 @@
-.intro-header {
+.view-header {
   margin-left: 50;
 }
 
-.introduction {
+.workoutBox {
   margin-left: 50;
-  font-size: 18px;
+}
+
+.workout {
+  margin-bottom: 10;
+}
+
+.successMessage {
+  color: green;
+}
+
+.failureMessage {
+  color: red;
+}
+
+#submitWorkout {
+  width: 100;
 }
