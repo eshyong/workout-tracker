@@ -12,6 +12,15 @@ module.exports = {
             status: 'failure',
             message: 'A workout with that date already exists.'
           });
+        } else if (
+          err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD' ||
+          err.code === 'ER_WARN_DATA_OUT_OF_RANGE'
+        ) {
+          res.json({
+            status: 'failure',
+            message: 'Invalid input - please check that your exercise weights are ' +
+              'positive integers.'
+          });
         } else {
           res.json({
             status: 'failure',
