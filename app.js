@@ -26,14 +26,6 @@ app.get('/', (req, res) => {
   res.sendFile('index.html', sendFileOpts);
 });
 
-app.get('/enter-workout', (req, res) => {
-  res.sendFile('enter-workout.html', sendFileOpts);
-});
-
-app.get('/view-workouts', (req, res) => {
-  res.sendFile('view-workouts.html', sendFileOpts);
-});
-
 // API endpoints
 app.get('/api/get-workouts', (req, res) => {
   workouts.getWorkouts(conn, res);

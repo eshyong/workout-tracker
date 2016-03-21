@@ -267,7 +267,6 @@ let Workout = React.createClass({
           className="btn btn-default"
           type="button"
           value="Edit"
-          id="editWorkout"
           onClick={this.toggleEditingMode}
         />
         {
@@ -277,14 +276,12 @@ let Workout = React.createClass({
               className="btn btn-default"
               type="button"
               value="Update"
-              key="updateWorkout"
               onClick={this.handleUpdate}
             />,
             <input
               className="btn btn-default"
               type="button"
               value="Delete"
-              key="deleteWorkout"
               onClick={this.handleDelete}
             />
           ] : null

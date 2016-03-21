@@ -12,18 +12,21 @@
         </div>
         <ul class="nav navbar-nav">
           <li class="active"><a href="#">Home</a></li>
-          <li><a href="/enter-workout">Enter a workout</a></li>
-          <li><a href="/view-workouts">View your workouts</a></li>
+          <li><a href="#">Enter a workout</a></li>
+          <li><a href="#">View your workouts</a></li>
         </ul>
       </div>
     </nav>
-    <h1 class="intro-header">
-      Workout Tracker
+    <h1 class="view-header">
+      View Workouts
     </h1>
-    <p class="introduction">
-      Welcome! Currently, this site only supports the <a href="http://stronglifts.com">stronglifts</a> regimen. Click through the navigation bar to see more.
-    </p>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <div id="content"></div>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+    <script type="text/babel" src="javascript/WorkoutTracker.jsx"></script>
   </body>
 </html>
