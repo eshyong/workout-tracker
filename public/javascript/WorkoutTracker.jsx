@@ -33,6 +33,19 @@ let WorkoutBox = React.createClass({
       handleResponse(data);
     });
   },
+  handleWorkoutDelete: function(workout, handleResponse) {
+    $.ajax({
+      url: this.props.deleteUrl,
+      method: 'POST',
+      data: workout,
+      dataType: 'json',
+      failure: function(xhr, status, err) {
+        console.err(this.props.url, status, err.toString());
+      }.bind(this)
+    }).done(function(data) {
+      handleResponse(data);
+    });
+  },
   componentDidMount: function() {
     this.loadWorkoutsFromServer();
     setInterval(this.loadWorkoutsFromServer, this.props.pollInterval);
@@ -46,6 +59,7 @@ let WorkoutBox = React.createClass({
         <WorkoutList
           data={this.state.data}
           onWorkoutUpdate={this.handleWorkoutUpdate}
+          onWorkoutDelete={this.handleWorkoutDelete}
         />
       </div>
     );
@@ -125,6 +139,7 @@ let WorkoutList = React.createClass({
           overheadPress={String(workout.overhead_press)}
           deadlifts={String(workout.deadlifts)}
           onWorkoutUpdate={this.props.onWorkoutUpdate}
+          onWorkoutDelete={this.props.onWorkoutDelete}
         />
       );
     });
@@ -177,15 +192,16 @@ let Workout = React.createClass({
   },
   handleUpdate: function(e) {
     // Send an UPDATE request to the API server
-    e.preventDefault();
     this.props.onWorkoutUpdate({
       squats: this.state.squats,
       bench_press: this.state.benchPress,
       barbell_rows: this.state.barbellRows,
       overhead_press: this.state.overheadPress,
       deadlifts: this.state.deadlifts,
+      // Dates need to be in the MySQL format 'YYYY-MM-DD'
       date: moment(this.state.date, 'MM-DD-YYYY').format('YYYY-MM-DD')
     }, (response) => {
+      // Set success or failure messages accordingly
       if (response.status === 'failure') {
         this.setState({
           success: false,
@@ -196,7 +212,7 @@ let Workout = React.createClass({
         this.setState({
           success: true,
           failure: false,
-          successMessage: 'Successfully updated workout!'
+          successMessage: 'Successfully updated workout.'
         });
       } else {
         console.log(`Unknown status: ${response.status}`);
@@ -204,7 +220,28 @@ let Workout = React.createClass({
     });
   },
   handleDelete: function(e) {
-    // TODO: Send a DELETE request to the API server
+    // Send a DELETE request to the API server
+    this.props.onWorkoutDelete({
+      // Dates need to be in the MySQL format 'YYYY-MM-DD'
+      date: moment(this.state.date, 'MM-DD-YYYY').format('YYYY-MM-DD')
+    }, (response) => {
+      // Set success or failure messages accordingly
+      if (response.status === 'failure') {
+        this.setState({
+          success: false,
+          failure: true,
+          failureMessage: response.message
+        });
+      } else if (response.status === 'success') {
+        this.setState({
+          success: true,
+          failure: false,
+          successMessage: 'Successfully deleted workout.'
+        });
+      } else {
+        console.log(`Unknown status: ${response.status}`);
+      }
+    });
   },
   render: function() {
     return (
@@ -307,6 +344,7 @@ ReactDOM.render(
   <WorkoutBox
     getUrl="/api/get-workouts"
     updateUrl="/api/update-workout"
+    deleteUrl="/api/delete-workout"
     pollInterval={2000}
   />,
   document.getElementById('content')
