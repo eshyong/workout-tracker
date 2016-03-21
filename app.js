@@ -12,7 +12,7 @@ let db = require('./db'),
 
 let sendFileOpts = {
   root: __dirname + '/public/views'
-}
+};
 
 // Middleware setup
 app.use(express.static('./public'));
