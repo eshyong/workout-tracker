@@ -115,8 +115,7 @@ let WorkoutForm = React.createClass({
 
 let WorkoutList = React.createClass({
   render: function() {
-    let self = this;
-    let workoutNodes = this.props.data.map(function(workout) {
+    let workoutNodes = this.props.data.map((workout) => {
       return (
         <Workout key={workout.id}
           date={moment(workout.date).format('MM-DD-YYYY')}
@@ -125,7 +124,7 @@ let WorkoutList = React.createClass({
           barbellRows={String(workout.barbell_rows)}
           overheadPress={String(workout.overhead_press)}
           deadlifts={String(workout.deadlifts)}
-          onWorkoutUpdate={self.props.onWorkoutUpdate}
+          onWorkoutUpdate={this.props.onWorkoutUpdate}
         />
       );
     });
