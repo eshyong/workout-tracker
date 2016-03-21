@@ -326,7 +326,7 @@ let Workout = React.createClass({
           {
             this.state.editing ? (
               <input
-                defaultValue={this.props.squats}
+                defaultValue={this.state.squats}
                 onChange={this.handleInputChange}
                 id="squats"
               />
@@ -337,7 +337,7 @@ let Workout = React.createClass({
           {
             this.state.editing ? (
               <input
-                defaultValue={this.props.benchPress}
+                defaultValue={this.state.benchPress}
                 onChange={this.handleInputChange}
                 id="benchPress"
               />
@@ -348,7 +348,7 @@ let Workout = React.createClass({
           {
             this.state.editing ? (
               <input
-                defaultValue={this.props.barbellRows}
+                defaultValue={this.state.barbellRows}
                 onChange={this.handleInputChange}
                 id="barbellRows"
               />
@@ -359,7 +359,7 @@ let Workout = React.createClass({
           {
             this.state.editing ? (
               <input
-                defaultValue={this.props.overheadPress}
+                defaultValue={this.state.overheadPress}
                 onChange={this.handleInputChange}
                 id="overheadPress"
               />
@@ -370,7 +370,7 @@ let Workout = React.createClass({
           {
             this.state.editing ? (
               <input
-                defaultValue={this.props.deadlifts}
+                defaultValue={this.state.deadlifts}
                 onChange={this.handleInputChange}
                 id="deadlifts"
               />
