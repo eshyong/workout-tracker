@@ -54,7 +54,7 @@ let WorkoutBox = React.createClass({
       <div className="workoutBox">
         <h2>Submit a new Workout</h2>
         <WorkoutForm
-          date={moment().format('YYYY-MM-DD')}
+          date={moment()}
           squats="0"
           benchPress="0"
           barbellRows="0"
@@ -108,7 +108,7 @@ let WorkoutForm = React.createClass({
       overhead_press: this.state.overheadPress,
       deadlifts: this.state.deadlifts,
       // Dates need to be in the MySQL format 'YYYY-MM-DD'
-      date: this.state.date
+      date: this.state.date.format('YYYY-MM-DD')
     }, (response) => {
       // Set success or failure messages accordingly
       if (response.status === 'failure') {
@@ -135,7 +135,7 @@ let WorkoutForm = React.createClass({
           <div>Workout Date:
             <input
               type="date"
-              defaultValue={this.state.date}
+              defaultValue={this.state.date.format('YYYY-MM-DD')}
               onChange={this.handleInputChange}
               id="date"
             />
@@ -207,7 +207,7 @@ let WorkoutList = React.createClass({
     let workoutNodes = this.props.data.map((workout) => {
       return (
         <Workout key={workout.id}
-          date={moment(workout.date).format('MM-DD-YYYY')}
+          date={moment(workout.date)}
           squats={String(workout.squats)}
           benchPress={String(workout.bench_press)}
           barbellRows={String(workout.barbell_rows)}
@@ -274,7 +274,7 @@ let Workout = React.createClass({
       overhead_press: this.state.overheadPress,
       deadlifts: this.state.deadlifts,
       // Dates need to be in the MySQL format 'YYYY-MM-DD'
-      date: moment(this.state.date, 'MM-DD-YYYY').format('YYYY-MM-DD')
+      date: this.state.date.format('YYYY-MM-DD')
     }, (response) => {
       // Set success or failure messages accordingly
       if (response.status === 'failure') {
@@ -298,7 +298,7 @@ let Workout = React.createClass({
     // Send a DELETE request to the API server
     this.props.onWorkoutDelete({
       // Dates need to be in the MySQL format 'YYYY-MM-DD'
-      date: moment(this.state.date, 'MM-DD-YYYY').format('YYYY-MM-DD')
+      date: this.state.date.format('YYYY-MM-DD')
     }, (response) => {
       // Set success or failure messages accordingly
       if (response.status === 'failure') {
@@ -321,7 +321,7 @@ let Workout = React.createClass({
   render: function() {
     return (
       <form className="workout">
-        <div>Date: {this.props.date}</div>
+        <div>Date: {this.props.date.format('MM-DD-YYYY')}</div>
         <div>Squats:
           {
             this.state.editing ? (
