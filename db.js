@@ -1,10 +1,10 @@
 'use strict';
 
-let mysql = require('mysql');
+var mysql = require('mysql');
 
 // Database setup for local development only
 // TODO: Deploy app to the **cloud**
-let connection = mysql.createConnection({
+var connection = mysql.createConnection({
   host: 'localhost',
   user: 'workout_tracker',
   password: 'abc123',
@@ -12,8 +12,8 @@ let connection = mysql.createConnection({
 });
 
 module.exports = {
-  connect: () => {
-    connection.connect((err) => {
+  connect: function() {
+    connection.connect(function(err) {
       if (err) {
         console.log('Error connecting to db: ' + err.stack);
         throw err;

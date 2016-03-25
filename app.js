@@ -1,16 +1,16 @@
 'use strict';
 
 // Third party packages
-let bodyParser = require('body-parser'),
+var bodyParser = require('body-parser'),
   express = require('express'),
   app = express();
 
 // Local packages
-let db = require('./db'),
+var db = require('./db'),
   workouts = require('./workouts'),
   conn = db.connect();
 
-let sendFileOpts = {
+var sendFileOpts = {
   root: __dirname + '/public/views'
 };
 
@@ -22,25 +22,25 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Pages
-app.get('/', (req, res) => {
+app.get('/', function(req, res) {
   res.sendFile('index.html', sendFileOpts);
 });
 
 // API endpoints
-app.get('/api/get-workouts', (req, res) => {
+app.get('/api/get-workouts', function(req, res) {
   workouts.getWorkouts(conn, res);
 });
 
-app.post('/api/submit-workout', (req, res) => {
+app.post('/api/submit-workout', function(req, res) {
   workouts.submitWorkout(conn, req.body, res);
 });
 
-app.post('/api/update-workout', (req, res) => {
+app.post('/api/update-workout', function(req, res) {
   workouts.updateWorkout(conn, req.body, res);
 });
 
-app.post('/api/delete-workout', (req, res) => {
-  workouts.deleteWorkout(conn, req.body, res);
+app.post('/api/devare-workout', function(req, res) {
+  workouts.devareWorkout(conn, req.body, res);
 });
 
 app.listen(8080, '127.0.0.1');

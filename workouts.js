@@ -3,8 +3,8 @@
 // TODO: codify schema in a migrations script
 
 module.exports = {
-  submitWorkout: (dbConn, workout, res) => {
-    let query = dbConn.query('INSERT INTO workouts SET ?', workout, (err) => {
+  submitWorkout: function(dbConn, workout, res) {
+    var query = dbConn.query('INSERT INTO workouts SET ?', workout, function(err) {
       if (err) {
         console.log('Encountered database err: ' + err.message);
         if (err.code === 'ER_DUP_ENTRY') {
@@ -36,10 +36,10 @@ module.exports = {
     });
   },
 
-  getWorkouts: (dbConn, res) => {
-    let queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
+  getWorkouts: function(dbConn, res) {
+    var queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
       'overhead_press, deadlifts, date FROM workouts';
-    let query = dbConn.query(queryString, (err, results) => {
+    var query = dbConn.query(queryString, function(err, results) {
       if (err) {
         console.log('Encountered database err: ' + err.message);
         res.json({
@@ -55,11 +55,11 @@ module.exports = {
     });
   },
 
-  updateWorkout: (dbConn, workout, res) => {
-    let workoutDate = workout.date,
+  updateWorkout: function(dbConn, workout, res) {
+    var workoutDate = workout.date,
       queryString = 'UPDATE workouts SET ? WHERE date = ?';
 
-    let query = dbConn.query(queryString, [workout, workoutDate], (err, result) => {
+    var query = dbConn.query(queryString, [workout, workoutDate], function(err, result) {
       if (err) {
         console.log('Encountered database err: ' + err.message);
         res.json({
@@ -75,11 +75,11 @@ module.exports = {
     });
   },
 
-  deleteWorkout: (dbConn, workout, res) => {
-    let workoutDate = workout.date,
+  deleteWorkout: function(dbConn, workout, res) {
+    var workoutDate = workout.date,
       queryString = 'DELETE FROM workouts WHERE date = ?';
 
-    let query = dbConn.query(queryString, workoutDate, (err) => {
+    var query = dbConn.query(queryString, workoutDate, function(err) {
       if (err) {
         console.log('Encountered database err: ' + err.message);
         res.json({
