@@ -3,3 +3,6 @@ node_modules
 
 # Used for debugging NPM
 npm-debug.log
+
+# Used by Vagrant
+.vagrant
