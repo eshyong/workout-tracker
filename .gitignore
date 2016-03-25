@@ -6,3 +6,6 @@ npm-debug.log
 
 # Used by Vagrant
 .vagrant
+
+# Environment variables file
+env_vars
