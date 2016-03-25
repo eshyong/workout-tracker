@@ -4,8 +4,8 @@
   "description": "Track your workouts",
   "main": "app.js",
   "scripts": {
-    "start": "./scripts/dev_start.sh",
-    "stop": "./scripts/dev_stop.sh",
+    "start": "sudo ./scripts/dev_start.sh",
+    "stop": "sudo ./scripts/dev_stop.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +21,7 @@
   "dependencies": {
     "body-parser": "^1.15.0",
     "express": "^4.13.4",
-    "mysql": "^2.10.2"
+    "mysql": "^2.10.2",
+    "nodemon": "~1.9.1"
   }
 }

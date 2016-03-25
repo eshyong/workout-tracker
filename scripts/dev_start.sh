@@ -9,5 +9,7 @@
 set -eux -o pipefail
 
 # Start MySQL server and Node server
-mysql.server start
-nodemon
+if service mysql status | grep -q "stop"; then
+    service mysql start
+fi
+node_modules/nodemon/bin/nodemon.js &
