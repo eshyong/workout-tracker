@@ -95,6 +95,9 @@ let WorkoutForm = React.createClass({
   handleInputChange: function(e) {
     let workoutType = e.target.id,
       newValue = e.target.value;
+    if (workoutType === 'date') {
+      newValue = moment(newValue);
+    }
     this.setState({
       [workoutType]: newValue
     });
@@ -261,6 +264,9 @@ let Workout = React.createClass({
   handleInputChange: function(e) {
     let workoutType = e.target.id,
       newValue = e.target.value;
+    if (workoutType === 'date') {
+      newValue = moment(newValue);
+    }
     this.setState({
       [workoutType]: newValue
     });
