@@ -9,7 +9,7 @@ source ./env_vars
 # -x: log each line of the script as it is executed
 # -o pipefail: sets the exit status of a pipe to the last
 #   command that returned a non-zero status
-set -eu -o pipefail
+set -eux -o pipefail
 
 # Update apt repos
 apt-get update
