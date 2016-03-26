@@ -23,7 +23,7 @@ command=$(cat <<EOF
 GRANT USAGE ON *.* TO 'workout_tracker'@'localhost';
 DROP USER 'workout_tracker'@'localhost';
 # Create new user
-CREATE USER 'workout_tracker'@'localhost' IDENTIFIED BY '"$MYSQL_WORKOUT_TRACKER_PW"';
+CREATE USER 'workout_tracker'@'localhost' IDENTIFIED BY '$MYSQL_WORKOUT_TRACKER_PW';
 EOF
 )
 echo 'Creating workout_tracker user'
@@ -31,4 +31,4 @@ mysql -u root --password="$MYSQL_ROOT_PW" --execute "$command"
 
 # Run SQL scripts on database
 echo 'Running sql/create_schema.sql script'
-mysql -u root --password="$MYSQL_ROOT_PW" < ./sql/create_schema.sql > create_schema.log
+mysql -u root --password="$MYSQL_ROOT_PW" < ./sql/create_schema.sql

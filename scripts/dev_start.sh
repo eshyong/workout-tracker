@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Source environment variables file
+source ./env_vars
+
 # Turn on the following flags
 # -e: terminate script on error
 # -u: terminate script on unbound variable
@@ -12,4 +15,4 @@ set -eux -o pipefail
 if service mysql status | grep -q "stop"; then
     service mysql start
 fi
-node_modules/nodemon/bin/nodemon.js &
+node_modules/nodemon/bin/nodemon.js -L app.js &

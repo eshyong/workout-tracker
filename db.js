@@ -4,12 +4,14 @@ var mysql = require('mysql');
 
 // Database setup for local development only
 // TODO: Deploy app to the **cloud**
-var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'workout_tracker',
-  password: 'abc123',
-  database: 'workouts'
-});
+if (process.env.NODE_ENV === 'development') {
+  var connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'workout_tracker',
+    password: process.env.DEV_WORKOUT_TRACKER_PW,
+    database: 'workouts'
+  });
+}
 
 module.exports = {
   connect: function() {
