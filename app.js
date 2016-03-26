@@ -39,9 +39,11 @@ app.post('/api/update-workout', function(req, res) {
   workouts.updateWorkout(conn, req.body, res);
 });
 
-app.post('/api/devare-workout', function(req, res) {
-  workouts.devareWorkout(conn, req.body, res);
+app.post('/api/delete-workout', function(req, res) {
+  workouts.deleteWorkout(conn, req.body, res);
 });
 
-app.listen(8080, '127.0.0.1');
-console.log('Listening on http://127.0.0.1:8080');
+if (process.env.NODE_ENV === 'development') {
+  app.listen(8080, '0.0.0.0');
+  console.log('Listening on http://0.0.0.0:8080');
+}
