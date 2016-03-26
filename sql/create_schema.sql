@@ -8,7 +8,7 @@ CREATE DATABASE IF NOT EXISTS workouts
 
 # Create workouts table in the workouts database
 CREATE TABLE IF NOT EXISTS workouts.workouts (
-    id INT UNSIGNED NOT NULL PRIMARY KEY,
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     date DATE NOT NULL UNIQUE KEY,
     squats INT UNSIGNED,
     bench_press INT UNSIGNED,
