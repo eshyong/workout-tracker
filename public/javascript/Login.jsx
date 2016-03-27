@@ -15,11 +15,25 @@ var LoginScreen = React.createClass({
       }.bind(this)
     });
   },
+  login: function(userData, callback) {
+    $.ajax({
+      url: this.props.loginUrl,
+      method: 'POST',
+      dataType: 'json',
+      data: userData,
+      success: function(response) {
+        callback(response);
+      }.bind(this),
+      failure: function(xhr, status, err) {
+        console.err(this.props.getUrl, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
     return (
       <div className="loginScreen">
         <h2>Login as a returning user</h2>
-        <LoginForm/>
+        <LoginForm login={this.login}/>
         <h2>Or, register as a new user</h2>
         <RegisterForm registerNewUser={this.registerNewUser}/>
       </div>
@@ -31,7 +45,9 @@ var LoginForm = React.createClass({
   getInitialState: function() {
     return {
       username: '',
-      password: ''
+      password: '',
+      success: '',
+      failure: ''
     }
   },
   handleInputChange: function(e) {
@@ -43,31 +59,79 @@ var LoginForm = React.createClass({
   },
   handleSubmit: function(e) {
     e.preventDefault();
-    // TODO: Implement login
+
+    // Reset status messages
+    this.setState({
+      success: '',
+      failure: ''
+    });
+
+    // Trim extra whitespace around words
+    var username = this.state.username.trim(),
+        password = this.state.password.trim();
+
+    // Form validation
+    if (!username || !password) {
+      this.setState({
+        failure: 'Need to fill both username and password in.'
+      });
+      return;
+    }
+
+    // Try logging in
+    this.props.login({
+      username: username,
+      password: password
+    }, (response) => {
+      if (response.status === 'success') {
+        // Redirect to server URL
+        window.location.replace(response.redirectUrl);
+      } else if (response.status === 'failure') {
+        this.setState({
+          failure: response.message
+        });
+      } else {
+        this.setState({
+          failure: 'Unknown response type'
+        });
+      }
+    });
   },
   render: function() {
     return (
-      <form className="loginForm" onSubmit={this.handleSubmit}>
-        <div>
-          <input
-            type="text"
-            id="username"
-            placeholder="username"
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            id="password"
-            placeholder="password"
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <div>
-          <input type="submit" value="Submit"/>
-        </div>
-      </form>
+      <div className="loginForm">
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <input
+              type="text"
+              id="username"
+              placeholder="username"
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <div>
+            <input
+              type="password"
+              id="password"
+              placeholder="password"
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <div>
+            <input type="submit" value="Submit"/>
+          </div>
+        </form>
+        {
+          this.state.success ?
+            <div className="successMessage">{this.state.success}</div>
+            : null
+        }
+        {
+          this.state.failure ?
+            <div className="failureMessage">{this.state.failure}</div>
+            : null
+        }
+      </div>
     );
   }
 });
@@ -186,6 +250,9 @@ var RegisterForm = React.createClass({
 });
 
 ReactDOM.render(
-  <LoginScreen registerUrl="/register"/>,
+  <LoginScreen
+    registerUrl="/register"
+    loginUrl="/login"
+  />,
   document.getElementById('content')
 );
