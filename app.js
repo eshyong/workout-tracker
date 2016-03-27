@@ -34,9 +34,13 @@ app.use(sessions({
   duration: 1000 * 60 * 60 * 24
 }));
 
-// Check for authentication on all pages, except for '/login' and '/register'
+// Check for authentication on all pages, except for login pages and api calls
 app.use(function(req, res, next) {
-  if (!req.auth.userId && req.path !== '/login' && req.path !== '/register') {
+  if (!req.auth.userId &&
+    req.path !== '/login' &&
+    req.path !== '/api/register' &&
+    req.path !== '/api/login'
+  ) {
     // Not authed, redirect to login page
     res.redirect('/login');
   } else {
@@ -51,10 +55,16 @@ app.get('/', function(req, res) {
 });
 
 app.get('/login', function(req, res) {
-  res.sendFile('login.html', sendFileOpts);
+  if (req.auth.userId) {
+    // Redirect to home page if already authenticated
+    res.redirect('/');
+  } else {
+    res.sendFile('login.html', sendFileOpts);
+  }
 });
 
-app.post('/register', function(req, res) {
+// Login and register endpoints
+app.post('/api/register', function(req, res) {
   // Generate a salt and hash of the password, then pass the user to the DB
   bcrypt.genSalt(function(err, salt) {
     bcrypt.hash(req.body.password, salt, function(err, hash) {
@@ -96,7 +106,7 @@ app.post('/register', function(req, res) {
   });
 });
 
-app.post('/login', function(req, res) {
+app.post('/api/login', function(req, res) {
   // Authenticate user by checking credentials against database
   users.getUserCredentials(conn, {
     username: req.body.username,

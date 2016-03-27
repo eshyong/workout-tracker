@@ -256,8 +256,8 @@ var RegisterForm = React.createClass({
 
 ReactDOM.render(
   <LoginScreen
-    registerUrl="/register"
-    loginUrl="/login"
+    registerUrl="/api/register"
+    loginUrl="/api/login"
   />,
   document.getElementById('content')
 );
