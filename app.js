@@ -97,7 +97,6 @@ app.post('/register', function(req, res) {
 });
 
 app.post('/login', function(req, res) {
-  console.log('/login');
   // Authenticate user by checking credentials against database
   users.getUserCredentials(conn, {
     username: req.body.username,
@@ -150,19 +149,92 @@ app.post('/login', function(req, res) {
 
 // API endpoints
 app.get('/api/get-workouts', function(req, res) {
-  workouts.getWorkouts(conn, res);
+  workouts.getWorkouts(conn, function(err, results) {
+    if (err) {
+      // Generic DB error
+      console.log('Encountered database err: ' + err.message);
+      res.json({
+        status: 'failure',
+        message: 'Failed to query workouts.'
+      });
+      return;
+    }
+    res.json({
+      status: 'success',
+      workouts: results
+    });
+  });
 });
 
 app.post('/api/submit-workout', function(req, res) {
-  workouts.submitWorkout(conn, req.body, res);
+  workouts.submitWorkout(conn, req.body, function(err) {
+    if (err) {
+      console.log('Encountered database err: ' + err.message);
+      if (err.code === 'ER_DUP_ENTRY') {
+        // Duplicate workout error
+        res.json({
+          status: 'failure',
+          message: 'A workout with that date already exists.'
+        });
+      } else if (
+        err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD' ||
+        err.code === 'ER_WARN_DATA_OUT_OF_RANGE'
+      ) {
+        // Invalid user input error
+        res.json({
+          status: 'failure',
+          message: 'Invalid input - please check that your exercise weights are ' +
+            'positive integers.'
+        });
+      } else {
+        // Generic error
+        res.json({
+          status: 'failure',
+          message: 'Failed to insert workout.'
+        });
+      }
+      return;
+    }
+    console.log('Successfully added workout.');
+    res.json({
+      status: 'success'
+    });
+  });
 });
 
 app.post('/api/update-workout', function(req, res) {
-  workouts.updateWorkout(conn, req.body, res);
+  workouts.updateWorkout(conn, req.body, function(err, result) {
+    if (err) {
+      // Generic DB error
+      console.log('Encountered database err: ' + err.message);
+      res.json({
+        status: 'failure',
+        message: 'Failed to update workout.'
+      });
+      return;
+    }
+    res.json({
+      status: 'success',
+      message: 'Successfully updated workout.'
+    })
+  });
 });
 
 app.post('/api/delete-workout', function(req, res) {
-  workouts.deleteWorkout(conn, req.body, res);
+  workouts.deleteWorkout(conn, req.body, function(err) {
+    if (err) {
+      // Generic DB error
+      console.log('Encountered database err: ' + err.message);
+      res.json({
+        status: 'failure',
+        message: 'Failed to delete workout.'
+      });
+      return;
+    }
+    res.json({
+      status: 'success'
+    });
+  });
 });
 
 if (process.env.NODE_ENV === 'development') {
