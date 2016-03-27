@@ -101,9 +101,8 @@ var RegisterForm = React.createClass({
     var username = this.state.username.trim(),
         password = this.state.password.trim(),
         passwordAgain = this.state.passwordAgain.trim();
-    console.log(`username: ${username}, password: ${password}, passwordAgain: ${passwordAgain}`);
 
-    // 
+    // Form validation
     if (!username || !password) {
       this.setState({
         failure: 'Need to fill both username and password in'

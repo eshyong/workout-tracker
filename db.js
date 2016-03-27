@@ -3,7 +3,6 @@
 var mysql = require('mysql');
 
 // Database setup for local development only
-// TODO: Deploy app to the **cloud**
 if (process.env.NODE_ENV === 'development') {
   var connection = mysql.createConnection({
     host: 'localhost',

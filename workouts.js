@@ -1,7 +1,5 @@
 'use strict';
 
-// TODO: codify schema in a migrations script
-
 module.exports = {
   submitWorkout: function(dbConn, workout, res) {
     var query = dbConn.query('INSERT INTO workouts SET ?', workout, function(err) {
@@ -93,4 +91,4 @@ module.exports = {
       });
     });
   }
-}
+};
