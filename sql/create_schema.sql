@@ -15,7 +15,8 @@ CREATE DATABASE workouts
 CREATE TABLE workouts.users (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE KEY,
-    password_hash VARCHAR(255) NOT NULL);
+    password_hash VARCHAR(255) NOT NULL,
+    password_salt VARCHAR(255) NOT NULL);
 
 # Create workouts table in workouts database
 CREATE TABLE workouts.workouts (
