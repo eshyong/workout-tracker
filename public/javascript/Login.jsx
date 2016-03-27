@@ -94,8 +94,10 @@ var RegisterForm = React.createClass({
     e.preventDefault();
 
     // Reset status messages
-    this.success = '';
-    this.failure = '';
+    this.setState({
+      success: '',
+      failure: ''
+    });
 
     // Trim extra whitespace around words
     var username = this.state.username.trim(),
@@ -105,13 +107,13 @@ var RegisterForm = React.createClass({
     // Form validation
     if (!username || !password) {
       this.setState({
-        failure: 'Need to fill both username and password in'
+        failure: 'Need to fill both username and password in.'
       });
       return;
     }
     if (password !== passwordAgain) {
       this.setState({
-        failure: 'First password does not match second'
+        failure: 'First password does not match second.'
       });
       return;
     }
@@ -184,6 +186,6 @@ var RegisterForm = React.createClass({
 });
 
 ReactDOM.render(
-  <LoginScreen/>,
+  <LoginScreen registerUrl="/register"/>,
   document.getElementById('content')
 );
