@@ -101,34 +101,36 @@ var LoginForm = React.createClass({
     return (
       <div className="loginForm">
         <form onSubmit={this.handleSubmit}>
-          <div>
+          <div className="input">
             <input
               type="text"
               id="username"
+              className="inputBox"
               placeholder="username"
               onChange={this.handleInputChange}
             />
           </div>
-          <div>
+          <div className="input">
             <input
               type="password"
               id="password"
+              className="inputBox"
               placeholder="password"
               onChange={this.handleInputChange}
             />
           </div>
           <div>
-            <input type="submit" value="Submit"/>
+            <input className="btn btn-default" type="submit" value="Submit"/>
           </div>
         </form>
         {
           this.state.success ?
-            <div className="successMessage">{this.state.success}</div>
+            <div className="success">{this.state.success}</div>
             : null
         }
         {
           this.state.failure ?
-            <div className="failureMessage">{this.state.failure}</div>
+            <div className="failure">{this.state.failure}</div>
             : null
         }
       </div>
@@ -206,42 +208,45 @@ var RegisterForm = React.createClass({
     return (
       <div className="registerForm">
         <form onSubmit={this.handleSubmit}>
-          <div>
+          <div className="input">
             <input
               type="text"
               id="username"
+              className="inputBox"
               placeholder="username"
               onChange={this.handleInputChange}
             />
           </div>
-          <div>
+          <div className="input">
             <input
               type="password"
               id="password"
+              className="inputBox"
               placeholder="password"
               onChange={this.handleInputChange}
             />
           </div>
-          <div>
+          <div className="input">
             <input
               type="password"
               id="passwordAgain"
+              className="inputBox"
               placeholder="password again"
               onChange={this.handleInputChange}
             />
           </div>
           <div>
-            <input type="submit" value="Submit"/>
+            <input className="btn btn-default" type="submit" value="Submit"/>
           </div>
         </form>
         {
           this.state.success ?
-            <div className="successMessage">{this.state.success}</div>
+            <div className="success">{this.state.success}</div>
             : null
         }
         {
           this.state.failure ?
-            <div className="failureMessage">{this.state.failure}</div>
+            <div className="failure">{this.state.failure}</div>
             : null
         }
       </div>

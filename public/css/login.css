@@ -1,3 +1,15 @@
+.loginScreen {
+  margin-left: 50;
+}
+
+.input {
+  margin-bottom: 5;
+}
+
+.inputBox {
+  width: 250;
+}
+
 .success {
   color: green;
 }
