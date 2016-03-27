@@ -119,16 +119,16 @@ app.post('/login', function(req, res) {
       return;
     }
 
-    // Calculate hash from salt and password and ensure proper authentication
+    // Calculate hash from salt and password and attempt to authenticate user
     var userInfo = results[0];
-    bcrypt.hash(req.body.username, userInfo.password_salt, function(err, hash) {
+    bcrypt.compare(req.body.password, userInfo.password_hash, function(err, matches) {
       if (err) {
         // bcrypt failed somehow, throw fast
         throw err;
       }
 
       // Calculated hash doesn't match stored hash
-      if (hash !== userInfo.password_hash) {
+      if (!matches) {
         res.json({
           status: 'failure',
           message: 'Username or password was entered incorrectly, please try again.'
