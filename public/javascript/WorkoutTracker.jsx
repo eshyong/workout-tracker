@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 let WorkoutBox = React.createClass({
   getInitialState: function() {
