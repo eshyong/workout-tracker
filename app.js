@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt'),
   bodyParser = require('body-parser'),
   crypto = require('crypto'),
   express = require('express'),
+  morgan = require('morgan'),
   sessions = require('client-sessions'),
   app = express();
 
@@ -23,6 +24,14 @@ app.use(express.static('./public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
+}));
+app.use(morgan('combined', {
+  skip: function(req, res) {
+    return (
+      req.method === 'GET' &&
+      (req.path === '/api/get-workouts' || req.path === '/login')
+    );
+  }
 }));
 
 // Client login sessions
