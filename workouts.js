@@ -5,20 +5,22 @@ module.exports = {
     dbConn.query('INSERT INTO workouts SET ?', workout, callback);
   },
 
-  getWorkouts: function(dbConn, callback) {
-    dbConn.query('SELECT id, squats, bench_press, barbell_rows, ' +
-      'overhead_press, deadlifts, date FROM workouts', callback);
+  getWorkouts: function(dbConn, userId, callback) {
+    var queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
+      'overhead_press, deadlifts, date ' +
+      'FROM workouts ' +
+      'WHERE user_id = ?';
+    dbConn.query(queryString, userId, callback);
   },
 
-  updateWorkout: function(dbConn, workout, callback) {
-    var workoutDate = workout.date,
-      queryString = 'UPDATE workouts SET ? WHERE date = ?';
-    dbConn.query(queryString, [workout, workoutDate], callback);
+  updateWorkout: function(dbConn, workout, workoutDate, userId, callback) {
+    var queryString = 'UPDATE workouts SET ? WHERE date = ? AND user_id = ?';
+    var query = dbConn.query(queryString, [workout, workoutDate, userId], callback);
+    console.log(query.sql);
   },
 
-  deleteWorkout: function(dbConn, workout, callback) {
-    var workoutDate = workout.date,
-      queryString = 'DELETE FROM workouts WHERE date = ?';
-    dbConn.query(queryString, workoutDate, callback);
+  deleteWorkout: function(dbConn, workoutDate, userId, callback) {
+    var queryString = 'DELETE FROM workouts WHERE date = ? AND user_id = ?';
+    dbConn.query(queryString, [workoutDate, userId], callback);
   }
 };

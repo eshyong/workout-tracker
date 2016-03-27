@@ -54,7 +54,7 @@ let WorkoutBox = React.createClass({
       <div className="workoutBox">
         <h2>Submit a new Workout</h2>
         <WorkoutForm
-          date={moment()}
+          date={moment.utc()}
           squats="0"
           benchPress="0"
           barbellRows="0"
@@ -96,7 +96,7 @@ let WorkoutForm = React.createClass({
     let workoutType = e.target.id,
       newValue = e.target.value;
     if (workoutType === 'date') {
-      newValue = moment(newValue);
+      newValue = moment.utc(newValue);
     }
     this.setState({
       [workoutType]: newValue
@@ -210,7 +210,7 @@ let WorkoutList = React.createClass({
     let workoutNodes = this.props.data.map((workout) => {
       return (
         <Workout key={workout.id}
-          date={moment(workout.date)}
+          date={moment.utc(workout.date)}
           squats={String(workout.squats)}
           benchPress={String(workout.bench_press)}
           barbellRows={String(workout.barbell_rows)}
@@ -264,9 +264,6 @@ let Workout = React.createClass({
   handleInputChange: function(e) {
     let workoutType = e.target.id,
       newValue = e.target.value;
-    if (workoutType === 'date') {
-      newValue = moment(newValue);
-    }
     this.setState({
       [workoutType]: newValue
     });

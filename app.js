@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({
 // Client login sessions
 var cookieSecret = crypto.randomBytes(32).toString('base64');
 app.use(sessions({
-  cookieName: 'authenticated',
+  cookieName: 'auth',
   secret: cookieSecret,
   // Cookies last one day
   duration: 1000 * 60 * 60 * 24
@@ -36,7 +36,7 @@ app.use(sessions({
 
 // Check for authentication on all pages, except for '/login' and '/register'
 app.use(function(req, res, next) {
-  if (!req.authenticated.id && req.path !== '/login' && req.path !== '/register') {
+  if (!req.auth.userId && req.path !== '/login' && req.path !== '/register') {
     // Not authed, redirect to login page
     res.redirect('/login');
   } else {
@@ -138,7 +138,7 @@ app.post('/login', function(req, res) {
 
       // Successfully authenticate user and set session ID
       console.log('Successfully authenticated user.');
-      req.authenticated.id = userInfo.id;
+      req.auth.userId = userInfo.id;
       res.json({
         status: 'success',
         redirectUrl: '/'
@@ -149,7 +149,7 @@ app.post('/login', function(req, res) {
 
 // API endpoints
 app.get('/api/get-workouts', function(req, res) {
-  workouts.getWorkouts(conn, function(err, results) {
+  workouts.getWorkouts(conn, req.auth.userId, function(err, results) {
     if (err) {
       // Generic DB error
       console.log('Encountered database err: ' + err.message);
@@ -167,6 +167,11 @@ app.get('/api/get-workouts', function(req, res) {
 });
 
 app.post('/api/submit-workout', function(req, res) {
+  // Add user ID to DB request
+  var workout = req.body;
+  workout['user_id'] = req.auth.userId;
+
+  // Submit workout
   workouts.submitWorkout(conn, req.body, function(err) {
     if (err) {
       console.log('Encountered database err: ' + err.message);
@@ -203,25 +208,27 @@ app.post('/api/submit-workout', function(req, res) {
 });
 
 app.post('/api/update-workout', function(req, res) {
-  workouts.updateWorkout(conn, req.body, function(err, result) {
-    if (err) {
-      // Generic DB error
-      console.log('Encountered database err: ' + err.message);
+  workouts.updateWorkout(conn,
+    req.body, req.body.date, req.auth.userId,
+    function(err, result) {
+      if (err) {
+        // Generic DB error
+        console.log('Encountered database err: ' + err.message);
+        res.json({
+          status: 'failure',
+          message: 'Failed to update workout.'
+        });
+        return;
+      }
       res.json({
-        status: 'failure',
-        message: 'Failed to update workout.'
-      });
-      return;
-    }
-    res.json({
-      status: 'success',
-      message: 'Successfully updated workout.'
-    })
-  });
+        status: 'success',
+        message: 'Successfully updated workout.'
+      })
+    });
 });
 
 app.post('/api/delete-workout', function(req, res) {
-  workouts.deleteWorkout(conn, req.body, function(err) {
+  workouts.deleteWorkout(conn, req.body, req.auth.userId, function(err) {
     if (err) {
       // Generic DB error
       console.log('Encountered database err: ' + err.message);
