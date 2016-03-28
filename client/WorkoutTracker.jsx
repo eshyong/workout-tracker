@@ -2,7 +2,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-let WorkoutBox = React.createClass({
+var WorkoutBox = React.createClass({
   getInitialState: function() {
     return {
       data: []
@@ -75,7 +75,7 @@ let WorkoutBox = React.createClass({
   }
 });
 
-let WorkoutForm = React.createClass({
+var WorkoutForm = React.createClass({
   getInitialState: function() {
     return {
       // The data fields of a workout
@@ -95,7 +95,7 @@ let WorkoutForm = React.createClass({
     }
   },
   handleInputChange: function(e) {
-    let workoutType = e.target.id,
+    var workoutType = e.target.id,
       newValue = e.target.value;
     if (workoutType === 'date') {
       newValue = moment.utc(newValue);
@@ -207,9 +207,9 @@ let WorkoutForm = React.createClass({
   }
 });
 
-let WorkoutList = React.createClass({
+var WorkoutList = React.createClass({
   render: function() {
-    let workoutNodes = this.props.data.map((workout) => {
+    var workoutNodes = this.props.data.map((workout) => {
       return (
         <Workout key={workout.id}
           date={moment.utc(workout.date)}
@@ -231,7 +231,7 @@ let WorkoutList = React.createClass({
   }
 });
 
-let Workout = React.createClass({
+var Workout = React.createClass({
   getInitialState: function() {
     return {
       // A flag that specifies whether workout is in editing
@@ -264,7 +264,7 @@ let Workout = React.createClass({
     });
   },
   handleInputChange: function(e) {
-    let workoutType = e.target.id,
+    var workoutType = e.target.id,
       newValue = e.target.value;
     this.setState({
       [workoutType]: newValue
