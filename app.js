@@ -245,10 +245,19 @@ app.post('/api/update-workout', function(req, res) {
 });
 
 app.post('/api/delete-workout', function(req, res) {
-  workouts.deleteWorkout(conn, req.body, req.session.userId, function(err) {
+  workouts.deleteWorkout(conn, req.body.date, req.session.userId, function(err, result) {
     if (err) {
       // Generic DB error
       console.log('Encountered database err: ' + err.message);
+      res.json({
+        status: 'failure',
+        message: 'Failed to delete workout.'
+      });
+      return;
+    }
+    // Catch non-MySQL errors
+    if (result.affectedRows === 0 || result.warningCount > 0) {
+      console.log('No error thrown, but failed to delete row');
       res.json({
         status: 'failure',
         message: 'Failed to delete workout.'
