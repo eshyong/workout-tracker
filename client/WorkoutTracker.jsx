@@ -1,4 +1,5 @@
 'use strict';
+
 var moment = require('moment'),
     React = require('react'),
     ReactDOM = require('react-dom');
@@ -55,7 +56,6 @@ var WorkoutBox = React.createClass({
   render: function() {
     return (
       <div className="workoutBox">
-        <h2>Submit a new Workout</h2>
         <WorkoutForm
           date={moment.utc()}
           squats="0"
@@ -65,7 +65,6 @@ var WorkoutBox = React.createClass({
           deadlifts="0"
           onWorkoutSubmit={this.handleWorkoutSubmit}
         />
-        <h2>Workouts</h2>
         <WorkoutList
           data={this.state.data}
           onWorkoutUpdate={this.handleWorkoutUpdate}
@@ -137,6 +136,7 @@ var WorkoutForm = React.createClass({
   render: function() {
     return (
       <div className="workoutForm">
+        <h2>Submit a new Workout</h2>
         <form onSubmit={this.handleSubmit}>
           <div>Workout Date:
             <input
@@ -226,6 +226,7 @@ var WorkoutList = React.createClass({
     });
     return (
       <div className="workoutList">
+        <h2>Workouts</h2>
         {workoutNodes}
       </div>
     );
