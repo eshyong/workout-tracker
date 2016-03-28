@@ -1,6 +1,7 @@
 'use strict';
-var React = require('react');
-var ReactDOM = require('react-dom');
+var moment = require('moment'),
+    React = require('react'),
+    ReactDOM = require('react-dom');
 
 var WorkoutBox = React.createClass({
   getInitialState: function() {
