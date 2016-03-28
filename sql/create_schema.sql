@@ -4,7 +4,7 @@
 USE mysql;
 
 # Drop any existing databases if applicable
-DROP DATABASE workouts;
+DROP DATABASE IF EXISTS workouts;
 
 # Create workouts database
 CREATE DATABASE workouts

@@ -15,4 +15,4 @@ set -eux -o pipefail
 if service mysql status | grep -q "stop"; then
     service mysql start
 fi
-node_modules/nodemon/bin/nodemon.js -L app.js &
+nodemon -L app.js &
