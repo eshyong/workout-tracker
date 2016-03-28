@@ -20,6 +20,6 @@ module.exports = {
     path: __dirname + '/public/javascript'
   },
   watchOptions: {
-    poll: 300
+    poll: 1000
   }
 };
