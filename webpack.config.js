@@ -18,5 +18,8 @@ module.exports = {
   output: {
     filename: '[name].bundle.js',
     path: __dirname + '/public/javascript'
+  },
+  watchOptions: {
+    poll: 300
   }
 };

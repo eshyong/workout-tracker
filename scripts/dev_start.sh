@@ -15,4 +15,6 @@ set -eux -o pipefail
 if service mysql status | grep -q "stop"; then
     service mysql start
 fi
+# Run webpack and nodemon as separate processes
+webpack --progress --color --watch &
 nodemon -L app.js &
