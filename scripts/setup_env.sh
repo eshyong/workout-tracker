@@ -17,11 +17,13 @@ apt-get update
 # Install git, nodejs, and npm
 apt-get --yes install git nodejs npm
 
-# Install node/npm 5.6.0
+# Install node 5.6.0
 npm install --global n
 n 5.6.0
-ln -sf /usr/local/n/versions/node/5.6.0/bin/npm /usr/local/bin/npm
 ln -sf /usr/local/n/versions/node/5.6.0/bin/node /usr/local/bin/node
+
+# Upgrade npm
+npm install --global npm
 
 # Install nodemon and webpack globally
 npm install --global nodemon webpack

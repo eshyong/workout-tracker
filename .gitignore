@@ -9,3 +9,6 @@ npm-debug.log
 
 # Environment variables file
 env_vars
+
+# Ignore compiled javascript files
+public/javascript/*
