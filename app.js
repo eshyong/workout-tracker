@@ -10,9 +10,9 @@ var bcrypt = require('bcrypt'),
   app = express();
 
 // Local packages
-var db = require('./db'),
-  workouts = require('./workouts'),
-  users = require('./users'),
+var db = require('./server/db'),
+  workouts = require('./server/workouts'),
+  users = require('./server/users'),
   conn = db.connect();
 
 var sendFileOpts = {
