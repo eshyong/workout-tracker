@@ -2,7 +2,7 @@
 
 module.exports = {
   getUserCredentials: function(database, user, callback) {
-    var queryString = 'SELECT id, password_hash, password_salt ' +
+    var queryString = 'SELECT id, password_hash ' +
       ' FROM users WHERE username = ?';
     database.query(queryString, user.username, callback);
   },

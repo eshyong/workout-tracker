@@ -86,7 +86,6 @@ app.post('/api/register', function(req, res) {
       users.registerNewUser(conn, {
         username: req.body.username,
         password_hash: hash,
-        password_salt: salt
       }, function(err) {
         if (err) {
           console.log('Encountered database err: ' + err.message);
