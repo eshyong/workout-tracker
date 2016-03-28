@@ -22,5 +22,8 @@ module.exports = {
       console.log('Connected with ID ' + connection.threadId);
     });
     return connection;
+  },
+  showWarnings: function(dbConn, callback) {
+    dbConn.query('SHOW WARNINGS', callback);
   }
 };

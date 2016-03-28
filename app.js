@@ -258,6 +258,12 @@ app.post('/api/delete-workout', function(req, res) {
     // Catch non-MySQL errors
     if (result.affectedRows === 0 || result.warningCount > 0) {
       console.log('No error thrown, but failed to delete row');
+      db.showWarnings(conn, function(err, result) {
+        if (err) {
+          throw err;
+        }
+        console.log('Warning: ' + result[0].Message);
+      });
       res.json({
         status: 'failure',
         message: 'Failed to delete workout.'
