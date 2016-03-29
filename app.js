@@ -39,7 +39,8 @@ var cookieSecret = crypto.randomBytes(32).toString('base64');
 app.use(session({
   secret: cookieSecret,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  unset: 'destroy'
 }));
 
 // Check for authentication on all pages, except for login pages and api calls
@@ -71,7 +72,15 @@ app.get('/login', function(req, res) {
   }
 });
 
-// Login and register endpoints
+app.get('/logout', function(req, res) {
+  if (req.session.userId) {
+    // Log user out by deleting session
+    delete req.session;
+  }
+  res.redirect('/login');
+});
+
+// API endpoints
 app.post('/api/register', function(req, res) {
   // Generate a salt and hash of the password, then pass the user to the DB
   bcrypt.genSalt(function(err, salt) {
@@ -164,7 +173,6 @@ app.post('/api/login', function(req, res) {
   });
 });
 
-// API endpoints
 app.get('/api/get-workouts', function(req, res) {
   workouts.getWorkouts(conn, req.session.userId, function(err, results) {
     if (err) {
