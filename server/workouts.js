@@ -1,11 +1,17 @@
 'use strict';
 
+function logSqlIfVerbose(query) {
+  var nodeEnv = process.env.NODE_ENV;
+  var logSql = process.env.LOG_SQL;
+  if (nodeEnv === 'development' && logSql === 'true') {
+    console.log(query.sql);
+  }
+}
+
 module.exports = {
   submitWorkout: function(dbConn, workout, callback) {
     var query = dbConn.query('INSERT INTO workouts SET ?', workout, callback);
-    if (process.env.NODE_ENV === 'development') {
-      console.log(query.sql);
-    }
+    logSqlIfVerbose(query);
   },
 
   getWorkouts: function(dbConn, userId, callback) {
@@ -14,24 +20,18 @@ module.exports = {
       'FROM workouts ' +
       'WHERE user_id = ?';
     var query = dbConn.query(queryString, userId, callback);
-    if (process.env.NODE_ENV === 'development') {
-      console.log(query.sql);
-    }
+    logSqlIfVerbose(query);
   },
 
   updateWorkout: function(dbConn, workout, workoutDate, userId, callback) {
     var queryString = 'UPDATE workouts SET ? WHERE date = ? AND user_id = ?';
     var query = dbConn.query(queryString, [workout, workoutDate, userId], callback);
-    if (process.env.NODE_ENV === 'development') {
-      console.log(query.sql);
-    }
+    logSqlIfVerbose(query);
   },
 
   deleteWorkout: function(dbConn, workoutDate, userId, callback) {
     var queryString = 'DELETE FROM workouts WHERE date = ? AND user_id = ?';
     var query = dbConn.query(queryString, [workoutDate, userId], callback);
-    if (process.env.NODE_ENV === 'development') {
-      console.log(query.sql);
-    }
+    logSqlIfVerbose(query);
   }
 };
