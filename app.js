@@ -92,8 +92,12 @@ app.get('/login', function(req, res) {
 
 app.get('/logout', function(req, res) {
   if (req.session.userId) {
-    // Log user out by deleting userId
-    req.session.userId = null;
+    // Destroy user session on logout
+    req.session.destroy(function(err) {
+      if (err) {
+        console.log('Unable to destroy session: ', err);
+      }
+    });
   }
   res.redirect('/login');
 });
