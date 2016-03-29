@@ -183,7 +183,6 @@ app.post('/api/login', function(req, res) {
       // Successfully authenticate user and set session ID
       console.log('Successfully authenticated user.');
       req.session.userId = userInfo.id;
-      console.log(req.session.userId);
       res.json({
         status: 'success',
         redirectUrl: '/'
