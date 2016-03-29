@@ -3,10 +3,11 @@
 // Third party packages
 var bcrypt = require('bcrypt'),
   bodyParser = require('body-parser'),
-  crypto = require('crypto'),
   express = require('express'),
   morgan = require('morgan'),
+  redis = require('redis'),
   session = require('express-session'),
+  RedisStore = require('connect-redis')(session),
   app = express();
 
 // Local packages
@@ -34,12 +35,29 @@ app.use(morgan('combined', {
   }
 }));
 
+// Use redis for client sessions
+var redisClient = redis.createClient({
+  host: '127.0.0.1',
+  port: 6379,
+  password: process.env.REDIS_PW
+});
+
+redisClient.on('error', function(err) {
+  throw err;
+});
+
+redisClient.on('ready', function() {
+  console.log('Connected to redis');
+});
+
 // Client login sessions
-var cookieSecret = crypto.randomBytes(32).toString('base64');
 app.use(session({
-  secret: cookieSecret,
+  store: new RedisStore({
+    client: redisClient
+  }),
+  secret: process.env.COOKIE_SECRET,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   unset: 'destroy'
 }));
 
@@ -74,8 +92,8 @@ app.get('/login', function(req, res) {
 
 app.get('/logout', function(req, res) {
   if (req.session.userId) {
-    // Log user out by deleting session
-    delete req.session;
+    // Log user out by deleting userId
+    req.session.userId = null;
   }
   res.redirect('/login');
 });
@@ -165,6 +183,7 @@ app.post('/api/login', function(req, res) {
       // Successfully authenticate user and set session ID
       console.log('Successfully authenticated user.');
       req.session.userId = userInfo.id;
+      console.log(req.session.userId);
       res.json({
         status: 'success',
         redirectUrl: '/'

@@ -15,6 +15,9 @@ set -eux -o pipefail
 if service mysql status | grep -q "stop"; then
     service mysql start
 fi
+if ! pgrep redis-server; then
+    service redis-server start
+fi
 # Run webpack and nodemon as separate processes
 webpack --progress --color --watch &
 nodemon -L app.js &

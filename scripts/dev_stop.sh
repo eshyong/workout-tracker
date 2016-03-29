@@ -9,10 +9,13 @@
 set -eux -o pipefail
 
 # Kill any node processes, including nodemon
-# Then shut off MySQL
+# Then shut off MySQL and redis
 if pgrep node; then
     pkill node
 fi
 if service mysql status | grep -q "start"; then
     service mysql stop
+fi
+if pgrep redis-server; then
+    service redis-server stop
 fi

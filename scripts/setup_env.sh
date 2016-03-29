@@ -14,8 +14,15 @@ set -eux -o pipefail
 # Update apt repos
 apt-get update
 
-# Install git, nodejs, and npm
-apt-get --yes install git nodejs npm
+# Install git, nodejs, npm, and redis
+apt-get --yes install git \
+    nodejs \
+    npm \
+    redis-server
+
+# Secure redis server by requiring authentication
+sed -i.bak "s/# requirepass foobared/requirepass $REDIS_PW/g" /etc/redis/redis.conf
+service redis-server restart
 
 # Install node 5.6.0
 npm install --global n
