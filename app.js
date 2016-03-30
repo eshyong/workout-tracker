@@ -235,6 +235,56 @@ app.get('/api/get-workouts', function(req, res) {
   });
 });
 
+app.get('/api/get-workout-averages', function(req, res) {
+  workouts.getWorkoutAverages(conn, req.session.userInfo.userId, function(err, results) {
+    if (err) {
+      // Generic DB error
+      console.log('Encountered database err: ' + err.message);
+      res.json({
+        status: 'failure',
+        message: 'Failed to query workouts.'
+      });
+      return;
+    }
+    var averages = results[0];
+    res.json({
+      status: 'success',
+      averages: {
+        squats: averages.squats,
+        benchPress: averages.bench_press,
+        barbellRows: averages.barbell_rows,
+        overheadPress: averages.overhead_press,
+        deadlifts: averages.deadlifts
+      }
+    });
+  });
+});
+
+app.get('/api/get-workout-maxes', function(req, res) {
+  workouts.getWorkoutMaxes(conn, req.session.userInfo.userId, function(err, results) {
+    if (err) {
+      // Generic DB error
+      console.log('Encountered database err: ' + err.message);
+      res.json({
+        status: 'failure',
+        message: 'Failed to query workouts.'
+      });
+      return;
+    }
+    var maxes = results[0];
+    res.json({
+      status: 'success',
+      maxes: {
+        squats: maxes.squats,
+        benchPress: maxes.bench_press,
+        barbellRows: maxes.barbell_rows,
+        overheadPress: maxes.overhead_press,
+        deadlifts: maxes.deadlifts
+      }
+    });
+  });
+});
+
 app.post('/api/submit-workout', function(req, res) {
   // Add user ID to DB request
   var workout = req.body;

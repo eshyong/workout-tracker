@@ -23,6 +23,30 @@ module.exports = {
     logSqlIfVerbose(query);
   },
 
+  getWorkoutAverages: function(dbConn, userId, callback) {
+    var queryString = 'SELECT AVG(squats) AS squats, ' +
+      'AVG(bench_press) AS bench_press, ' +
+      'AVG(barbell_rows) AS barbell_rows,' +
+      'AVG(overhead_press) AS overhead_press, ' +
+      'AVG(deadlifts) AS deadlifts ' +
+      'FROM workouts ' +
+      'WHERE user_id = ?';
+    var query = dbConn.query(queryString, userId, callback);
+    logSqlIfVerbose(query);
+  },
+
+  getWorkoutMaxes: function(dbConn, userId, callback) {
+    var queryString = 'SELECT MAX(squats) AS squats, ' +
+      'MAX(bench_press) AS bench_press, ' +
+      'MAX(barbell_rows) AS barbell_rows,' +
+      'MAX(overhead_press) AS overhead_press, ' +
+      'MAX(deadlifts) AS deadlifts ' +
+      'FROM workouts ' +
+      'WHERE user_id = ?';
+    var query = dbConn.query(queryString, userId, callback);
+    logSqlIfVerbose(query);
+  },
+
   updateWorkout: function(dbConn, workout, workoutDate, userId, callback) {
     var queryString = 'UPDATE workouts SET ? WHERE date = ? AND user_id = ?';
     var query = dbConn.query(queryString, [workout, workoutDate, userId], callback);
