@@ -43,9 +43,7 @@ var StatsPage = React.createClass({
   },
   componentDidMount: function() {
     this.loadWorkoutAveragesFromServer();
-    setInterval(this.loadWorkoutAveragesFromServer, this.props.pollInterval);
     this.loadWorkoutMaxesFromServer();
-    setInterval(this.loadWorkoutMaxesFromServer, this.props.pollInterval);
   },
   render: function() {
     return (
