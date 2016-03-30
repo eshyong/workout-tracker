@@ -13,9 +13,3 @@ set -eux -o pipefail
 if pgrep node; then
     pkill node
 fi
-if service mysql status | grep -q "start"; then
-    service mysql stop
-fi
-if pgrep redis-server; then
-    service redis-server stop
-fi
