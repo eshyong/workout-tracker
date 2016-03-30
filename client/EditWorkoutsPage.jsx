@@ -227,7 +227,11 @@ var WorkoutList = React.createClass({
     return (
       <div className="workoutList">
         <h2>Workouts</h2>
-        {workoutNodes}
+        {
+          workoutNodes.length === 0 ?
+            <div>You haven't added any workouts yet. Try adding one above!</div>
+            : workoutNodes
+        }
       </div>
     );
   }
