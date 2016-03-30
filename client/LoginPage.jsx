@@ -1,6 +1,10 @@
 'use strict';
-var Navbar = require('./Navbar.jsx'),
-    React = require('react'),
+
+// Internal dependencies
+var Navbar = require('./Navbar.jsx');
+
+// External dependencies
+var React = require('react'),
     ReactDOM = require('react-dom');
 
 var LoginScreen = React.createClass({
