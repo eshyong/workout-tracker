@@ -10,7 +10,7 @@ function logSqlIfVerbose(query) {
 
 module.exports = {
   getUserCredentials: function(database, user, callback) {
-    var queryString = 'SELECT id, password_hash ' +
+    var queryString = 'SELECT username, id, password_hash ' +
       ' FROM users WHERE username = ?';
     var query = database.query(queryString, user.username, callback);
     logSqlIfVerbose(query);

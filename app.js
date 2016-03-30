@@ -63,7 +63,7 @@ app.use(session({
 
 // Check for authentication on all pages, except for login pages and api calls
 app.use(function(req, res, next) {
-  if (!req.session.userId &&
+  if (!req.session.userInfo &&
     req.path !== '/login' &&
     req.path !== '/api/register' &&
     req.path !== '/api/login'
@@ -82,7 +82,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/login', function(req, res) {
-  if (req.session.userId) {
+  if (req.session.userInfo) {
     // Redirect to home page if already authenticated
     res.redirect('/');
   } else {
@@ -91,7 +91,7 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/logout', function(req, res) {
-  if (req.session.userId) {
+  if (req.session.userInfo) {
     // Destroy user session on logout
     req.session.destroy(function(err) {
       if (err) {
@@ -103,6 +103,20 @@ app.get('/logout', function(req, res) {
 });
 
 // API endpoints
+app.get('/api/username', function(req, res) {
+  // Used to display username in the navbar
+  if (req.session.userInfo) {
+    res.json({
+      status: 'success',
+      username: req.session.userInfo.username
+    });
+  } else {
+    res.json({
+      status: 'failure'
+    });
+  }
+});
+
 app.post('/api/register', function(req, res) {
   // Generate a salt and hash of the password, then pass the user to the DB
   bcrypt.genSalt(function(err, salt) {
@@ -186,7 +200,11 @@ app.post('/api/login', function(req, res) {
 
       // Successfully authenticate user and set session ID
       console.log('Successfully authenticated user.');
-      req.session.userId = userInfo.id;
+      req.session.userInfo = {
+        username: userInfo.username,
+        userId: userInfo.id
+      };
+      console.log(req.session.userInfo);
       res.json({
         status: 'success',
         redirectUrl: '/'
@@ -196,7 +214,7 @@ app.post('/api/login', function(req, res) {
 });
 
 app.get('/api/get-workouts', function(req, res) {
-  workouts.getWorkouts(conn, req.session.userId, function(err, results) {
+  workouts.getWorkouts(conn, req.session.userInfo.userId, function(err, results) {
     if (err) {
       // Generic DB error
       console.log('Encountered database err: ' + err.message);
@@ -216,7 +234,7 @@ app.get('/api/get-workouts', function(req, res) {
 app.post('/api/submit-workout', function(req, res) {
   // Add user ID to DB request
   var workout = req.body;
-  workout['user_id'] = req.session.userId;
+  workout['user_id'] = req.session.userInfo.userId;
 
   // Submit workout
   workouts.submitWorkout(conn, req.body, function(err) {
@@ -256,7 +274,7 @@ app.post('/api/submit-workout', function(req, res) {
 
 app.post('/api/update-workout', function(req, res) {
   workouts.updateWorkout(conn,
-    req.body, req.body.date, req.session.userId,
+    req.body, req.body.date, req.session.userInfo.userId,
     function(err, result) {
       if (err) {
         // Generic DB error
@@ -290,7 +308,7 @@ app.post('/api/update-workout', function(req, res) {
 });
 
 app.post('/api/delete-workout', function(req, res) {
-  workouts.deleteWorkout(conn, req.body.date, req.session.userId, function(err, result) {
+  workouts.deleteWorkout(conn, req.body.date, req.session.userInfo.userId, function(err, result) {
     if (err) {
       // Generic DB error
       console.log('Encountered database err: ' + err.message);
