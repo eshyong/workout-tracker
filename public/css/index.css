@@ -1,17 +1,17 @@
+.WorkoutForm {
+  margin-left: 50;
+}
+
+.WorkoutList {
+  margin-left: 50;
+}
+
+.Workout {
+  margin-bottom: 10;
+}
+
 .view-header {
   margin-left: 50;
-}
-
-.workoutForm {
-  margin-left: 50;
-}
-
-.workoutList {
-  margin-left: 50;
-}
-
-.workout {
-  margin-bottom: 10;
 }
 
 .successMessage {

@@ -56,7 +56,7 @@ var WorkoutBox = React.createClass({
   },
   render: function() {
     return (
-      <div className="workoutBox">
+      <div className="WorkoutBox">
         <Navbar
           items={
             // List of navbar items
@@ -153,7 +153,7 @@ var WorkoutForm = React.createClass({
   },
   render: function() {
     return (
-      <div className="workoutForm">
+      <div className="WorkoutForm">
         <h2>Submit a new Workout</h2>
         <form onSubmit={this.handleSubmit}>
           <div>Workout Date:
@@ -243,7 +243,7 @@ var WorkoutList = React.createClass({
       );
     });
     return (
-      <div className="workoutList">
+      <div className="WorkoutList">
         <h2>Workouts</h2>
         {
           workoutNodes.length === 0 ?
@@ -349,7 +349,7 @@ var Workout = React.createClass({
   },
   render: function() {
     return (
-      <form className="workout">
+      <form className="Workout">
         <div>Date: {this.props.date.format('MM-DD-YYYY')}</div>
         <div>Squats:
           {

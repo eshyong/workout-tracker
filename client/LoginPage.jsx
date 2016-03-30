@@ -34,7 +34,7 @@ var LoginScreen = React.createClass({
   },
   render: function() {
     return (
-      <div className="loginScreen">
+      <div className="LoginScreen">
         <Navbar
           items={
             // List of navbar items
@@ -117,7 +117,7 @@ var LoginForm = React.createClass({
   },
   render: function() {
     return (
-      <div className="loginForm">
+      <div className="LoginForm">
         <h2>Login as a returning user</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="input">
@@ -225,7 +225,7 @@ var RegisterForm = React.createClass({
   },
   render: function() {
     return (
-      <div className="registerForm">
+      <div className="RegisterForm">
         <h2>Or, register as a new user</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="input">
