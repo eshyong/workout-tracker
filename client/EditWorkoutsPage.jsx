@@ -109,7 +109,7 @@ ReactDOM.render(
     submitUrl="/api/submit-workout"
     updateUrl="/api/update-workout"
     deleteUrl="/api/delete-workout"
-    pollInterval={10000}
+    pollInterval={5000}
   />,
   document.getElementById('content')
 );
