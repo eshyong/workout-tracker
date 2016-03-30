@@ -21,14 +21,14 @@ var WorkoutBox = React.createClass({
     $.ajax({
       url: this.props.getUrl,
       dataType: 'json',
-      success: function(data) {
+      success: (data) => {
         this.setState({
           data: data.workouts
         });
-      }.bind(this),
-      failure: function(xhr, status, err) {
+      },
+      failure: (xhr, status, err) => {
         console.err(this.props.getUrl, status, err.toString());
-      }.bind(this)
+      }
     });
   },
   // Helper function for workout POST functions
@@ -38,12 +38,12 @@ var WorkoutBox = React.createClass({
       method: 'POST',
       data: workout,
       dataType: 'json',
-      success: function(data) {
+      success: (data) => {
         callback(data);
-      }.bind(this),
-      failure: function(xhr, status, err) {
+      },
+      failure: (xhr, status, err) => {
         console.err(this.props.url, status, err.toString());
-      }.bind(this)
+      }
     });
   },
   handleWorkoutSubmit: function(workout, callback) {

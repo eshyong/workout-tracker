@@ -14,12 +14,12 @@ var LoginScreen = React.createClass({
       method: 'POST',
       data: userData,
       dataType: 'json',
-      success: function(response) {
+      success: (response) => {
         callback(response);
-      }.bind(this),
-      failure: function(xhr, status, err) {
+      },
+      failure: (xhr, status, err) => {
         console.err(this.props.getUrl, status, err.toString());
-      }.bind(this)
+      }
     });
   },
   login: function(userData, callback) {
@@ -28,12 +28,12 @@ var LoginScreen = React.createClass({
       method: 'POST',
       dataType: 'json',
       data: userData,
-      success: function(response) {
+      success: (response) => {
         callback(response);
-      }.bind(this),
-      failure: function(xhr, status, err) {
+      },
+      failure: (xhr, status, err) => {
         console.err(this.props.getUrl, status, err.toString());
-      }.bind(this)
+      }
     });
   },
   render: function() {

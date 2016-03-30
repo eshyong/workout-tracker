@@ -22,7 +22,6 @@ var Navbar = React.createClass({
     });
   },
   render: function() {
-    console.log(this.state);
     var navbarNodes = this.props.items.map((item) => {
       return (
         <li className={item.active ? "active" : ""} key={item.link}>
