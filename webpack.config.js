@@ -1,7 +1,7 @@
 module.exports = {
   entry: {
     login: './client/Login.jsx',
-    workoutTracker: './client/WorkoutTracker.jsx'
+    editWorkouts: './client/EditWorkouts.jsx'
   },
   module: {
     loaders: [{
