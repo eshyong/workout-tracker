@@ -1,6 +1,7 @@
 'use strict';
 
 var moment = require('moment'),
+    Navbar = require('./Navbar.jsx'),
     React = require('react'),
     ReactDOM = require('react-dom');
 
@@ -56,6 +57,23 @@ var WorkoutBox = React.createClass({
   render: function() {
     return (
       <div className="workoutBox">
+        <Navbar
+          items={
+            // List of navbar items
+            [
+              {
+                active: true,
+                link: '#',
+                text: 'Home'
+              },
+              {
+                active: false,
+                link: '/logout',
+                text: 'Logout'
+              }
+            ]
+          }
+        />
         <WorkoutForm
           date={moment.utc()}
           squats="0"

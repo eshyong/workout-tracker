@@ -1,5 +1,6 @@
 'use strict';
-var React = require('react'),
+var Navbar = require('./Navbar.jsx'),
+    React = require('react'),
     ReactDOM = require('react-dom');
 
 var LoginScreen = React.createClass({
@@ -34,9 +35,24 @@ var LoginScreen = React.createClass({
   render: function() {
     return (
       <div className="loginScreen">
-        <h2>Login as a returning user</h2>
+        <Navbar
+          items={
+            // List of navbar items
+            [
+              {
+                active: true,
+                link: '/',
+                text: 'Login'
+              },
+              {
+                active: false,
+                link: '/logout',
+                text: 'Logout'
+              }
+            ]
+          }
+        />
         <LoginForm login={this.login}/>
-        <h2>Or, register as a new user</h2>
         <RegisterForm registerNewUser={this.registerNewUser}/>
       </div>
     );
@@ -102,6 +118,7 @@ var LoginForm = React.createClass({
   render: function() {
     return (
       <div className="loginForm">
+        <h2>Login as a returning user</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="input">
             <input
@@ -209,6 +226,7 @@ var RegisterForm = React.createClass({
   render: function() {
     return (
       <div className="registerForm">
+        <h2>Or, register as a new user</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="input">
             <input
