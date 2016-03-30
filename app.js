@@ -81,6 +81,10 @@ app.get('/', function(req, res) {
   res.sendFile('index.html', sendFileOpts);
 });
 
+app.get('/stats', function(req, res) {
+  res.sendFile('stats.html', sendFileOpts);
+});
+
 app.get('/login', function(req, res) {
   if (req.session.userInfo) {
     // Redirect to home page if already authenticated

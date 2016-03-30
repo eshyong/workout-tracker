@@ -64,7 +64,7 @@ var WorkoutForm = React.createClass({
   render: function() {
     return (
       <div className="WorkoutForm">
-        <h2>Submit a new Workout</h2>
+        <h2>Submit a new workout</h2>
         <form onSubmit={this.handleSubmit}>
           <div>Workout Date:
             <input
