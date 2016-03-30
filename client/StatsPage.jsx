@@ -11,27 +11,41 @@ var React = require('react'),
 var StatsPage = React.createClass({
   getInitialState: function() {
     return {
-      workouts: []
+      workouts: [],
+      averages: {},
+      maxes: {}
     };
   },
-  // Load workouts from the server to display
-  loadWorkoutsFromServer: function() {
+  handleGet: function(url, callback) {
     $.get({
-      url: this.props.getUrl,
+      url: url,
       dataType: 'json',
-      success: (data) => {
-        this.setState({
-          workouts: data.workouts
-        });
-      },
+      success: callback,
       failure: (xhr, status, err) => {
         console.err(this.props.getUrl, status, err.toString());
       }
     });
   },
+  // Load workout statistics from the server
+  loadWorkoutAveragesFromServer: function() {
+    this.handleGet(this.props.avgUrl, (data) => {
+      this.setState({
+        averages: data.averages
+      });
+    });
+  },
+  loadWorkoutMaxesFromServer: function() {
+    this.handleGet(this.props.maxUrl, (data) => {
+      this.setState({
+        maxes: data.maxes
+      });
+    });
+  },
   componentDidMount: function() {
-    this.loadWorkoutsFromServer();
-    setInterval(this.loadWorkoutsFromServer, this.props.pollInterval);
+    this.loadWorkoutAveragesFromServer();
+    setInterval(this.loadWorkoutAveragesFromServer, this.props.pollInterval);
+    this.loadWorkoutMaxesFromServer();
+    setInterval(this.loadWorkoutMaxesFromServer, this.props.pollInterval);
   },
   render: function() {
     return (
@@ -59,7 +73,8 @@ var StatsPage = React.createClass({
           }
         />
         <StatsBox
-          workouts={this.state.workouts}
+          averages={this.state.averages}
+          maxes={this.state.maxes}
         />
       </div>
     );
@@ -69,6 +84,8 @@ var StatsPage = React.createClass({
 ReactDOM.render(
   <StatsPage
     getUrl="/api/get-workouts"
+    avgUrl="/api/get-workout-averages"
+    maxUrl="/api/get-workout-maxes"
     pollInterval={5000}
   />,
   document.getElementById('content')
