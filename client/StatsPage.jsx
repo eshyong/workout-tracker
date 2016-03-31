@@ -86,7 +86,7 @@ var StatsPage = React.createClass({
         <WorkoutGraph
           workouts={this.state.workouts}
           width={1000}
-          height={300}
+          height={500}
           margins={{
             left: 100,
             right: 100,
