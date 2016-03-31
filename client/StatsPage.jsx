@@ -2,7 +2,8 @@
 
 // Internal dependencies
 var Navbar = require('./Navbar.jsx'),
-    StatsBox = require('./StatsBox.jsx');
+    StatsBox = require('./StatsBox.jsx'),
+    WorkoutGraph = require('./WorkoutGraph.jsx');
 
 // External dependencies
 var React = require('react'),
@@ -27,6 +28,13 @@ var StatsPage = React.createClass({
     });
   },
   // Load workout statistics from the server
+  loadWorkoutsFromServer: function() {
+    this.handleGet(this.props.getUrl, (data) => {
+      this.setState({
+        workouts: data.workouts
+      });
+    });
+  },
   loadWorkoutAveragesFromServer: function() {
     this.handleGet(this.props.avgUrl, (data) => {
       this.setState({
@@ -42,6 +50,7 @@ var StatsPage = React.createClass({
     });
   },
   componentDidMount: function() {
+    this.loadWorkoutsFromServer();
     this.loadWorkoutAveragesFromServer();
     this.loadWorkoutMaxesFromServer();
   },
@@ -73,6 +82,17 @@ var StatsPage = React.createClass({
         <StatsBox
           averages={this.state.averages}
           maxes={this.state.maxes}
+        />
+        <WorkoutGraph
+          workouts={this.state.workouts}
+          width={1000}
+          height={300}
+          margins={{
+            left: 100,
+            right: 100,
+            top: 50,
+            bottom: 50
+          }}
         />
       </div>
     );
