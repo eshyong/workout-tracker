@@ -47,7 +47,6 @@ var WorkoutGraph = React.createClass({
     };
   },
   render: function() {
-    console.log(this.props.workouts);
     return (
       <div className="WorkoutGraph">
         <h2>Workout graph</h2>
