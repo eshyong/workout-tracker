@@ -18,7 +18,8 @@ module.exports = {
     var queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
       'overhead_press, deadlifts, date ' +
       'FROM workouts ' +
-      'WHERE user_id = ?';
+      'WHERE user_id = ? ' +
+      'ORDER BY date';
     var query = dbConn.query(queryString, userId, callback);
     logSqlIfVerbose(query);
   },
