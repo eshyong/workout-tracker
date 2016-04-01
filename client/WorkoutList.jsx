@@ -80,19 +80,7 @@ var Workout = React.createClass({
   },
   render: function() {
     return (
-      <div
-        className="Workout"
-        onClick={this.toggleEditingMode}
-        onMouseOver={this.onMouseOver}
-        onMouseOut={this.onMouseOut}
-        style={
-          // Signal highlighted button to user by changing style
-          this.state.highlighted ? {
-            background: 'lightgrey',
-            cursor: 'pointer'
-          } : null
-        }
-      >
+      <div className="Workout">
       {
         this.state.editing ? (
           <WorkoutForm
@@ -107,14 +95,25 @@ var Workout = React.createClass({
             submitter={false}
           />
         ) :
-        [
-          <div key="date">Date: {this.props.date.format('MM-DD-YYYY')}</div>,
-          <div key="squats">Squats: {this.state.squats}</div>,
-          <div key="benchPress">Bench Press: {this.state.benchPress}</div>,
-          <div key="barbellRows">Barbell Rows: {this.state.barbellRows}</div>,
-          <div key="overheadPress">Overhead Press: {this.state.overheadPress}</div>,
-          <div key="deadlifts">Deadlifts: {this.state.deadlifts}</div>
-        ]
+          <div
+            onClick={this.toggleEditingMode}
+            onMouseOver={this.onMouseOver}
+            onMouseOut={this.onMouseOut}
+            style={
+              // Signal highlighted button to user by changing style
+              this.state.highlighted ? {
+                background: 'lightgrey',
+                cursor: 'pointer'
+              } : null
+            }
+          >
+            <div>Date: {this.props.date.format('MM-DD-YYYY')}</div>
+            <div>Squats: {this.state.squats}</div>
+            <div>Bench Press: {this.state.benchPress}</div>
+            <div>Barbell Rows: {this.state.barbellRows}</div>
+            <div>Overhead Press: {this.state.overheadPress}</div>
+            <div>Deadlifts: {this.state.deadlifts}</div>
+          </div>
       }
       </div>
     );
