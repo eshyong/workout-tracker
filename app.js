@@ -331,12 +331,30 @@ app.post('/api/update-workout', function(req, res) {
     req.body, req.body.date, req.session.userInfo.userId,
     function(err, result) {
       if (err) {
-        // Generic DB error
         console.log('Encountered database err: ' + err.message);
-        res.json({
-          status: 'failure',
-          message: 'Failed to update workout.'
-        });
+        if (err.code === 'ER_DUP_ENTRY') {
+          // Duplicate workout error
+          res.json({
+            status: 'failure',
+            message: 'A workout with that date already exists.'
+          });
+        } else if (
+          err.code === 'ER_TRUNCATED_WRONG_VALUE_FOR_FIELD' ||
+          err.code === 'ER_WARN_DATA_OUT_OF_RANGE'
+        ) {
+          // Invalid user input error
+          res.json({
+            status: 'failure',
+            message: 'Invalid input - please check that your exercise weights are ' +
+              'positive integers.'
+          });
+        } else {
+          // Generic DB error
+          res.json({
+            status: 'failure',
+            message: 'Failed to update workout.'
+          });
+        }
         return;
       }
       // Catch MySQL warnings
@@ -350,7 +368,7 @@ app.post('/api/update-workout', function(req, res) {
         });
         res.json({
           status: 'failure',
-          message: 'Failed to delete workout.'
+          message: 'Failed to update workout.'
         });
         return;
       }
