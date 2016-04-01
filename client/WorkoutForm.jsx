@@ -32,17 +32,9 @@ var WorkoutForm = React.createClass({
       failure: ''
     });
   },
-  handleSubmit: function(e) {
+  handleRequest: function(e, requestFunc, input, successMessage) {
     e.preventDefault();
-    this.props.onWorkoutSubmit({
-      squats: this.state.squats,
-      bench_press: this.state.benchPress,
-      barbell_rows: this.state.barbellRows,
-      overhead_press: this.state.overheadPress,
-      deadlifts: this.state.deadlifts,
-      // Dates need to be in the MySQL format 'YYYY-MM-DD'
-      date: this.state.date.format('YYYY-MM-DD')
-    }, (response) => {
+    requestFunc(input, (response) => {
       // Set success or failure messages accordingly
       if (response.status === 'failure') {
         this.setState({
@@ -51,17 +43,28 @@ var WorkoutForm = React.createClass({
         });
       } else if (response.status === 'success') {
         this.setState({
-          success: 'Successfully submitted workout.',
+          success: successMessage,
           failure: ''
         });
       } else {
         console.log(`Unknown status: ${response.status}`);
       }
     });
+  },
+  handleSubmit: function(e) {
+    var input = {
+      squats: this.state.squats,
+      bench_press: this.state.benchPress,
+      barbell_rows: this.state.barbellRows,
+      overhead_press: this.state.overheadPress,
+      deadlifts: this.state.deadlifts,
+      // Dates need to be in the MySQL format 'YYYY-MM-DD'
+      date: this.state.date.format('YYYY-MM-DD')
+    };
+    this.handleRequest(e, this.props.onWorkoutSubmit, input, 'Successfully submitted workout.');
   },
   handleUpdate: function(e) {
-    // Send an UPDATE request to the API server
-    this.props.onWorkoutUpdate({
+    var input = {
       squats: this.state.squats,
       bench_press: this.state.benchPress,
       barbell_rows: this.state.barbellRows,
@@ -69,47 +72,15 @@ var WorkoutForm = React.createClass({
       deadlifts: this.state.deadlifts,
       // Dates need to be in the MySQL format 'YYYY-MM-DD'
       date: this.state.date.format('YYYY-MM-DD')
-    }, (response) => {
-      // Set success or failure messages accordingly
-      if (response.status === 'failure') {
-        this.setState({
-          success: '',
-          failure: response.message
-        });
-      } else if (response.status === 'success') {
-        this.setState({
-          success: 'Successfully updated workout.',
-          failure: ''
-        });
-      } else {
-        console.log(`Unknown status: ${response.status}`);
-      }
-    });
+    };
+    this.handleRequest(e, this.props.onWorkoutUpdate, input, 'Successfully updated workout.');
   },
   handleDelete: function(e) {
-    // Send a DELETE request to the API server
-    this.props.onWorkoutDelete({
+    var input = {
       // Dates need to be in the MySQL format 'YYYY-MM-DD'
       date: this.state.date.format('YYYY-MM-DD')
-    }, (response) => {
-      // Set success or failure messages accordingly
-      if (response.status === 'failure') {
-        this.setState({
-          success: '',
-          failure: response.message
-        });
-      } else if (response.status === 'success') {
-        this.setState({
-          success: 'Successfully deleted workout.',
-          failure: ''
-        });
-      } else {
-        console.log(`Unknown status: ${response.status}`);
-      }
-    });
-  },
-  onClick: function(e) {
-    e.stopImmediatePropagation();
+    };
+    this.handleRequest(e, this.props.onWorkoutDelete, input, 'Successfully deleted workout.');
   },
   render: function() {
     return (
