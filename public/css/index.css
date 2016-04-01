@@ -1,4 +1,8 @@
-.WorkoutForm {
+h2 {
+  margin-left: 50;
+}
+
+.submitter {
   margin-left: 50;
 }
 
@@ -8,10 +12,6 @@
 
 .Workout {
   margin-bottom: 10;
-}
-
-.view-header {
-  margin-left: 50;
 }
 
 .successMessage {
