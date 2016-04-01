@@ -84,15 +84,21 @@ var WorkoutBox = React.createClass({
             ]
           }
         />
-        <WorkoutForm
-          date={moment.utc()}
-          squats="0"
-          benchPress="0"
-          barbellRows="0"
-          overheadPress="0"
-          deadlifts="0"
-          onWorkoutSubmit={this.handleWorkoutSubmit}
-        />
+        <h2>Submit a new workout</h2>
+        <div className="submitter">
+          <WorkoutForm
+            date={moment.utc()}
+            squats="0"
+            benchPress="0"
+            barbellRows="0"
+            overheadPress="0"
+            deadlifts="0"
+            onWorkoutSubmit={this.handleWorkoutSubmit}
+            submitter={true}
+            id="Submitter"
+          />
+        </div>
+        <h2>View and edit workouts</h2>
         <WorkoutList
           data={this.state.data}
           onWorkoutUpdate={this.handleWorkoutUpdate}

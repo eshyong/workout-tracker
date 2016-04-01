@@ -16,10 +16,8 @@ var WorkoutForm = React.createClass({
 
       // These are set whenever an operation on a workout is performed,
       // such as an update or delete
-      success: false,
-      failure: false,
-      successMessage: '',
-      failureMessage: ''
+      success: '',
+      failure: ''
     }
   },
   handleInputChange: function(e) {
@@ -29,7 +27,9 @@ var WorkoutForm = React.createClass({
       newValue = moment.utc(newValue);
     }
     this.setState({
-      [workoutType]: newValue
+      [workoutType]: newValue,
+      success: '',
+      failure: ''
     });
   },
   handleSubmit: function(e) {
@@ -46,25 +46,74 @@ var WorkoutForm = React.createClass({
       // Set success or failure messages accordingly
       if (response.status === 'failure') {
         this.setState({
-          success: false,
-          failure: true,
-          failureMessage: response.message
+          success: '',
+          failure: response.message
         });
       } else if (response.status === 'success') {
         this.setState({
-          success: true,
-          failure: false,
-          successMessage: 'Successfully submitted workout.'
+          success: 'Successfully submitted workout.',
+          failure: ''
         });
       } else {
         console.log(`Unknown status: ${response.status}`);
       }
     });
   },
+  handleUpdate: function(e) {
+    // Send an UPDATE request to the API server
+    this.props.onWorkoutUpdate({
+      squats: this.state.squats,
+      bench_press: this.state.benchPress,
+      barbell_rows: this.state.barbellRows,
+      overhead_press: this.state.overheadPress,
+      deadlifts: this.state.deadlifts,
+      // Dates need to be in the MySQL format 'YYYY-MM-DD'
+      date: this.state.date.format('YYYY-MM-DD')
+    }, (response) => {
+      // Set success or failure messages accordingly
+      if (response.status === 'failure') {
+        this.setState({
+          success: '',
+          failure: response.message
+        });
+      } else if (response.status === 'success') {
+        this.setState({
+          success: 'Successfully updated workout.',
+          failure: ''
+        });
+      } else {
+        console.log(`Unknown status: ${response.status}`);
+      }
+    });
+  },
+  handleDelete: function(e) {
+    // Send a DELETE request to the API server
+    this.props.onWorkoutDelete({
+      // Dates need to be in the MySQL format 'YYYY-MM-DD'
+      date: this.state.date.format('YYYY-MM-DD')
+    }, (response) => {
+      // Set success or failure messages accordingly
+      if (response.status === 'failure') {
+        this.setState({
+          success: '',
+          failure: response.message
+        });
+      } else if (response.status === 'success') {
+        this.setState({
+          success: 'Successfully deleted workout.',
+          failure: ''
+        });
+      } else {
+        console.log(`Unknown status: ${response.status}`);
+      }
+    });
+  },
+  onClick: function(e) {
+    e.stopImmediatePropagation();
+  },
   render: function() {
     return (
       <div className="WorkoutForm">
-        <h2>Submit a new workout</h2>
         <form onSubmit={this.handleSubmit}>
           <div>Workout Date:
             <input
@@ -114,21 +163,45 @@ var WorkoutForm = React.createClass({
               id="deadlifts"
             />
           </div>
-          <input
-            className="btn btn-default"
-            type="submit"
-            value="Submit"
-            id="submitWorkout"
-          />
+          {
+            // If the form is a "submitter" form, then it INSERTs workouts
+            // If not, it UPDATEs or DELETEs them
+            this.props.submitter ?
+              (
+                <input
+                  className="btn btn-default"
+                  type="submit"
+                  value="Submit"
+                />
+              ) :
+              (
+                [
+                  <input
+                    className="btn btn-default"
+                    type="button"
+                    value="Update"
+                    onClick={this.handleUpdate}
+                    key="update"
+                  />,
+                  <input
+                    className="btn btn-default"
+                    type="button"
+                    value="Delete"
+                    onClick={this.handleDelete}
+                    key="delete"
+                  />
+                ]
+              )
+          }
         </form>
         {
           this.state.success ? (
-            <div className="successMessage">{this.state.successMessage}</div>
+            <div className="successMessage">{this.state.success}</div>
           ) : null
         }
         {
           this.state.failure ? (
-            <div className="failureMessage">{this.state.failureMessage}</div>
+            <div className="failureMessage">{this.state.failure}</div>
           ) : null
         }
       </div>

@@ -1,5 +1,9 @@
 'use strict';
 
+// Internal dependencies
+var WorkoutForm = require('./WorkoutForm.jsx');
+
+// External dependencies
 var moment = require('moment'),
     React = require('react');
 
@@ -7,7 +11,8 @@ var WorkoutList = React.createClass({
   render: function() {
     var workoutNodes = this.props.data.map((workout) => {
       return (
-        <Workout key={workout.id}
+        <Workout
+          key={workout.id}
           date={moment.utc(workout.date)}
           squats={String(workout.squats)}
           benchPress={String(workout.bench_press)}
@@ -21,7 +26,6 @@ var WorkoutList = React.createClass({
     });
     return (
       <div className="WorkoutList">
-        <h2>View and edit workouts</h2>
         {
           workoutNodes.length === 0 ?
             <div>You haven't added any workouts yet. Try adding one above!</div>
@@ -39,6 +43,9 @@ var Workout = React.createClass({
       // mode or not
       editing: false,
 
+      // Change style when the user mouses over or mouses out on a workout
+      highlighted: false,
+
       // The data fields of a workout
       date: this.props.date,
       squats: this.props.squats,
@@ -50,175 +57,66 @@ var Workout = React.createClass({
       // These are set whenever an operation on a workout is performed,
       // such as an update or delete
       success: false,
-      failure: false,
-      successMessage: '',
-      failureMessage: ''
+      failure: false
     };
   },
   toggleEditingMode: function(e) {
     this.setState({
       editing: !this.state.editing,
+      highlighted: false,
       success: false,
-      failure: false,
-      successMessage: '',
-      failureMessage: ''
+      failure: false
     });
   },
-  handleInputChange: function(e) {
-    var workoutType = e.target.id,
-      newValue = e.target.value;
+  onMouseOver: function(e) {
     this.setState({
-      [workoutType]: newValue
+      highlighted: true
     });
   },
-  handleUpdate: function(e) {
-    // Send an UPDATE request to the API server
-    this.props.onWorkoutUpdate({
-      squats: this.state.squats,
-      bench_press: this.state.benchPress,
-      barbell_rows: this.state.barbellRows,
-      overhead_press: this.state.overheadPress,
-      deadlifts: this.state.deadlifts,
-      // Dates need to be in the MySQL format 'YYYY-MM-DD'
-      date: this.state.date.format('YYYY-MM-DD')
-    }, (response) => {
-      // Set success or failure messages accordingly
-      if (response.status === 'failure') {
-        this.setState({
-          success: false,
-          failure: true,
-          failureMessage: response.message
-        });
-      } else if (response.status === 'success') {
-        this.setState({
-          success: true,
-          failure: false,
-          successMessage: 'Successfully updated workout.'
-        });
-      } else {
-        console.log(`Unknown status: ${response.status}`);
-      }
-    });
-  },
-  handleDelete: function(e) {
-    // Send a DELETE request to the API server
-    this.props.onWorkoutDelete({
-      // Dates need to be in the MySQL format 'YYYY-MM-DD'
-      date: this.state.date.format('YYYY-MM-DD')
-    }, (response) => {
-      // Set success or failure messages accordingly
-      if (response.status === 'failure') {
-        this.setState({
-          success: false,
-          failure: true,
-          failureMessage: response.message
-        });
-      } else if (response.status === 'success') {
-        this.setState({
-          success: true,
-          failure: false,
-          successMessage: 'Successfully deleted workout.'
-        });
-      } else {
-        console.log(`Unknown status: ${response.status}`);
-      }
+  onMouseOut: function(e) {
+    this.setState({
+      highlighted: false
     });
   },
   render: function() {
     return (
-      <form className="Workout">
-        <div>Date: {this.props.date.format('MM-DD-YYYY')}</div>
-        <div>Squats:
-          {
-            this.state.editing ? (
-              <input
-                defaultValue={this.state.squats}
-                onChange={this.handleInputChange}
-                id="squats"
-              />
-            ) : ` ${this.state.squats}`
-          }
-        </div>
-        <div>Bench Press:
-          {
-            this.state.editing ? (
-              <input
-                defaultValue={this.state.benchPress}
-                onChange={this.handleInputChange}
-                id="benchPress"
-              />
-            ) : ` ${this.state.benchPress}`
-          }
-        </div>
-        <div>Barbell Rows:
-          {
-            this.state.editing ? (
-              <input
-                defaultValue={this.state.barbellRows}
-                onChange={this.handleInputChange}
-                id="barbellRows"
-              />
-            ) : ` ${this.state.barbellRows}`
-          }
-        </div>
-        <div>Overhead Press:
-          {
-            this.state.editing ? (
-              <input
-                defaultValue={this.state.overheadPress}
-                onChange={this.handleInputChange}
-                id="overheadPress"
-              />
-            ) : ` ${this.state.overheadPress}`
-          }
-        </div>
-        <div>Deadlifts:
-          {
-            this.state.editing ? (
-              <input
-                defaultValue={this.state.deadlifts}
-                onChange={this.handleInputChange}
-                id="deadlifts"
-              />
-            ) : ` ${this.state.deadlifts}`
-          }
-        </div>
-        <input
-          className="btn btn-default"
-          type="button"
-          value="Edit"
-          onClick={this.toggleEditingMode}
-        />
-        {
-          // If not editing, hide the submit and delete buttons
-          this.state.editing ? [
-            <input
-              className="btn btn-default"
-              type="button"
-              value="Update"
-              onClick={this.handleUpdate}
-              key="update"
-            />,
-            <input
-              className="btn btn-default"
-              type="button"
-              value="Delete"
-              onClick={this.handleDelete}
-              key="delete"
-            />
-          ] : null
+      <div
+        className="Workout"
+        onClick={this.toggleEditingMode}
+        onMouseOver={this.onMouseOver}
+        onMouseOut={this.onMouseOut}
+        style={
+          // Signal highlighted button to user by changing style
+          this.state.highlighted ? {
+            background: 'lightgrey',
+            cursor: 'pointer'
+          } : null
         }
-        {
-          this.state.success ? (
-            <div className="successMessage">{this.state.successMessage}</div>
-          ) : null
-        }
-        {
-          this.state.failure ? (
-            <div className="failureMessage">{this.state.failureMessage}</div>
-          ) : null
-        }
-      </form>
+      >
+      {
+        this.state.editing ? (
+          <WorkoutForm
+            date={this.props.date}
+            squats={this.props.squats}
+            benchPress={this.props.benchPress}
+            barbellRows={this.props.barbellRows}
+            overheadPress={this.props.overheadPress}
+            deadlifts={this.props.deadlifts}
+            onWorkoutUpdate={this.props.onWorkoutUpdate}
+            onWorkoutDelete={this.props.onWorkoutDelete}
+            submitter={false}
+          />
+        ) :
+        [
+          <div key="date">Date: {this.props.date.format('MM-DD-YYYY')}</div>,
+          <div key="squats">Squats: {this.state.squats}</div>,
+          <div key="benchPress">Bench Press: {this.state.benchPress}</div>,
+          <div key="barbellRows">Barbell Rows: {this.state.barbellRows}</div>,
+          <div key="overheadPress">Overhead Press: {this.state.overheadPress}</div>,
+          <div key="deadlifts">Deadlifts: {this.state.deadlifts}</div>
+        ]
+      }
+      </div>
     );
   }
 });
