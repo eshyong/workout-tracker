@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
   var connection = mysql.createConnection({
     host: 'localhost',
     user: 'workout_tracker',
-    password: process.env.DEV_WORKOUT_TRACKER_PW,
+    password: process.env.MYSQL_WORKOUT_TRACKER_PW,
     database: 'workouts'
   });
 }

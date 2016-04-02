@@ -16,19 +16,29 @@ if ! service mysql status | grep -q "start"; then
     service mysql start
 fi
 
-# Create workout_tracker user
+# Run schema creation/migrations on DB
 set +x
+echo 'Creating workouts DB'
+mysql -u root --password="$MYSQL_ROOT_PW" < sql/create_db.sql
+
+# Create workout_tracker user
 command=$(cat <<EOF
 # Safe way of dropping a user if it doesn't exist
 GRANT USAGE ON *.* TO 'workout_tracker'@'localhost';
 DROP USER 'workout_tracker'@'localhost';
 # Create new user
 CREATE USER 'workout_tracker'@'localhost' IDENTIFIED BY '$MYSQL_WORKOUT_TRACKER_PW';
+# Grant all privileges to the workouts database to the workout tracker app
+GRANT ALL ON workouts.* to 'workout_tracker'@'localhost';
 EOF
 )
 echo 'Creating workout_tracker user'
 mysql -u root --password="$MYSQL_ROOT_PW" --execute "$command"
+set -x
 
-# Run SQL scripts on database
-echo 'Running sql/create_schema.sql script'
-mysql -u root --password="$MYSQL_ROOT_PW" < ./sql/create_schema.sql
+echo 'Running DB migrations'
+flyway \
+    -user=workout_tracker \
+    -password="$MYSQL_WORKOUT_TRACKER_PW" \
+    -configFile=$(pwd)/flyway.dev.conf \
+    migrate

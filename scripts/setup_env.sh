@@ -41,3 +41,10 @@ ln -sf /usr/local/n/versions/node/5.6.0/bin/webpack /usr/local/bin/webpack
 debconf-set-selections <<< "mysql-server mysql-server/root_password password $MYSQL_ROOT_PW"
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $MYSQL_ROOT_PW"
 apt-get --yes install mysql-server-5.6
+
+# Install flyway
+pushd /tmp
+curl -O https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.0/flyway-commandline-4.0-linux-x64.tar.gz
+tar xzvf flyway-commandline-4.0-linux-x64.tar.gz
+mv -f flyway-4.0 /opt
+ln -sf /opt/flyway-4.0/flyway /usr/local/bin/flyway
