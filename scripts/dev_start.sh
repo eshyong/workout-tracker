@@ -19,5 +19,5 @@ if ! pgrep redis-server; then
     service redis-server start
 fi
 # Run webpack and nodemon as separate processes
-webpack --progress --color --watch &
-nodemon -L app.js &
+screen -d -m webpack --progress --color --watch
+screen -d -m nodemon -L app.js
