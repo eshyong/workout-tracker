@@ -34,7 +34,6 @@ EOF
 )
 echo 'Creating workout_tracker user'
 mysql -u root --password="$MYSQL_ROOT_PW" --execute "$command"
-set -x
 
 echo 'Running DB migrations'
 flyway \
