@@ -79,6 +79,11 @@ var WorkoutBox = React.createClass({
               },
               {
                 active: false,
+                link: '/profile',
+                text: 'Profile'
+              },
+              {
+                active: false,
                 link: '/logout',
                 text: 'Logout'
               }

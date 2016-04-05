@@ -94,6 +94,10 @@ app.get('/login', function(req, res) {
   }
 });
 
+app.get('/profile', function(req, res) {
+  res.sendFile('profile.html', sendFileOpts);
+});
+
 app.get('/logout', function(req, res) {
   if (req.session.userInfo) {
     // Destroy user session on logout
