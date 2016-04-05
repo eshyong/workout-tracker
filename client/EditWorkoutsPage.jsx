@@ -36,7 +36,8 @@ var WorkoutBox = React.createClass({
     $.ajax({
       url: url,
       method: 'POST',
-      data: workout,
+      contentType: 'application/json',
+      data: JSON.stringify(workout),
       dataType: 'json',
       success: (data) => {
         callback(data);
@@ -94,6 +95,7 @@ var WorkoutBox = React.createClass({
             overheadPress="0"
             deadlifts="0"
             onWorkoutSubmit={this.handleWorkoutSubmit}
+            isTypeA={true}
             submitter={true}
             id="Submitter"
           />
