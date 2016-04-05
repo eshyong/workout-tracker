@@ -50,11 +50,11 @@ var Workout = React.createClass({
       // The data fields of a workout
       // If we receive NULL fields, turn them into "0"s
       date: this.props.date,
-      squats: this.props.squats == 'null' ? '0' : this.props.squats,
-      benchPress: this.props.benchPress == 'null' ? '0' : this.props.benchPress,
-      barbellRows: this.props.barbellRows == 'null' ? '0' : this.props.barbellRows,
-      overheadPress: this.props.overheadPress == 'null' ? '0' : this.props.overheadPress,
-      deadlifts: this.props.deadlifts == 'null' ? '0' : this.props.deadlifts,
+      squats: this.props.squats === 'null' ? '0' : this.props.squats,
+      benchPress: this.props.benchPress === 'null' ? '0' : this.props.benchPress,
+      barbellRows: this.props.barbellRows === 'null' ? '0' : this.props.barbellRows,
+      overheadPress: this.props.overheadPress === 'null' ? '0' : this.props.overheadPress,
+      deadlifts: this.props.deadlifts === 'null' ? '0' : this.props.deadlifts,
 
       // These are set whenever an operation on a workout is performed,
       // such as an update or delete
