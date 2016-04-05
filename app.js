@@ -12,8 +12,8 @@ var bcrypt = require('bcrypt'),
 
 // Local packages
 var db = require('./server/db'),
-  workouts = require('./server/workouts'),
-  users = require('./server/users'),
+  workouts = require('./server/query/workouts'),
+  users = require('./server/query/users'),
   conn = db.connect();
 
 var sendFileOpts = {
