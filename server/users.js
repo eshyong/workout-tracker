@@ -25,6 +25,11 @@ module.exports = {
     var query = database.query(queryString, [newEmail, userId], callback);
     logSqlIfVerbose(query);
   },
+  updateUserPasswordForId: function(database, userId, newPasswordHash, callback) {
+    var queryString = 'UPDATE users SET password_hash = ? WHERE id = ?';
+    var query = database.query(queryString, [newPasswordHash, userId], callback);
+    logSqlIfVerbose(query);
+  },
   registerNewUser: function(database, user, callback) {
     var query = database.query('INSERT INTO users SET ?', user, callback);
     logSqlIfVerbose(query);

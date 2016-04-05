@@ -137,6 +137,7 @@ app.post('/api/register', function(req, res) {
       // Send password hash and salt to database
       users.registerNewUser(conn, {
         username: req.body.username,
+        email: req.body.email,
         password_hash: hash,
       }, function(err) {
         if (err) {
@@ -212,7 +213,6 @@ app.post('/api/login', function(req, res) {
         username: userInfo.username,
         userId: userInfo.id
       };
-      console.log(req.session.userInfo);
       res.json({
         status: 'success',
         redirectUrl: '/'
@@ -255,7 +255,6 @@ app.post('/api/update-user-email', function(req, res) {
         });
         return;
       }
-      console.log(result);
       // Catch MySQL warnings
       if (result.affectedRows === 0 || result.warningCount > 0) {
         console.log('No error thrown, but failed to delete row');
@@ -274,6 +273,96 @@ app.post('/api/update-user-email', function(req, res) {
       res.json({
         status: 'success',
         message: 'Successfully updated email address.'
+      });
+    }
+  );
+});
+
+app.post('/api/update-user-password', function(req, res) {
+  console.log(req.session.userInfo);
+  users.getUserCredentials(conn, {username: req.session.userInfo.username},
+    function(err, results) {
+      // Generic DB error
+      if (err) {
+        console.log('Encountered database err: ' + err.message);
+        res.json({
+          status: 'failure',
+          message: 'Unable to update password.'
+        });
+        return;
+      }
+      // Should not happen error
+      if (results.length === 0) {
+        res.json({
+          status: 'failure',
+          message: 'Unknown error.'
+        });
+        return;
+      }
+
+      // Calculate hash from salt and password and attempt to authenticate user
+      var userInfo = results[0];
+      bcrypt.compare(req.body.password, userInfo.password_hash, function(err, isMatch) {
+        if (err) {
+          // bcrypt failed somehow, throw fast
+          throw err;
+        }
+
+        // Calculated hash doesn't match stored hash
+        if (!isMatch) {
+          res.json({
+            status: 'failure',
+            message: 'Password was entered incorrectly, please try again.'
+          });
+          return;
+        }
+
+        // Create a hash from the new desired password
+        bcrypt.genSalt(function(err, salt) {
+          if (err) {
+            // bcrypt failed somehow, throw fast
+            throw err;
+          }
+          bcrypt.hash(req.body.newPassword, salt, function(err, newPasswordHash) {
+            if (err) {
+              // bcrypt failed somehow, throw fast
+              throw err;
+            }
+            users.updateUserPasswordForId(conn, req.session.userInfo.userId, newPasswordHash,
+              function(err, result) {
+                // Oh god the callbacks
+                if (err) {
+                  console.log('Encountered database err: ' + err.message);
+                  res.json({
+                    status: 'failure',
+                    message: 'Unable to update password.'
+                  });
+                  return;
+                }
+                // Catch MySQL warnings
+                if (result.affectedRows === 0 || result.warningCount > 0) {
+                  console.log('No error thrown, but failed to update row');
+                  db.showWarnings(conn, function(err, result) {
+                    if (err) {
+                      throw err;
+                    }
+                    console.log('Warning: ' + result[0].Message);
+                  });
+                  res.json({
+                    status: 'failure',
+                    message: 'Failed to update password.'
+                  });
+                  return;
+                }
+                // Finally we've updated the password
+                res.json({
+                  status: 'success',
+                  message: 'Successfully updated password.'
+                });
+              }
+            );
+          });
+        });
       });
     }
   );
