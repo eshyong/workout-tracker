@@ -19,6 +19,7 @@ var WorkoutList = React.createClass({
           barbellRows={String(workout.barbell_rows)}
           overheadPress={String(workout.overhead_press)}
           deadlifts={String(workout.deadlifts)}
+          isTypeA={Boolean(workout.is_type_a)}
           onWorkoutUpdate={this.props.onWorkoutUpdate}
           onWorkoutDelete={this.props.onWorkoutDelete}
         />
@@ -47,12 +48,13 @@ var Workout = React.createClass({
       highlighted: false,
 
       // The data fields of a workout
+      // If we receive NULL fields, turn them into "0"s
       date: this.props.date,
-      squats: this.props.squats,
-      benchPress: this.props.benchPress,
-      barbellRows: this.props.barbellRows,
-      overheadPress: this.props.overheadPress,
-      deadlifts: this.props.deadlifts,
+      squats: this.props.squats == 'null' ? '0' : this.props.squats,
+      benchPress: this.props.benchPress == 'null' ? '0' : this.props.benchPress,
+      barbellRows: this.props.barbellRows == 'null' ? '0' : this.props.barbellRows,
+      overheadPress: this.props.overheadPress == 'null' ? '0' : this.props.overheadPress,
+      deadlifts: this.props.deadlifts == 'null' ? '0' : this.props.deadlifts,
 
       // These are set whenever an operation on a workout is performed,
       // such as an update or delete
@@ -79,6 +81,22 @@ var Workout = React.createClass({
     });
   },
   render: function() {
+    var dataFields;
+    if (this.props.isTypeA) {
+      dataFields = ([
+        <div key="date">Date: {this.props.date.format('MM-DD-YYYY')}</div>,
+        <div key="squats">Squats: {this.state.squats}</div>,
+        <div key="benchPress">Bench Press: {this.state.benchPress}</div>,
+        <div key="barbellRows">Barbell Rows: {this.state.barbellRows}</div>
+      ]);
+    } else {
+      dataFields = ([
+        <div key="date">Date: {this.props.date.format('MM-DD-YYYY')}</div>,
+        <div key="squats">Squats: {this.state.squats}</div>,
+        <div key="overheadPress">Overhead Press: {this.state.overheadPress}</div>,
+        <div key="deadlifts">Deadlifts: {this.state.deadlifts}</div>
+      ]);
+    }
     return (
       <div className="Workout">
       {
@@ -90,11 +108,12 @@ var Workout = React.createClass({
             barbellRows={this.props.barbellRows}
             overheadPress={this.props.overheadPress}
             deadlifts={this.props.deadlifts}
+            isTypeA={this.props.isTypeA}
             onWorkoutUpdate={this.props.onWorkoutUpdate}
             onWorkoutDelete={this.props.onWorkoutDelete}
             submitter={false}
           />
-        ) :
+        ) : (
           <div
             onClick={this.toggleEditingMode}
             onMouseOver={this.onMouseOver}
@@ -107,13 +126,9 @@ var Workout = React.createClass({
               } : null
             }
           >
-            <div>Date: {this.props.date.format('MM-DD-YYYY')}</div>
-            <div>Squats: {this.state.squats}</div>
-            <div>Bench Press: {this.state.benchPress}</div>
-            <div>Barbell Rows: {this.state.barbellRows}</div>
-            <div>Overhead Press: {this.state.overheadPress}</div>
-            <div>Deadlifts: {this.state.deadlifts}</div>
+            {dataFields}
           </div>
+        )
       }
       </div>
     );

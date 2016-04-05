@@ -2,6 +2,14 @@ h2 {
   margin-left: 50;
 }
 
+#workoutSelector {
+  margin-bottom: 10;
+}
+
+button.clicked {
+  background: lightgrey;
+}
+
 .submitter {
   margin-left: 50;
 }

@@ -16,7 +16,7 @@ module.exports = {
 
   getWorkouts: function(dbConn, userId, callback) {
     var queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
-      'overhead_press, deadlifts, date ' +
+      'overhead_press, deadlifts, date, is_type_a ' +
       'FROM workouts ' +
       'WHERE user_id = ? ' +
       'ORDER BY date';
