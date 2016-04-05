@@ -165,6 +165,7 @@ var RegisterForm = React.createClass({
   getInitialState: function() {
     return {
       username: '',
+      email: '',
       password: '',
       passwordAgain: '',
       success: '',
@@ -190,13 +191,14 @@ var RegisterForm = React.createClass({
 
     // Trim extra whitespace around words
     var username = this.state.username.trim(),
+        email = this.state.email.trim(),
         password = this.state.password.trim(),
         passwordAgain = this.state.passwordAgain.trim();
 
     // Form validation
-    if (!username || !password) {
+    if (!username || !email || !password) {
       this.setState({
-        failure: 'Need to fill both username and password in.'
+        failure: 'Need to fill all fields in.'
       });
       return;
     }
@@ -210,6 +212,7 @@ var RegisterForm = React.createClass({
     // Try registering a new user
     this.props.registerNewUser({
       username: username,
+      email: email,
       password: password
     }, (response) => {
       if (response.status === 'success') {
@@ -238,6 +241,15 @@ var RegisterForm = React.createClass({
               id="username"
               className="inputBox"
               placeholder="username"
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <div className="input">
+            <input
+              type="text"
+              id="email"
+              className="inputBox"
+              placeholder="email address"
               onChange={this.handleInputChange}
             />
           </div>
