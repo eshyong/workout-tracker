@@ -1,3 +1,11 @@
 .ProfileForm {
   margin-left: 50;
 }
+
+.successMessage {
+  color: green;
+}
+
+.failureMessage {
+  color: red;
+}

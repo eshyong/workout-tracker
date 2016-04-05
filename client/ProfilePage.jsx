@@ -38,31 +38,124 @@ var ProfilePage = React.createClass({
             ]
           }
         />
-        <ProfileForm/>
+        <EmailForm
+          getUrl={this.props.getUrl}
+          postUrl={this.props.postUrl}
+        />
+        <PasswordForm/>
       </div>
     );
   }
 });
 
-var ProfileForm = React.createClass({
+var EmailForm = React.createClass({
   getInitialState: function() {
-    return {};
+    return {
+      currentEmail: '',
+      newEmail: '',
+      success: '',
+      failure: ''
+    };
+  },
+  getEmailAddress: function() {
+    $.get({
+      url: this.props.getUrl,
+      success: (response) => {
+        if (response.status === 'failure') {
+          this.setState({
+            failure: response.message
+          });
+        } else {
+          this.setState({
+            currentEmail: response.email
+          });
+        }
+      },
+      dataType: 'json'
+    });
+  },
+  changeEmail: function(e) {
+    e.preventDefault();
+    if (!this.state.newEmail) {
+      this.setState({
+        failure: 'Email field must not be empty.'
+      });
+      return;
+    }
+
+    $.post({
+      url: this.props.postUrl,
+      data: JSON.stringify({newEmail: this.state.newEmail}),
+      contentType: 'application/json',
+      success: (response) => {
+        if (response.status === 'success') {
+          this.setState({
+            success: 'Successfully updated email.'
+          });
+        } else {
+          this.setState({
+            failure: response.message
+          });
+        }
+      },
+      dataType: 'json',
+    })
+  },
+  onEmailInputChange: function(e) {
+    this.setState({
+      success: '',
+      failure: '',
+      newEmail: e.target.value
+    });
+  },
+  componentDidMount: function() {
+    this.getEmailAddress();
   },
   render: function() {
     return (
-      <div className="ProfileForm">
+      <div className="EmailForm">
         <h3>Change your email address</h3>
-        <form>
+        <form onSubmit={this.changeEmail}>
           <div> {
-            this.state.emailAddress ?
-              ('Current email address: ' + this.state.emailAddress)
+            this.state.currentEmail ?
+              ('Current email address: ' + this.state.currentEmail)
             :
-              ('No email address on record')
+              ('No email address on record.')
           } </div>
           <div>Email:
-            <input type="text" placeholder="your email address"/>
+            <input
+              type="text"
+              placeholder="your email address"
+              onChange={this.onEmailInputChange}
+            />
+            <input type="submit" placeholder="submit"/>
           </div>
-          <h3>Change password</h3>
+        </form>
+        {
+          this.state.success ? (
+            <div className="successMessage">{this.state.success}</div>
+          ) : (
+            null
+          )
+        }
+        {
+          this.state.failure ? (
+            <div className="failureMessage">{this.state.failure}</div>
+          ) : (
+            null
+          )
+        }
+      </div>
+    );
+  }
+});
+
+var PasswordForm = React.createClass({
+  render: function() {
+    return (
+      <div className="PasswordForm">
+        <h3>Change your password</h3>
+        <form>
           <div>Current password:
             <input type="text" placeholder="current password"/>
           </div>
@@ -79,6 +172,9 @@ var ProfileForm = React.createClass({
 });
 
 ReactDOM.render(
-  <ProfilePage/>,
+  <ProfilePage
+    getUrl='/api/get-user-email'
+    postUrl='/api/update-user-email'
+  />,
   document.getElementById('content')
 );

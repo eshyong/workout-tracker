@@ -221,6 +221,64 @@ app.post('/api/login', function(req, res) {
   });
 });
 
+app.get('/api/get-user-email', function(req, res) {
+  users.getUserEmailForId(conn, req.session.userInfo.userId, function(err, results) {
+    if (err) {
+      // Generic DB error
+      console.log('Encountered database err: ' + err.message);
+      res.json({
+        status: 'failure',
+        message: 'Failed to get user email.'
+      });
+      return;
+    }
+
+    // Return user email address
+    var email = results[0].email;
+    res.json({
+      status: 'success',
+      email: email.trim()
+    });
+  });
+});
+
+app.post('/api/update-user-email', function(req, res) {
+  users.updateUserEmailForId(
+    conn, req.session.userInfo.userId, req.body.newEmail,
+    function(err, result) {
+      if (err) {
+        // Generic DB error
+        console.log('Encountered database err: ' + err.message);
+        res.json({
+          status: 'failure',
+          message: 'Failed to udpate email address.'
+        });
+        return;
+      }
+      console.log(result);
+      // Catch MySQL warnings
+      if (result.affectedRows === 0 || result.warningCount > 0) {
+        console.log('No error thrown, but failed to delete row');
+        db.showWarnings(conn, function(err, result) {
+          if (err) {
+            throw err;
+          }
+          console.log('Warning: ' + result[0].Message);
+        });
+        res.json({
+          status: 'failure',
+          message: 'Failed to update email address.'
+        });
+        return;
+      }
+      res.json({
+        status: 'success',
+        message: 'Successfully updated email address.'
+      });
+    }
+  );
+});
+
 app.get('/api/get-workouts', function(req, res) {
   workouts.getWorkouts(conn, req.session.userInfo.userId, function(err, results) {
     if (err) {
@@ -379,7 +437,7 @@ app.post('/api/update-workout', function(req, res) {
       res.json({
         status: 'success',
         message: 'Successfully updated workout.'
-      })
+      });
     });
 });
 
