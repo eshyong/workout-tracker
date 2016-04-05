@@ -66,9 +66,13 @@ var WorkoutForm = React.createClass({
     if (this.state.isTypeA) {
       input.bench_press = this.state.benchPress;
       input.barbell_rows = this.state.barbellRows;
-    } else  {
+      input.overhead_press = null;
+      input.deadlifts = null;
+    } else {
       input.overhead_press = this.state.overheadPress;
       input.deadlifts = this.state.deadlifts;
+      input.bench_press = null;
+      input.barbell_rows = null;
     }
     this.handleRequest(e, this.props.onWorkoutSubmit, input, 'Successfully submitted workout.');
   },
