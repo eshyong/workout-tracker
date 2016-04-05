@@ -5,8 +5,11 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL);
 
 # Create workouts table in workouts database
+# A workout can be of type A or B, and is represented by the boolean
+# field `is_type_a`
 CREATE TABLE IF NOT EXISTS workouts (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    is_type_a BOOLEAN NOT NULL,
     date DATE NOT NULL UNIQUE KEY,
     squats INT UNSIGNED,
     bench_press INT UNSIGNED,
@@ -14,4 +17,4 @@ CREATE TABLE IF NOT EXISTS workouts (
     overhead_press INT UNSIGNED,
     deadlifts INT UNSIGNED,
     user_id INT UNSIGNED NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES workouts.users(id));
+    FOREIGN KEY(user_id) REFERENCES users(id));
