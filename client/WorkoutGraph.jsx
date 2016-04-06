@@ -30,7 +30,7 @@ var WorkoutGraph = React.createClass({
         {
           field: 'overhead_press',
           name: 'Overhead Press',
-          color: '#FFFF00'
+          color: '#EF902F'
         },
         {
           field: 'deadlifts',
