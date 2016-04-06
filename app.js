@@ -27,14 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(morgan('combined', {
-  skip: function(req, res) {
-    return (
-      req.method === 'GET' &&
-      (req.path === '/api/workouts/get-all-workouts' || req.path === '/login')
-    );
-  }
-}));
+app.use(morgan('combined'));
 
 // Use redis for client sessions
 var redisClient = redis.createClient({
