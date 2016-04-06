@@ -10,7 +10,7 @@ var Navbar = React.createClass({
   },
   componentDidMount: function() {
     $.get({
-      url: '/api/username',
+      url: '/api/users/username',
       dataType: 'json',
       success: (response) => {
         if (response.status === 'success') {

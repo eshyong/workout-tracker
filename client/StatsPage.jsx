@@ -106,9 +106,9 @@ var StatsPage = React.createClass({
 
 ReactDOM.render(
   <StatsPage
-    getUrl="/api/get-workouts"
-    avgUrl="/api/get-workout-averages"
-    maxUrl="/api/get-workout-maxes"
+    getUrl="/api/workouts/get-all-workouts"
+    avgUrl="/api/workouts/get-workout-averages"
+    maxUrl="/api/workouts/get-workout-maxes"
     pollInterval={5000}
   />,
   document.getElementById('content')

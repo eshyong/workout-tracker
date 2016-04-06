@@ -118,10 +118,10 @@ var WorkoutBox = React.createClass({
 
 ReactDOM.render(
   <WorkoutBox
-    getUrl="/api/get-workouts"
-    submitUrl="/api/submit-workout"
-    updateUrl="/api/update-workout"
-    deleteUrl="/api/delete-workout"
+    getUrl="/api/workouts/get-all-workouts"
+    submitUrl="/api/workouts/submit-workout"
+    updateUrl="/api/workouts/update-workout"
+    deleteUrl="/api/workouts/delete-workout"
     pollInterval={3000}
   />,
   document.getElementById('content')

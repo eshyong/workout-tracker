@@ -260,9 +260,9 @@ var PasswordForm = React.createClass({
 
 ReactDOM.render(
   <ProfilePage
-    getEmailUrl='/api/get-user-email'
-    updateEmailUrl='/api/update-user-email'
-    updatePasswordUrl='/api/update-user-password'
+    getEmailUrl='/api/users/get-user-email'
+    updateEmailUrl='/api/users/update-user-email'
+    updatePasswordUrl='/api/users/update-user-password'
   />,
   document.getElementById('content')
 );
