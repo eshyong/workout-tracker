@@ -40,6 +40,12 @@ module.exports = {
     logSqlIfVerbose(query);
   },
 
+  updateUserPasswordForEmail: function(database, email, newPasswordHash, callback) {
+    var queryString = 'UPDATE users SET password_hash = ? WHERE email = ?';
+    var query = database.query(queryString, [newPasswordHash, email], callback);
+    logSqlIfVerbose(query);
+  },
+
   registerNewUser: function(database, user, callback) {
     var query = database.query('INSERT INTO users SET ?', user, callback);
     logSqlIfVerbose(query);

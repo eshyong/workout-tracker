@@ -1,11 +1,14 @@
 'use strict';
 
 // Internal dependencies
-var users = require('../query/users');
+var query = require('../query/users');
 
 // External dependencies
 var bcrypt = require('bcrypt');
+var crypto = require('crypto');
 var express = require('express');
+
+const resetPasswordLength = 16;
 
 module.exports = function(database, emailer) {
   var router = express.Router();
@@ -28,6 +31,10 @@ module.exports = function(database, emailer) {
   router.post('/register', function(req, res) {
     // Generate a salt and hash of the password, then pass the user to the DB
     bcrypt.genSalt(function(err, salt) {
+      if (err) {
+        // bcrypt failed somehow, throw fast
+        throw err;
+      }
       bcrypt.hash(req.body.password, salt, function(err, hash) {
         if (err) {
           // bcrypt failed somehow, throw fast
@@ -35,7 +42,7 @@ module.exports = function(database, emailer) {
         }
 
         // Send password hash and salt to database
-        users.registerNewUser(database, {
+        query.registerNewUser(database, {
           username: req.body.username,
           email: req.body.email,
           password_hash: hash,
@@ -69,7 +76,7 @@ module.exports = function(database, emailer) {
 
   router.post('/login', function(req, res) {
     // Authenticate user by checking credentials against database
-    users.getUserCredentials(database, {
+    query.getUserCredentials(database, {
       username: req.body.username,
     }, function(err, results) {
       // Generic DB error
@@ -122,7 +129,7 @@ module.exports = function(database, emailer) {
   });
 
   router.get('/get-user-email', function(req, res) {
-    users.getUserEmailForId(database, req.session.userInfo.userId, function(err, results) {
+    query.getUserEmailForId(database, req.session.userInfo.userId, function(err, results) {
       if (err) {
         // Generic DB error
         console.log('Encountered database err: ' + err.message);
@@ -143,7 +150,7 @@ module.exports = function(database, emailer) {
   });
 
   router.post('/update-user-email', function(req, res) {
-    users.updateUserEmailForId(
+    query.updateUserEmailForId(
       database, req.session.userInfo.userId, req.body.newEmail,
       function(err, result) {
         if (err) {
@@ -179,7 +186,7 @@ module.exports = function(database, emailer) {
   });
 
   router.post('/update-user-password', function(req, res) {
-    users.getUserCredentials(database, {username: req.session.userInfo.username},
+    query.getUserCredentials(database, {username: req.session.userInfo.username},
       function(err, results) {
         // Generic DB error
         if (err) {
@@ -227,7 +234,7 @@ module.exports = function(database, emailer) {
                 // bcrypt failed somehow, throw fast
                 throw err;
               }
-              users.updateUserPasswordForId(database, req.session.userInfo.userId, newPasswordHash,
+              query.updateUserPasswordForId(database, req.session.userInfo.userId, newPasswordHash,
                 function(err, result) {
                   // Oh god the callbacks
                   if (err) {
@@ -269,7 +276,7 @@ module.exports = function(database, emailer) {
 
   // Allow users to recover their username or password
   router.post('/send-username-reminder', function(req, res) {
-    users.getUsernameForEmail(database, req.body.email, function(err, results) {
+    query.getUsernameForEmail(database, req.body.email, function(err, results) {
       // Generic DB error
       if (err) {
         console.log('Encountered database err: ' + err.message);
@@ -315,7 +322,92 @@ module.exports = function(database, emailer) {
   });
 
   router.post('/reset-user-password', function(req, res) {
+    var email = req.body.email;
+    query.getUsernameForEmail(database, email, function(err, results) {
+      // Generic DB error
+      if (err) {
+        console.log('Encountered database err: ' + err.message);
+        res.json({
+          status: 'failure',
+          message: 'Unable to send email reminder.'
+        });
+        return;
+      }
+      // No results error
+      if (results.length === 0) {
+        res.json({
+          status: 'failure',
+          message: 'No user with that email found.'
+        });
+        return;
+      }
 
+      var username = results[0].username;
+      var newPassword = crypto.randomBytes(resetPasswordLength).toString('base64');
+      bcrypt.genSalt(function(err, salt) {
+        if (err) {
+          // bcrypt failed somehow, throw fast
+          throw err;
+        }
+        bcrypt.hash(newPassword, salt, function(err, hash) {
+          if (err) {
+            // bcrypt failed somehow, throw fast
+            throw err;
+          }
+
+          query.updateUserPasswordForEmail(database, email, hash, function(err, result) {
+            if (err) {
+              console.log(err);
+              res.json({
+                status: 'failure',
+                message: 'Unable to change password.'
+              });
+              return;
+            }
+            // Catch MySQL warnings
+            if (result.affectedRows === 0 || result.warningCount > 0) {
+              console.log('No error thrown, but failed to update row');
+              db.showWarnings(database, function(err, result) {
+                if (err) {
+                  throw err;
+                }
+                console.log('Warning: ' + result[0].Message);
+              });
+              res.json({
+                status: 'failure',
+                message: 'Failed to update password.'
+              });
+              return;
+            }
+
+            // Send email to user notifying them of change
+            var mailData = {
+              from: process.env.GMAIL_USERNAME,
+              to: email,
+              subject: 'Username Reminder',
+              text: `Hi, your password has been successfully changed to "${newPassword}".` +
+                ` For your security, please login and change your password.`
+            };
+            emailer.sendMail(mailData, function(err, info) {
+              // Oh god callbacks...
+              if (err) {
+                console.log('Unable to send email to ' + req.body.email);
+                console.log(info.response);
+                res.json({
+                  status: 'failure',
+                  message: 'Unable to send email. Are you sure your email address is correct?'
+                });
+                return;
+              }
+              res.json({
+                status: 'success',
+                message: 'Successfully sent an email reminder to you.'
+              });
+            });
+          });
+        });
+      });
+    });
   });
 
   return router;

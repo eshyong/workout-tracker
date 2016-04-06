@@ -30,6 +30,7 @@ var ForgotPage = React.createClass({
         />
         <ForgotForm
           reminderUrl={this.props.reminderUrl}
+          resetUrl={this.props.resetUrl}
         />
       </div>
     );
@@ -74,6 +75,29 @@ var ForgotForm = React.createClass({
       }
     });
   },
+  resetPassword: function(e) {
+    if (!this.state.email) {
+      this.setState({failure: 'Please fill in your email address.'});
+      return;
+    }
+    $.ajax({
+      url: this.props.resetUrl,
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(this.state),
+      dataType: 'json',
+      success: (response) => {
+        if (response.status === 'success') {
+          this.setState({success: response.message});
+        } else {
+          this.setState({failure: response.message});
+        }
+      },
+      failure: (xhr, status, err) => {
+        console.err(this.props.getUrl, status, err.toString());
+      }
+    });
+  },
   render: function() {
     return (
       <div className="ForgotForm">
@@ -96,6 +120,7 @@ var ForgotForm = React.createClass({
           className="btn btn-default"
           type="button"
           value="Reset my password"
+          onClick={this.resetPassword}
         />
         {
           this.state.success ? (
@@ -118,6 +143,7 @@ var ForgotForm = React.createClass({
 ReactDOM.render(
   <ForgotPage
     reminderUrl="/api/users/send-username-reminder"
+    resetUrl="/api/users/reset-user-password"
   />,
   document.getElementById('content')
 );
