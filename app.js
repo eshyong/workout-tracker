@@ -4,6 +4,7 @@
 var bodyParser = require('body-parser'),
   express = require('express'),
   morgan = require('morgan'),
+  nodemailer = require('nodemailer'),
   redis = require('redis'),
   session = require('express-session'),
   RedisStore = require('connect-redis')(session),
@@ -22,12 +23,34 @@ var sendFileOpts = {
 };
 
 // Middleware setup
+// Static files
 app.use(express.static('./public'));
+
+// Parse HTTP body as JSON
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+// Request logging
 app.use(morgan('combined'));
+
+// Use nodemailer for support emails
+var emailer = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USERNAME,
+    pass: process.env.GMAIL_PW
+  }
+});
+
+// Test gmail connection
+emailer.verify(function(err, success) {
+  if (err) {
+    throw err;
+  }
+  console.log('Connected to gmail');
+});
 
 // Use redis for client sessions
 var redisClient = redis.createClient({
@@ -55,7 +78,8 @@ app.use(session({
   unset: 'destroy'
 }));
 
-// Check for authentication on all pages, except for login pages and api calls
+// Check for authentication on all pages, except for login pages and
+// user authentication endpoints
 app.use(function(req, res, next) {
   if (!req.session.userInfo &&
     req.path !== '/login' &&
