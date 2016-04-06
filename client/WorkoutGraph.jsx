@@ -6,57 +6,50 @@ var moment = require('moment'),
     React = require('react');
 
 // ISO 8601 date format
-var dateFormat = d3.time.format('%Y-%m-%dT%H:%M:%S.%LZ');
+const dateFormat = d3.time.format('%Y-%m-%dT%H:%M:%S.%LZ');
+const domainTopPadding = 0.25;
 
 var WorkoutGraph = React.createClass({
   getInitialState: function() {
     return {
-      chartSeries: [
-        {
-          field: 'squats',
-          name: 'Squats',
-          color: '#FF0000'
-        },
-        {
-          field: 'bench_press',
-          name: 'Bench Press',
-          color: '#0000FF'
-        },
-        {
-          field: 'barbell_rows',
-          name: 'Barbell Rows',
-          color: '#00FF00'
-        },
-        {
-          field: 'overhead_press',
-          name: 'Overhead Press',
-          color: '#EF902F'
-        },
-        {
-          field: 'deadlifts',
-          name: 'Deadlifts',
-          color: '#00FFFF'
-        }
-      ],
       x: function(d) {
         // The x-axis is time
         return dateFormat.parse(d.date);
       },
       xScale: 'time'
-      // TODO: Get scale ticks to day granularity
     };
   },
   render: function() {
+    // Filter out all nulled exercises
+    var workouts = this.props.workouts.filter((workout) => {
+      return workout[this.props.fieldName] !== null;
+    });
+
+    // Get the max so we can calculate padding at the top of the graph
+    var max = 0;
+    workouts.forEach((workout) => {
+      if (max < workout[this.props.fieldName]) {
+        max = workout[this.props.fieldName];
+      }
+    });
+
     return (
       <div className="WorkoutGraph">
-        <h2>Workout graph</h2>
+        <h3>{this.props.title}</h3>
         <LineChart
           width={this.props.width}
           height={this.props.height}
           margins={this.props.margins}
-          data={this.props.workouts}
-          chartSeries={this.state.chartSeries}
+          data={workouts}
+          chartSeries={this.props.chartSeries}
           x={this.state.x}
+          xLabel="Date"
+          yLabel="Weight (lb)"
+          yDomain={
+            // Increase the domain of the graph so there's some padding at
+            // the top
+            [0, max + domainTopPadding * max]
+          }
           xScale={this.state.xScale}
         />
       </div>
