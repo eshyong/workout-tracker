@@ -12,11 +12,11 @@ var bodyParser = require('body-parser'),
 
 // Local packages
 var db = require('./server/db'),
-  conn = db.connect();
+  database = db.connect();
 
 // API endpoints
-var userApi = require('./server/api/users')(conn);
-var workoutApi = require('./server/api/workouts')(conn);
+var userApi = require('./server/api/users')(database);
+var workoutApi = require('./server/api/workouts')(database);
 
 var sendFileOpts = {
   root: __dirname + '/public/views'
@@ -82,9 +82,10 @@ app.use(session({
 // user authentication endpoints
 app.use(function(req, res, next) {
   if (!req.session.userInfo &&
-    req.path !== '/login' &&
-    req.path !== '/api/users/register' &&
-    req.path !== '/api/users/login'
+    req.path !== '/login' && req.path !== '/forgot' &&
+    req.path !== '/api/users/register' && req.path !== '/api/users/login' &&
+    req.path !== '/api/users/forgot' && req.path !== '/api/users/remind-user-email' &&
+    req.path !== '/api/users/reset-user-password'
   ) {
     // Redirect user to login page
     res.redirect('/login');
@@ -114,6 +115,10 @@ app.get('/login', function(req, res) {
 
 app.get('/profile', function(req, res) {
   res.sendFile('profile.html', sendFileOpts);
+});
+
+app.get('/forgot', function(req, res) {
+  res.sendFile('forgot.html', sendFileOpts);
 });
 
 app.get('/logout', function(req, res) {
