@@ -130,7 +130,9 @@ var EmailForm = React.createClass({
               placeholder="your email address"
               onChange={this.onEmailInputChange}
             />
-            <input type="submit" placeholder="submit"/>
+            <div>
+              <input className="btn btn-default" type="submit"/>
+            </div>
           </div>
         </form>
         {
