@@ -147,15 +147,19 @@ var LoginForm = React.createClass({
           </div>
         </form>
         {
-          this.state.success ?
+          this.state.success ? (
             <div className="success">{this.state.success}</div>
-            : null
-        }
-        {
-          this.state.failure ?
+          ) : (
+            null
+          )
+        } {
+          this.state.failure ? (
             <div className="failure">{this.state.failure}</div>
-            : null
+          ) : (
+            null
+          )
         }
+        <a href="/forgot">Forgot your username or password?</a>
       </div>
     );
   }
@@ -276,14 +280,17 @@ var RegisterForm = React.createClass({
           </div>
         </form>
         {
-          this.state.success ?
+          this.state.success ? (
             <div className="success">{this.state.success}</div>
-            : null
-        }
-        {
-          this.state.failure ?
+          ) : (
+            null
+          )
+        } {
+          this.state.failure ? (
             <div className="failure">{this.state.failure}</div>
-            : null
+          ) : (
+            null
+          )
         }
       </div>
     );
