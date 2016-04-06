@@ -19,7 +19,7 @@ module.exports = {
         console.log('Error connecting to db');
         throw err;
       }
-      console.log('Connected with ID ' + connection.threadId);
+      console.log('Connected to mysql with ID ' + connection.threadId);
     });
     // Make sure we get MySQL strict mode
     connection.query('SET SESSION sql_mode = "STRICT_ALL_TABLES"', function(err) {

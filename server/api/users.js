@@ -179,7 +179,6 @@ module.exports = function(database) {
   });
 
   router.post('/update-user-password', function(req, res) {
-    console.log(req.session.userInfo);
     users.getUserCredentials(database, {username: req.session.userInfo.username},
       function(err, results) {
         // Generic DB error
