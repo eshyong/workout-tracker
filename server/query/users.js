@@ -15,21 +15,31 @@ module.exports = {
     var query = database.query(queryString, user.username, callback);
     logSqlIfVerbose(query);
   },
+
   getUserEmailForId: function(database, userId, callback) {
     var queryString = 'SELECT email FROM users WHERE id = ?';
     var query = database.query(queryString, userId, callback);
     logSqlIfVerbose(query);
   },
+
+  getUsernameForEmail: function(database, email, callback) {
+    var queryString = 'SELECT username FROM users WHERE email = ?';
+    var query = database.query(queryString, email, callback);
+    logSqlIfVerbose(query);
+  },
+
   updateUserEmailForId: function(database, userId, newEmail, callback) {
     var queryString = 'UPDATE users SET email = ? WHERE id = ?';
     var query = database.query(queryString, [newEmail, userId], callback);
     logSqlIfVerbose(query);
   },
+
   updateUserPasswordForId: function(database, userId, newPasswordHash, callback) {
     var queryString = 'UPDATE users SET password_hash = ? WHERE id = ?';
     var query = database.query(queryString, [newPasswordHash, userId], callback);
     logSqlIfVerbose(query);
   },
+
   registerNewUser: function(database, user, callback) {
     var query = database.query('INSERT INTO users SET ?', user, callback);
     logSqlIfVerbose(query);

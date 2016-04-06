@@ -266,5 +266,57 @@ module.exports = function(database, emailer) {
       }
     );
   });
+
+  // Allow users to recover their username or password
+  router.post('/send-username-reminder', function(req, res) {
+    users.getUsernameForEmail(database, req.body.email, function(err, results) {
+      // Generic DB error
+      if (err) {
+        console.log('Encountered database err: ' + err.message);
+        res.json({
+          status: 'failure',
+          message: 'Unable to send email reminder.'
+        });
+        return;
+      }
+      // No results error
+      if (results.length === 0) {
+        res.json({
+          status: 'failure',
+          message: 'No user with that email found.'
+        });
+        return;
+      }
+
+      // Try sending an email to the user
+      var username = results[0].username;
+      var mailData = {
+        from: process.env.GMAIL_USERNAME,
+        to: req.body.email,
+        subject: 'Username Reminder',
+        text: 'Hi! This is a friendly reminder that your username is ' + username + '.'
+      };
+      emailer.sendMail(mailData, function(err, info) {
+        if (err) {
+          console.log('Unable to send email to ' + req.body.email);
+          console.log(info.response);
+          res.json({
+            status: 'failure',
+            message: 'Unable to send email. Are you sure your email address is correct?'
+          });
+          return;
+        }
+        res.json({
+          status: 'success',
+          message: 'Successfully sent an email reminder to you.'
+        });
+      });
+    });
+  });
+
+  router.post('/reset-user-password', function(req, res) {
+
+  });
+
   return router;
 };

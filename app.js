@@ -84,7 +84,7 @@ app.use(function(req, res, next) {
   if (!req.session.userInfo &&
     req.path !== '/login' && req.path !== '/forgot' &&
     req.path !== '/api/users/register' && req.path !== '/api/users/login' &&
-    req.path !== '/api/users/forgot' && req.path !== '/api/users/remind-user-email' &&
+    req.path !== '/api/users/forgot' && req.path !== '/api/users/send-username-reminder' &&
     req.path !== '/api/users/reset-user-password'
   ) {
     // Redirect user to login page

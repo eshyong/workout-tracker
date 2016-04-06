@@ -1,0 +1,11 @@
+.ForgotForm {
+  margin-left: 50;
+}
+
+.success {
+  color: green;
+}
+
+.failure {
+  color: red;
+}
