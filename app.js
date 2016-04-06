@@ -14,8 +14,25 @@ var bodyParser = require('body-parser'),
 var db = require('./server/db'),
   database = db.connect();
 
+// Use nodemailer for support emails
+var emailer = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USERNAME,
+    pass: process.env.GMAIL_PW
+  }
+});
+
+// Test gmail connection
+emailer.verify(function(err, success) {
+  if (err) {
+    throw err;
+  }
+  console.log('Connected to gmail');
+});
+
 // API endpoints
-var userApi = require('./server/api/users')(database);
+var userApi = require('./server/api/users')(database, emailer);
 var workoutApi = require('./server/api/workouts')(database);
 
 var sendFileOpts = {
@@ -34,23 +51,6 @@ app.use(bodyParser.urlencoded({
 
 // Request logging
 app.use(morgan('combined'));
-
-// Use nodemailer for support emails
-var emailer = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USERNAME,
-    pass: process.env.GMAIL_PW
-  }
-});
-
-// Test gmail connection
-emailer.verify(function(err, success) {
-  if (err) {
-    throw err;
-  }
-  console.log('Connected to gmail');
-});
 
 // Use redis for client sessions
 var redisClient = redis.createClient({

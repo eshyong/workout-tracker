@@ -7,7 +7,7 @@ var users = require('../query/users');
 var bcrypt = require('bcrypt');
 var express = require('express');
 
-module.exports = function(database) {
+module.exports = function(database, emailer) {
   var router = express.Router();
 
   // API endpoints
