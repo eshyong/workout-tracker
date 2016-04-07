@@ -9,3 +9,7 @@
 .failure {
   color: red;
 }
+
+.processing {
+  color: blue;
+}

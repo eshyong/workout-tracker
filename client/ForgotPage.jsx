@@ -16,9 +16,14 @@ var ForgotPage = React.createClass({
             // List of navbar items
             [
               {
-                active: true,
+                active: false,
                 link: '/login',
                 text: 'Login'
+              },
+              {
+                active: true,
+                link: '#',
+                text: 'Forgot'
               },
               {
                 active: false,
@@ -42,21 +47,31 @@ var ForgotForm = React.createClass({
     return {
       email: '',
       success: '',
-      failure: ''
+      failure: '',
+      processing: false
     };
   },
   handleEmailChange: function(e) {
     this.setState({
       email: e.target.value,
       success: '',
-      failure: ''
+      failure: '',
+      processing: false
     });
   },
   sendUsernameReminder: function(e) {
+    // Simple form validation
     if (!this.state.email) {
       this.setState({failure: 'Please fill in your email address.'});
       return;
     }
+
+    // Email/database operations may take a while
+    this.setState({
+      processing: true,
+      success: '',
+      failure: ''
+    });
     $.ajax({
       url: this.props.reminderUrl,
       method: 'POST',
@@ -65,9 +80,15 @@ var ForgotForm = React.createClass({
       dataType: 'json',
       success: (response) => {
         if (response.status === 'success') {
-          this.setState({success: response.message});
+          this.setState({
+            success: response.message,
+            processing: false
+          });
         } else {
-          this.setState({failure: response.message});
+          this.setState({
+            failure: response.message,
+            processing: false
+          });
         }
       },
       failure: (xhr, status, err) => {
@@ -76,10 +97,18 @@ var ForgotForm = React.createClass({
     });
   },
   resetPassword: function(e) {
+    // Simple form validation
     if (!this.state.email) {
       this.setState({failure: 'Please fill in your email address.'});
       return;
     }
+
+    // Email/database operations may take a while
+    this.setState({
+      processing: true,
+      success: '',
+      failure: ''
+    });
     $.ajax({
       url: this.props.resetUrl,
       method: 'POST',
@@ -88,9 +117,15 @@ var ForgotForm = React.createClass({
       dataType: 'json',
       success: (response) => {
         if (response.status === 'success') {
-          this.setState({success: response.message});
+          this.setState({
+            success: response.message,
+            processing: false
+          });
         } else {
-          this.setState({failure: response.message});
+          this.setState({
+            failure: response.message,
+            processing: false
+          });
         }
       },
       failure: (xhr, status, err) => {
@@ -122,6 +157,13 @@ var ForgotForm = React.createClass({
           value="Reset my password"
           onClick={this.resetPassword}
         />
+        {
+          this.state.processing ? (
+            <div className="processing">Processing...</div>
+          ) : (
+            null
+          )
+        }
         {
           this.state.success ? (
             <div className="success">{this.state.success}</div>

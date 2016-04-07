@@ -45,8 +45,13 @@ var LoginScreen = React.createClass({
             [
               {
                 active: true,
-                link: '/',
+                link: '#',
                 text: 'Login'
+              },
+              {
+                active: false,
+                link: '/forgot',
+                text: 'Forgot'
               },
               {
                 active: false,

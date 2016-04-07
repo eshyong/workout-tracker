@@ -301,7 +301,7 @@ module.exports = function(database, emailer) {
         from: process.env.GMAIL_USERNAME,
         to: req.body.email,
         subject: 'Username Reminder',
-        text: 'Hi! This is a friendly reminder that your username is ' + username + '.'
+        text: `Hi! This is a friendly reminder that your username is ${username}.`
       };
       emailer.sendMail(mailData, function(err, info) {
         if (err) {
@@ -386,7 +386,7 @@ module.exports = function(database, emailer) {
               to: email,
               subject: 'Username Reminder',
               text: `Hi, your password has been successfully changed to "${newPassword}".` +
-                ` For your security, please login and change your password.`
+                '\nFor your security, please login and change your password.'
             };
             emailer.sendMail(mailData, function(err, info) {
               // Oh god callbacks...
@@ -401,7 +401,8 @@ module.exports = function(database, emailer) {
               }
               res.json({
                 status: 'success',
-                message: 'Successfully sent an email reminder to you.'
+                message: 'Successfully reset password. Please check your inbox for ' +
+                  'your new password.'
               });
             });
           });
