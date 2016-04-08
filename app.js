@@ -3,6 +3,7 @@
 // Third party packages
 var bodyParser = require('body-parser'),
   express = require('express'),
+  fs = require('fs'),
   morgan = require('morgan'),
   nodemailer = require('nodemailer'),
   redis = require('redis'),
@@ -50,7 +51,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 // Request logging
-app.use(morgan('combined'));
+var requestLogStream = fs.createWriteStream(__dirname + '/requests.log', {flags: 'a'});
+app.use(morgan('combined', {stream: requestLogStream}));
 
 // Use redis for client sessions
 var redisClient = redis.createClient({

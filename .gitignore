@@ -15,3 +15,6 @@ public/javascript/*
 
 # Ignore Flyway prod conf
 flyway.prod.conf
+
+# Logfile
+requests.log
