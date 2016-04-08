@@ -4,8 +4,9 @@
   "description": "Track your workouts",
   "main": "app.js",
   "scripts": {
-    "start": "sudo ./scripts/dev_start.sh",
-    "stop": "sudo ./scripts/dev_stop.sh",
+    "dev-start": "sudo ./scripts/dev_start.sh",
+    "dev-stop": "sudo ./scripts/dev_stop.sh",
+    "start": "webpack --progress --color && node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

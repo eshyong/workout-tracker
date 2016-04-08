@@ -41,5 +41,8 @@ pushd /opt
 tar xzvf /tmp/flyway-commandline-4.0-linux-x64.tar.gz
 ln -sf /opt/flyway-4.0/flyway /usr/local/bin/flyway
 
+# Clone repo
+git clone https://github.com/eshyong/workout-tracker
+
 # Cleanup
 rm -rf /tmp/*
