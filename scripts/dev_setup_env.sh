@@ -26,8 +26,8 @@ pushd /tmp
 curl -O https://nodejs.org/dist/v5.6.0/node-v5.6.0-linux-x64.tar.xz
 pushd /opt
 tar xvf /tmp/node-v5.6.0-linux-x64.tar.xz
-sudo ln -sf /opt/node-v5.6.0-linux-x64/bin/node /usr/local/bin/node
-sudo ln -sf /opt/node-v5.6.0-linux-x64/bin/npm /usr/local/bin/npm
+ln -sf /opt/node-v5.6.0-linux-x64/bin/node /usr/local/bin/node
+ln -sf /opt/node-v5.6.0-linux-x64/bin/npm /usr/local/bin/npm
 popd
 popd
 
