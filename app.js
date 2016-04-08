@@ -140,4 +140,12 @@ app.use('/api/workouts', workoutApi);
 if (process.env.NODE_ENV === 'development') {
   app.listen(8080, '0.0.0.0');
   console.log('Listening on http://0.0.0.0:8080');
+} else if (process.env.NODE_ENV === 'production') {
+  var server = app.listen(80, '0.0.0.0', function() {
+    var hostname = server.address().address;
+    var port = server.address().port;
+    console.log(`Listening on http://${hostname}:${port}`);
+  });
+} else {
+  throw new Error(`Unknown NODE_ENV: ${process.env.NODE_ENV}`);
 }

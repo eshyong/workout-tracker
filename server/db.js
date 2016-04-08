@@ -10,6 +10,15 @@ if (process.env.NODE_ENV === 'development') {
     password: process.env.MYSQL_WORKOUT_TRACKER_PW,
     database: 'workouts'
   });
+} else if (process.env.NODE_ENV === 'production') {
+  var connection = mysql.createConnection({
+    host: process.env.AWS_MYSQL_INSTANCE_HOSTNAME,
+    user: 'workout_tracker',
+    password: process.env.MYSQL_WORKOUT_TRACKER_PW,
+    database: 'workouts'
+  });
+} else {
+  throw new Error(`Unknown NODE_ENV: ${process.env.NODE_ENV}`);
 }
 
 module.exports = {
