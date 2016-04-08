@@ -15,27 +15,24 @@ set -eux -o pipefail
 apt-get update
 
 # Install git, nodejs, npm, and redis
-apt-get --yes install git \
-    nodejs \
-    npm \
-    redis-server
+apt-get --yes install git redis-server
 
 # Secure redis server by requiring authentication
 sed -i.bak "s/# requirepass foobared/requirepass $REDIS_PW/g" /etc/redis/redis.conf
 service redis-server restart
 
 # Install node 5.6.0
-npm install --global n
-n 5.6.0
-ln -sf /usr/local/n/versions/node/5.6.0/bin/node /usr/local/bin/node
-
-# Upgrade npm
-npm install --global npm
+pushd /tmp
+curl -O https://nodejs.org/dist/v5.6.0/node-v5.6.0-linux-x64.tar.xz
+pushd /opt
+tar xvf /tmp/node-v5.6.0-linux-x64.tar.xz
+sudo ln -sf /opt/node-v5.6.0-linux-x64/bin/node /usr/local/bin/node
+sudo ln -sf /opt/node-v5.6.0-linux-x64/bin/npm /usr/local/bin/npm
+popd
+popd
 
 # Install nodemon and webpack globally
 npm install --global nodemon webpack
-ln -sf /usr/local/n/versions/node/5.6.0/bin/nodemon /usr/local/bin/nodemon
-ln -sf /usr/local/n/versions/node/5.6.0/bin/webpack /usr/local/bin/webpack
 
 # Install MySQL 5.6
 debconf-set-selections <<< "mysql-server mysql-server/root_password password $MYSQL_ROOT_PW"
@@ -45,6 +42,9 @@ apt-get --yes install mysql-server-5.6
 # Install flyway
 pushd /tmp
 curl -O https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.0/flyway-commandline-4.0-linux-x64.tar.gz
-tar xzvf flyway-commandline-4.0-linux-x64.tar.gz
-mv -f flyway-4.0 /opt
+pushd /opt
+tar xzvf /tmp/flyway-commandline-4.0-linux-x64.tar.gz
 ln -sf /opt/flyway-4.0/flyway /usr/local/bin/flyway
+
+# Cleanup
+rm -rf /tmp/*
