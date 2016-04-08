@@ -34,5 +34,12 @@ popd
 # Install nodemon and webpack globally
 npm install --global nodemon webpack
 
+# Install flyway
+pushd /tmp
+curl -O https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.0/flyway-commandline-4.0-linux-x64.tar.gz
+pushd /opt
+tar xzvf /tmp/flyway-commandline-4.0-linux-x64.tar.gz
+ln -sf /opt/flyway-4.0/flyway /usr/local/bin/flyway
+
 # Cleanup
 rm -rf /tmp/*
