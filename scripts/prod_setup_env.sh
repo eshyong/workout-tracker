@@ -15,7 +15,7 @@ set -eux -o pipefail
 apt-get update
 
 # Install git, redis-server, and mysql-client
-apt-get --yes install git redis-server mysql-client
+apt-get --yes install make git redis-server mysql-client
 
 # Secure redis server by requiring authentication
 sed -i.bak "s/# requirepass foobared/requirepass $REDIS_PW/g" /etc/redis/redis.conf
@@ -40,8 +40,11 @@ curl -O https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/4.0/flywa
 pushd /opt
 tar xzvf /tmp/flyway-commandline-4.0-linux-x64.tar.gz
 ln -sf /opt/flyway-4.0/flyway /usr/local/bin/flyway
+popd
+popd
 
 # Clone repo
+rm -rf workout-tracker
 git clone https://github.com/eshyong/workout-tracker
 
 # Cleanup
