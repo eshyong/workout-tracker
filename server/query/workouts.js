@@ -24,6 +24,16 @@ module.exports = {
     logSqlIfVerbose(query);
   },
 
+  getWorkoutByDate: function(dbConn, userId, date, callback) {
+    var queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
+      'overhead_press, deadlifts, date, is_type_a ' +
+      'FROM workouts ' +
+      'WHERE user_id = ? AND date = ?' +
+      'ORDER BY date';
+    var query = dbConn.query(queryString, [userId, date], callback);
+    logSqlIfVerbose(query);
+  },
+
   getWorkoutAverages: function(dbConn, userId, callback) {
     var queryString = 'SELECT AVG(squats) AS squats, ' +
       'AVG(bench_press) AS bench_press, ' +
