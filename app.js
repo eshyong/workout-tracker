@@ -34,11 +34,28 @@ emailer.verify(function(err, success) {
 });
 
 // Connect to database
-var database = db.connect();
+var pool;
+if (process.env.NODE_ENV === 'development') {
+  pool = mysql.createPool({
+    host: 'localhost',
+    user: 'workout_tracker',
+    password: process.env.MYSQL_WORKOUT_TRACKER_PW,
+    database: 'workouts'
+  });
+} else if (process.env.NODE_ENV === 'production') {
+  pool = mysql.createPool({
+    host: process.env.AWS_MYSQL_INSTANCE_HOSTNAME,
+    user: 'workout_tracker',
+    password: process.env.MYSQL_WORKOUT_TRACKER_PW,
+    database: 'workouts'
+  });
+} else {
+  throw new Error(`Unknown NODE_ENV: ${process.env.NODE_ENV}`);
+}
 
 // API endpoints
-var userApi = require('./server/api/users')(database, emailer);
-var workoutApi = require('./server/api/workouts')(database);
+var userApi = require('./server/api/users')(pool, emailer);
+var workoutApi = require('./server/api/workouts')(pool);
 
 var sendFileOpts = {
   root: __dirname + '/public/views'
