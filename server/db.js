@@ -25,19 +25,30 @@ module.exports = {
   connect: function() {
     connection.connect(function(err) {
       if (err) {
-        console.log('Error connecting to db');
-        throw err;
+        console.error('Error connecting to db');
+        console.error(`Code: ${err.code}, message: ${err.message}`);
+        return null;
       }
       console.log('Connected to mysql with ID ' + connection.threadId);
+
+      // Make sure we get MySQL strict mode
+      connection.query('SET SESSION sql_mode = "STRICT_ALL_TABLES"', function(err) {
+        if (err) {
+          console.error('Error setting strict mode');
+          console.error(`Code: ${err.code}, message: ${err.message}`);
+          return null;
+        }
+
+        // Handle cases when MySQL server is down
+        connection.on('error', function(err) {
+          if (err) {
+            console.error('Error with MySQL server');
+            console.error(`Code: ${err.code}, message: ${err.message}`);
+          }
+        });
+        return connection;
+      });
     });
-    // Make sure we get MySQL strict mode
-    connection.query('SET SESSION sql_mode = "STRICT_ALL_TABLES"', function(err) {
-      if (err) {
-        console.log('Error setting strict mode');
-        throw err;
-      }
-    });
-    return connection;
   },
   showWarnings: function(dbConn, callback) {
     dbConn.query('SHOW WARNINGS', callback);

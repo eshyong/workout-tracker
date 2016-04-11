@@ -1,19 +1,20 @@
 'use strict';
 
+// Node stdlib packages
+const fs = require('fs');
+
 // Third party packages
-var bodyParser = require('body-parser'),
-  express = require('express'),
-  fs = require('fs'),
-  morgan = require('morgan'),
-  nodemailer = require('nodemailer'),
-  redis = require('redis'),
-  session = require('express-session'),
-  RedisStore = require('connect-redis')(session),
-  app = express();
+const bodyParser = require('body-parser');
+const express = require('express');
+const morgan = require('morgan');
+const nodemailer = require('nodemailer');
+const redis = require('redis');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const app = express();
 
 // Local packages
-var db = require('./server/db'),
-  database = db.connect();
+const db = require('./server/db');
 
 // Use nodemailer for support emails
 var emailer = nodemailer.createTransport({
@@ -31,6 +32,9 @@ emailer.verify(function(err, success) {
   }
   console.log('Connected to gmail');
 });
+
+// Connect to database
+var database = db.connect();
 
 // API endpoints
 var userApi = require('./server/api/users')(database, emailer);
@@ -80,15 +84,34 @@ app.use(session({
   unset: 'destroy'
 }));
 
+// Error pages
+app.get('/503', function(req, res) {
+  res.sendFile('503.html', sendFileOpts);
+});
+
+// If database is unavailable, send 503s
+app.use(function(req, res, next) {
+  if (!database) {
+    res.status(503).redirect('/503');
+  } else {
+    next();
+  }
+});
+
 // Check for authentication on all pages, except for login pages and
 // user authentication endpoints
+const whitelist = [
+  '/login',
+  '/forgot',
+  '/api/users/register',
+  '/api/users/login',
+  '/api/users/forgot',
+  '/api/users/send-username-reminder',
+  '/api/users/reset-user-password',
+  '/503',
+];
 app.use(function(req, res, next) {
-  if (!req.session.userInfo &&
-    req.path !== '/login' && req.path !== '/forgot' &&
-    req.path !== '/api/users/register' && req.path !== '/api/users/login' &&
-    req.path !== '/api/users/forgot' && req.path !== '/api/users/send-username-reminder' &&
-    req.path !== '/api/users/reset-user-password'
-  ) {
+  if (!req.session.userInfo && whitelist.indexOf(req.path) !== -1) {
     // Redirect user to login page
     res.redirect('/login');
   } else {
@@ -97,7 +120,7 @@ app.use(function(req, res, next) {
   }
 });
 
-// Pages
+// Regular pages
 app.get('/', function(req, res) {
   res.sendFile('index.html', sendFileOpts);
 });
