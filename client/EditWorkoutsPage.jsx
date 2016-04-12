@@ -114,18 +114,16 @@ var WorkoutBox = React.createClass({
             id="Submitter"
           />
         </div>
+        <h2>View and edit workouts</h2>
         {
           this.state.failure ? (
             <div className="failureMessage topLevelMessage">{this.state.failure}</div>
           ) : (
-            <div>
-              <h2>View and edit workouts</h2>
-              <WorkoutList
-                data={this.state.data}
-                onWorkoutUpdate={this.handleWorkoutUpdate}
-                onWorkoutDelete={this.handleWorkoutDelete}
-              />
-            </div>
+            <WorkoutList
+              data={this.state.data}
+              onWorkoutUpdate={this.handleWorkoutUpdate}
+              onWorkoutDelete={this.handleWorkoutDelete}
+            />
           )
         }
       </div>
