@@ -176,15 +176,14 @@ app.get('/logout', function(req, res) {
 app.use('/api/users', userApi);
 app.use('/api/workouts', workoutApi);
 
+var hostname = '0.0.0.0';
+var port;
 if (process.env.NODE_ENV === 'development') {
-  app.listen(8080, '0.0.0.0');
-  console.log('Listening on http://0.0.0.0:8080');
+  port = 8080;
 } else if (process.env.NODE_ENV === 'production') {
-  var server = app.listen(80, '0.0.0.0', function() {
-    var hostname = server.address().address;
-    var port = server.address().port;
-    console.log(`Listening on http://${hostname}:${port}`);
-  });
+  port = 80;
 } else {
   throw new Error(`Unknown NODE_ENV: ${process.env.NODE_ENV}`);
 }
+var httpServer = app.listen(port, hostname);
+console.log(`Listening on http://${hostname}:${port}`);
