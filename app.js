@@ -89,15 +89,6 @@ app.get('/503', function(req, res) {
   res.sendFile('503.html', sendFileOpts);
 });
 
-// If database is unavailable, send 503s
-app.use(function(req, res, next) {
-  if (!database) {
-    res.status(503).redirect('/503');
-  } else {
-    next();
-  }
-});
-
 // Check for authentication on all pages, except for login pages and
 // user authentication endpoints
 const whitelist = [
@@ -111,7 +102,8 @@ const whitelist = [
   '/503',
 ];
 app.use(function(req, res, next) {
-  if (!req.session.userInfo && whitelist.indexOf(req.path) !== -1) {
+  // If session info is not set and the request path is not in whitelist, redirect user
+  if (!req.session.userInfo && whitelist.indexOf(req.path) === -1) {
     // Redirect user to login page
     res.redirect('/login');
   } else {
