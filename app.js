@@ -36,8 +36,10 @@ emailer.verify(function(err, success) {
 
 // Create connection pool to database
 var pool;
+const maxConnections = 100;
 if (process.env.NODE_ENV === 'development') {
   pool = mysql.createPool({
+    connectionLimit: maxConnections,
     host: 'localhost',
     user: 'workout_tracker',
     password: process.env.MYSQL_WORKOUT_TRACKER_PW,
@@ -45,6 +47,7 @@ if (process.env.NODE_ENV === 'development') {
   });
 } else if (process.env.NODE_ENV === 'production') {
   pool = mysql.createPool({
+    connectionLimit: maxConnections,
     host: process.env.AWS_MYSQL_INSTANCE_HOSTNAME,
     user: 'workout_tracker',
     password: process.env.MYSQL_WORKOUT_TRACKER_PW,
