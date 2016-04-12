@@ -93,7 +93,7 @@ var StatsPage = React.createClass({
   },
   render: function() {
     // Same attributes for each graph
-    var width = 700;
+    var width = 1000;
     var height = 300;
     var margins = {
       left: 100,
