@@ -33,7 +33,7 @@ var Navbar = React.createClass({
       <nav className="Navbar navbar navbar-default">
         <div className="container-fluid">
           <div className="navbar-header">
-            <a className="navbar-brand" href="#">Workout tracker</a>
+            <a className="navbar-brand" href="/">Workout tracker</a>
           </div>
           <p className="navbar-text navbar-right">
             {
