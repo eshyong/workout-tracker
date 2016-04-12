@@ -20,4 +20,4 @@ if ! pgrep redis-server; then
 fi
 # Run webpack and nodemon as separate processes
 screen -d -m webpack --progress --color --watch
-screen -d -m nodemon -L app.js
+screen -d -m nodemon -L index.js

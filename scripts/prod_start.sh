@@ -16,4 +16,4 @@ if ! pgrep redis-server; then
     service redis-server start
 fi
 
-webpack --color --progress && node app.js &> prod.log
+webpack --color --progress && node index.js &>> prod.log
