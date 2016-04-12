@@ -176,4 +176,9 @@ app.get('/logout', function(req, res) {
 app.use('/api/users', userApi);
 app.use('/api/workouts', workoutApi);
 
+// Could not find page
+app.use(function(req, res) {
+  res.status(404).sendFile('/404.html', sendFileOpts);
+});
+
 module.exports = app;
