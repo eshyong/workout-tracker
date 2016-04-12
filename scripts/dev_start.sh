@@ -13,10 +13,10 @@ set -eux -o pipefail
 
 # Start MySQL server and Node server
 if service mysql status | grep -q "stop"; then
-    service mysql start
+    sudo service mysql start
 fi
 if ! pgrep redis-server; then
-    service redis-server start
+    sudo service redis-server start
 fi
 # Run webpack and nodemon as separate processes
 screen -d -m webpack --progress --color --watch

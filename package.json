@@ -4,8 +4,8 @@
   "description": "Track your workouts",
   "main": "app.js",
   "scripts": {
-    "dev-start": "sudo ./scripts/dev_start.sh",
-    "dev-stop": "sudo ./scripts/dev_stop.sh",
+    "dev-start": "./scripts/dev_start.sh",
+    "dev-stop": "./scripts/dev_stop.sh",
     "start": "sudo ./scripts/prod_start.sh",
     "stop": "pkill node",
     "test": "echo \"Error: no test specified\" && exit 1"
