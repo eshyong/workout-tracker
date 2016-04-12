@@ -204,7 +204,7 @@ var StatsPage = React.createClass({
                     {
                       field: 'barbell_rows',
                       name: 'Barbell Rows',
-                      color: '#00FF00'
+                      color: '#008E00'
                     }
                   ]
                 }
@@ -221,7 +221,7 @@ var StatsPage = React.createClass({
                     {
                       field: 'overhead_press',
                       name: 'Overhead Press',
-                      color: '#FFAA33'
+                      color: '#FF6933'
                     }
                   ]
                 }
@@ -238,7 +238,7 @@ var StatsPage = React.createClass({
                     {
                       field: 'deadlifts',
                       name: 'Deadlifts',
-                      color: '#00FFFF'
+                      color: '#B2339B'
                     }
                   ]
                 }
