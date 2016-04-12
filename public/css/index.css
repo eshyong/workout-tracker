@@ -18,6 +18,10 @@ button.clicked {
   margin-bottom: 10;
 }
 
+.topLevelMessage {
+  margin-left: 50;
+}
+
 .successMessage {
   color: green;
 }

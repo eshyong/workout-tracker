@@ -13,7 +13,8 @@ var moment = require('moment'),
 var WorkoutBox = React.createClass({
   getInitialState: function() {
     return {
-      data: []
+      data: [],
+      failure: ''
     };
   },
   // Load workouts from the server to display
@@ -21,10 +22,18 @@ var WorkoutBox = React.createClass({
     $.ajax({
       url: this.props.getUrl,
       dataType: 'json',
-      success: (data) => {
-        this.setState({
-          data: data.workouts
-        });
+      success: (response) => {
+        if (response.status === 'success') {
+          this.setState({
+            data: response.workouts,
+            failure: '',
+          });
+        } else if (response.status === 'failure') {
+          this.setState({
+            failure: response.message,
+          });
+        }
+        // TODO: handle and display errors
       },
       failure: (xhr, status, err) => {
         console.err(this.props.getUrl, status, err.toString());
@@ -105,12 +114,20 @@ var WorkoutBox = React.createClass({
             id="Submitter"
           />
         </div>
-        <h2>View and edit workouts</h2>
-        <WorkoutList
-          data={this.state.data}
-          onWorkoutUpdate={this.handleWorkoutUpdate}
-          onWorkoutDelete={this.handleWorkoutDelete}
-        />
+        {
+          this.state.failure ? (
+            <div className="failureMessage topLevelMessage">{this.state.failure}</div>
+          ) : (
+            <div>
+              <h2>View and edit workouts</h2>
+              <WorkoutList
+                data={this.state.data}
+                onWorkoutUpdate={this.handleWorkoutUpdate}
+                onWorkoutDelete={this.handleWorkoutDelete}
+              />
+            </div>
+          )
+        }
       </div>
     );
   }
