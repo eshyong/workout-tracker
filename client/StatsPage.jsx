@@ -14,7 +14,8 @@ var StatsPage = React.createClass({
     return {
       workouts: [],
       averages: {},
-      maxes: {}
+      maxes: {},
+      failure: ''
     };
   },
   handleGet: function(url, callback) {
@@ -29,24 +30,60 @@ var StatsPage = React.createClass({
   },
   // Load workout statistics from the server
   loadWorkoutsFromServer: function() {
-    this.handleGet(this.props.getUrl, (data) => {
-      this.setState({
-        workouts: data.workouts
-      });
+    this.handleGet(this.props.getUrl, (response) => {
+      if (response.status === 'success') {
+        this.setState({
+          failure: '',
+          workouts: response.workouts,
+        });
+      } else if (response.status === 'failure') {
+        this.setState({
+          failure: response.message,
+        });
+      } else {
+        this.setState({
+          failure: 'Unknown failure.'
+        });
+        console.error(`Unknown response data format: ${response}`);
+      }
     });
   },
   loadWorkoutAveragesFromServer: function() {
-    this.handleGet(this.props.avgUrl, (data) => {
-      this.setState({
-        averages: data.averages
-      });
+    this.handleGet(this.props.avgUrl, (response) => {
+      if (response.status === 'success') {
+        this.setState({
+          failure: '',
+          averages: response.averages,
+        });
+      } else if (response.status === 'failure') {
+        this.setState({
+          failure: response.message,
+        });
+      } else {
+        this.setState({
+          failure: 'Unknown failure.'
+        });
+        console.error(`Unknown response data format: ${response}`);
+      }
     });
   },
   loadWorkoutMaxesFromServer: function() {
-    this.handleGet(this.props.maxUrl, (data) => {
-      this.setState({
-        maxes: data.maxes
-      });
+    this.handleGet(this.props.maxUrl, (response) => {
+      if (response.status === 'success') {
+        this.setState({
+          failure: '',
+          maxes: response.maxes,
+        });
+      } else if (response.status === 'failure') {
+        this.setState({
+          failure: response.message,
+        });
+      } else {
+        this.setState({
+          failure: 'Unknown failure.'
+        });
+        console.error(`Unknown response data format: ${response}`);
+      }
     });
   },
   componentDidMount: function() {
@@ -104,13 +141,21 @@ var StatsPage = React.createClass({
           }
         />
         <h2>Workout stats</h2>
-        <StatsBox
-          averages={this.state.averages}
-          maxes={this.state.maxes}
-        />
+        {
+          this.state.failure ? (
+            <div className="failureMessage">{this.state.failure}</div>
+          ) : (
+          <StatsBox
+            averages={this.state.averages}
+            maxes={this.state.maxes}
+          />
+          )
+        }
         <h2>Workout graphs</h2>
         {
-          !showGraphs ? (
+          this.state.failure ? (
+            <div className="failureMessage">{this.state.failure}</div>
+          ) : !showGraphs ? (
             <div className="notEnoughWorkouts">
               Please add at least 3 workouts of each type to see your graphs.
             </div>

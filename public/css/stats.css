@@ -13,3 +13,8 @@ h2 {
 .notEnoughWorkouts {
   margin-left: 50;
 }
+
+.failureMessage {
+  color: red;
+  margin-left: 50;
+}

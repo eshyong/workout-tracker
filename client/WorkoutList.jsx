@@ -55,19 +55,12 @@ var Workout = React.createClass({
       barbellRows: this.props.barbellRows === 'null' ? '0' : this.props.barbellRows,
       overheadPress: this.props.overheadPress === 'null' ? '0' : this.props.overheadPress,
       deadlifts: this.props.deadlifts === 'null' ? '0' : this.props.deadlifts,
-
-      // These are set whenever an operation on a workout is performed,
-      // such as an update or delete
-      success: false,
-      failure: false
     };
   },
   toggleEditingMode: function(e) {
     this.setState({
       editing: !this.state.editing,
       highlighted: false,
-      success: false,
-      failure: false
     });
   },
   onMouseOver: function(e) {

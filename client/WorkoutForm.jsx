@@ -51,7 +51,11 @@ var WorkoutForm = React.createClass({
           failure: ''
         });
       } else {
-        console.log(`Unknown status: ${response.status}`);
+        this.setState({
+          success: '',
+          failure: 'Unknown failure.'
+        });
+        console.error(`Unknown response data format: ${response}`);
       }
     });
   },
@@ -248,12 +252,16 @@ var WorkoutForm = React.createClass({
         {
           this.state.success ? (
             <div className="successMessage">{this.state.success}</div>
-          ) : null
+          ) : (
+            null
+          )
         }
         {
           this.state.failure ? (
             <div className="failureMessage">{this.state.failure}</div>
-          ) : null
+          ) : (
+            null
+          )
         }
       </div>
     );
