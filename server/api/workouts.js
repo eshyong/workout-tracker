@@ -1,10 +1,11 @@
 'use strict';
 
 // Internal dependencies
-var workouts = require('../query/workouts');
+const dbUtils = require('../dbUtils');
+const workouts = require('../query/workouts');
 
 // External dependencies
-var express = require('express');
+const express = require('express');
 
 module.exports = function(database) {
   var router = express.Router();
@@ -168,7 +169,7 @@ module.exports = function(database) {
         // Catch MySQL warnings
         if (result.affectedRows === 0 || result.warningCount > 0) {
           console.log('No error thrown, but failed to delete row');
-          db.showWarnings(database, function(err, result) {
+          dbUtils.showWarnings(database, function(err, result) {
             if (err) {
               throw err;
             }
@@ -202,7 +203,7 @@ module.exports = function(database) {
         // Catch MySQL warnings
         if (result.affectedRows === 0 || result.warningCount > 0) {
           console.log('No error thrown, but failed to delete row');
-          db.showWarnings(database, function(err, result) {
+          dbUtils.showWarnings(database, function(err, result) {
             if (err) {
               throw err;
             }
