@@ -25,7 +25,16 @@ var Navbar = React.createClass({
     var navbarNodes = this.props.items.map((item) => {
       return (
         <li className={item.active ? "active" : ""} key={item.link}>
-          <a className="navbarLink" href={item.link}>{item.text}</a>
+          <a
+            href={item.link}
+            style={
+              {
+                color: 'black'
+              }
+            }
+          >
+            {item.text}
+          </a>
         </li>
       );
     });
@@ -33,9 +42,26 @@ var Navbar = React.createClass({
       <nav className="Navbar navbar navbar-default">
         <div className="container-fluid">
           <div className="navbar-header">
-            <a className="navbar-brand" href="/">Workout tracker</a>
+            <a
+              className="navbar-brand"
+              href="/"
+              style={
+                {
+                  color: 'black'
+                }
+              }
+            >
+              Workout tracker
+            </a>
           </div>
-          <p className="navbar-text navbar-right">
+          <p
+            className="navbar-text navbar-right"
+            style={
+              {
+                color: 'black'
+              }
+            }
+          >
             {
               this.state.username ? "Signed in as " + this.state.username : ""
             }
