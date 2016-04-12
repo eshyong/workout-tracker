@@ -1,3 +1,11 @@
+.Navbar {
+  background: #E8664F;
+}
+
 .navbar-right {
   margin-right: 10;
+}
+
+a.navbarLink {
+  color: black;
 }

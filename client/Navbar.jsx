@@ -25,7 +25,7 @@ var Navbar = React.createClass({
     var navbarNodes = this.props.items.map((item) => {
       return (
         <li className={item.active ? "active" : ""} key={item.link}>
-          <a href={item.link}>{item.text}</a>
+          <a className="navbarLink" href={item.link}>{item.text}</a>
         </li>
       );
     });
