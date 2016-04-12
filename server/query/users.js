@@ -9,45 +9,45 @@ function logSqlIfVerbose(query) {
 }
 
 module.exports = {
-  getUserCredentials: function(database, user, callback) {
+  getUserCredentials: function(dbConnPool, user, callback) {
     var queryString = 'SELECT username, id, password_hash ' +
       ' FROM users WHERE username = ?';
-    var query = database.query(queryString, user.username, callback);
+    var query = dbConnPool.query(queryString, user.username, callback);
     logSqlIfVerbose(query);
   },
 
-  getUserEmailForId: function(database, userId, callback) {
+  getUserEmailForId: function(dbConnPool, userId, callback) {
     var queryString = 'SELECT email FROM users WHERE id = ?';
-    var query = database.query(queryString, userId, callback);
+    var query = dbConnPool.query(queryString, userId, callback);
     logSqlIfVerbose(query);
   },
 
-  getUsernameForEmail: function(database, email, callback) {
+  getUsernameForEmail: function(dbConnPool, email, callback) {
     var queryString = 'SELECT username FROM users WHERE email = ?';
-    var query = database.query(queryString, email, callback);
+    var query = dbConnPool.query(queryString, email, callback);
     logSqlIfVerbose(query);
   },
 
-  updateUserEmailForId: function(database, userId, newEmail, callback) {
+  updateUserEmailForId: function(dbConnPool, userId, newEmail, callback) {
     var queryString = 'UPDATE users SET email = ? WHERE id = ?';
-    var query = database.query(queryString, [newEmail, userId], callback);
+    var query = dbConnPool.query(queryString, [newEmail, userId], callback);
     logSqlIfVerbose(query);
   },
 
-  updateUserPasswordForId: function(database, userId, newPasswordHash, callback) {
+  updateUserPasswordForId: function(dbConnPool, userId, newPasswordHash, callback) {
     var queryString = 'UPDATE users SET password_hash = ? WHERE id = ?';
-    var query = database.query(queryString, [newPasswordHash, userId], callback);
+    var query = dbConnPool.query(queryString, [newPasswordHash, userId], callback);
     logSqlIfVerbose(query);
   },
 
-  updateUserPasswordForEmail: function(database, email, newPasswordHash, callback) {
+  updateUserPasswordForEmail: function(dbConnPool, email, newPasswordHash, callback) {
     var queryString = 'UPDATE users SET password_hash = ? WHERE email = ?';
-    var query = database.query(queryString, [newPasswordHash, email], callback);
+    var query = dbConnPool.query(queryString, [newPasswordHash, email], callback);
     logSqlIfVerbose(query);
   },
 
-  registerNewUser: function(database, user, callback) {
-    var query = database.query('INSERT INTO users SET ?', user, callback);
+  registerNewUser: function(dbConnPool, user, callback) {
+    var query = dbConnPool.query('INSERT INTO users SET ?', user, callback);
     logSqlIfVerbose(query);
   }
 };

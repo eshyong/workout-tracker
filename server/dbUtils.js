@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  showWarnings: function(dbConnection, callback) {
-    dbConnection.query('SHOW WARNINGS', callback);
+  showWarnings: function(dbConnPool, callback) {
+    dbConnPool.query('SHOW WARNINGS', callback);
   }
 };

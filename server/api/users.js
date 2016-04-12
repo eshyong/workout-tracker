@@ -1,12 +1,13 @@
 'use strict';
 
 // Internal dependencies
-var query = require('../query/users');
+const dbUtils = require('../dbUtils');
+const query = require('../query/users');
 
 // External dependencies
-var bcrypt = require('bcrypt');
-var crypto = require('crypto');
-var express = require('express');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const express = require('express');
 
 const resetPasswordLength = 16;
 

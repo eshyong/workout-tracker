@@ -9,32 +9,32 @@ function logSqlIfVerbose(query) {
 }
 
 module.exports = {
-  submitWorkout: function(dbConn, workout, callback) {
-    var query = dbConn.query('INSERT INTO workouts SET ?', workout, callback);
+  submitWorkout: function(dbConnPool, workout, callback) {
+    var query = dbConnPool.query('INSERT INTO workouts SET ?', workout, callback);
     logSqlIfVerbose(query);
   },
 
-  getWorkouts: function(dbConn, userId, callback) {
+  getWorkouts: function(dbConnPool, userId, callback) {
     var queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
       'overhead_press, deadlifts, date, is_type_a ' +
       'FROM workouts ' +
       'WHERE user_id = ? ' +
       'ORDER BY date';
-    var query = dbConn.query(queryString, userId, callback);
+    var query = dbConnPool.query(queryString, userId, callback);
     logSqlIfVerbose(query);
   },
 
-  getWorkoutByDate: function(dbConn, userId, date, callback) {
+  getWorkoutByDate: function(dbConnPool, userId, date, callback) {
     var queryString = 'SELECT id, squats, bench_press, barbell_rows, ' +
       'overhead_press, deadlifts, date, is_type_a ' +
       'FROM workouts ' +
       'WHERE user_id = ? AND date = ?' +
       'ORDER BY date';
-    var query = dbConn.query(queryString, [userId, date], callback);
+    var query = dbConnPool.query(queryString, [userId, date], callback);
     logSqlIfVerbose(query);
   },
 
-  getWorkoutAverages: function(dbConn, userId, callback) {
+  getWorkoutAverages: function(dbConnPool, userId, callback) {
     var queryString = 'SELECT AVG(squats) AS squats, ' +
       'AVG(bench_press) AS bench_press, ' +
       'AVG(barbell_rows) AS barbell_rows,' +
@@ -42,11 +42,11 @@ module.exports = {
       'AVG(deadlifts) AS deadlifts ' +
       'FROM workouts ' +
       'WHERE user_id = ?';
-    var query = dbConn.query(queryString, userId, callback);
+    var query = dbConnPool.query(queryString, userId, callback);
     logSqlIfVerbose(query);
   },
 
-  getWorkoutMaxes: function(dbConn, userId, callback) {
+  getWorkoutMaxes: function(dbConnPool, userId, callback) {
     var queryString = 'SELECT MAX(squats) AS squats, ' +
       'MAX(bench_press) AS bench_press, ' +
       'MAX(barbell_rows) AS barbell_rows,' +
@@ -54,19 +54,19 @@ module.exports = {
       'MAX(deadlifts) AS deadlifts ' +
       'FROM workouts ' +
       'WHERE user_id = ?';
-    var query = dbConn.query(queryString, userId, callback);
+    var query = dbConnPool.query(queryString, userId, callback);
     logSqlIfVerbose(query);
   },
 
-  updateWorkout: function(dbConn, workout, workoutDate, userId, callback) {
+  updateWorkout: function(dbConnPool, workout, workoutDate, userId, callback) {
     var queryString = 'UPDATE workouts SET ? WHERE date = ? AND user_id = ?';
-    var query = dbConn.query(queryString, [workout, workoutDate, userId], callback);
+    var query = dbConnPool.query(queryString, [workout, workoutDate, userId], callback);
     logSqlIfVerbose(query);
   },
 
-  deleteWorkout: function(dbConn, workoutDate, userId, callback) {
+  deleteWorkout: function(dbConnPool, workoutDate, userId, callback) {
     var queryString = 'DELETE FROM workouts WHERE date = ? AND user_id = ?';
-    var query = dbConn.query(queryString, [workoutDate, userId], callback);
+    var query = dbConnPool.query(queryString, [workoutDate, userId], callback);
     logSqlIfVerbose(query);
   }
 };

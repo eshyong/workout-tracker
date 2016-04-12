@@ -7,14 +7,15 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
+const mysql = require('mysql');
 const nodemailer = require('nodemailer');
 const redis = require('redis');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const app = express();
 
-// Local packages
-const db = require('./server/db');
+// Internal dependencies
+const dbUtils = require('./server/dbUtils');
 
 // Use nodemailer for support emails
 var emailer = nodemailer.createTransport({
@@ -33,7 +34,7 @@ emailer.verify(function(err, success) {
   console.log('Connected to gmail');
 });
 
-// Connect to database
+// Create connection pool to database
 var pool;
 if (process.env.NODE_ENV === 'development') {
   pool = mysql.createPool({
@@ -52,6 +53,7 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   throw new Error(`Unknown NODE_ENV: ${process.env.NODE_ENV}`);
 }
+console.log('Created MySQL connection pool');
 
 // API endpoints
 var userApi = require('./server/api/users')(pool, emailer);
