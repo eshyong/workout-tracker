@@ -101,6 +101,19 @@ var WorkoutBox = React.createClass({
         />
         <h2>Submit a new workout</h2>
         <div className="submitter">
+          <div
+            style={
+              {
+                fontSize: '16px',
+                marginTop: '10',
+                marginBottom: '10',
+              }
+            }
+          >
+            Please choose either workout A or B.<br/>
+            If you don't know what that means, please consult the<br/>
+            <a href="http://stronglifts.com">Stronglifts</a> website.
+          </div>
           <WorkoutForm
             date={moment.utc()}
             squats="0"

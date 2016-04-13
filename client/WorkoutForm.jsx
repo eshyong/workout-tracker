@@ -194,19 +194,6 @@ var WorkoutForm = React.createClass({
     }
     return (
       <div className="WorkoutForm">
-        <div
-          style={
-            {
-              fontSize: '16px',
-              marginTop: '10',
-              marginBottom: '10',
-            }
-          }
-        >
-          Please choose either workout A or B.<br/>
-          If you don't know what that means, please consult the<br/>
-          <a href="http://stronglifts.com">Stronglifts</a> website.
-        </div>
         <div id="workoutSelector">
           <button
             className={
