@@ -28,9 +28,11 @@ var WorkoutList = React.createClass({
     return (
       <div className="WorkoutList">
         {
-          workoutNodes.length === 0 ?
+          workoutNodes.length === 0 ? (
             <div>You haven't added any workouts yet. Try adding one above!</div>
-            : workoutNodes
+          ) : (
+            workoutNodes
+          )
         }
       </div>
     );
@@ -63,66 +65,52 @@ var Workout = React.createClass({
       highlighted: false,
     });
   },
-  onMouseOver: function(e) {
-    this.setState({
-      highlighted: true
-    });
-  },
-  onMouseOut: function(e) {
-    this.setState({
-      highlighted: false
-    });
-  },
   render: function() {
     var dataFields;
     if (this.props.isTypeA) {
-      dataFields = ([
+      dataFields = [
         <div key="date">Date: {this.props.date.format('MM-DD-YYYY')}</div>,
         <div key="squats">Squats: {this.state.squats}</div>,
         <div key="benchPress">Bench Press: {this.state.benchPress}</div>,
         <div key="barbellRows">Barbell Rows: {this.state.barbellRows}</div>
-      ]);
+      ];
     } else {
-      dataFields = ([
+      dataFields = [
         <div key="date">Date: {this.props.date.format('MM-DD-YYYY')}</div>,
         <div key="squats">Squats: {this.state.squats}</div>,
         <div key="overheadPress">Overhead Press: {this.state.overheadPress}</div>,
         <div key="deadlifts">Deadlifts: {this.state.deadlifts}</div>
-      ]);
+      ];
     }
+    var style = {background: this.state.editing ? '#EEEEEE' : 'white'};
     return (
-      <div className="Workout">
-      {
-        this.state.editing ? (
-          <WorkoutForm
-            date={this.props.date}
-            squats={this.props.squats}
-            benchPress={this.props.benchPress}
-            barbellRows={this.props.barbellRows}
-            overheadPress={this.props.overheadPress}
-            deadlifts={this.props.deadlifts}
-            isTypeA={this.props.isTypeA}
-            onWorkoutUpdate={this.props.onWorkoutUpdate}
-            onWorkoutDelete={this.props.onWorkoutDelete}
-            submitter={false}
-          />
-        ) : (
-          <div
-            onClick={this.toggleEditingMode}
-            onMouseOver={this.onMouseOver}
-            onMouseOut={this.onMouseOut}
-            style={
-              // Signal highlighted button to user by changing style
-              this.state.highlighted ? {
-                background: 'lightgrey',
-                cursor: 'pointer'
-              } : null
-            }
-          >
-            {dataFields}
-          </div>
-        )
-      }
+      <div className="Workout" style={style}>
+        {
+          this.state.editing ? (
+            <WorkoutForm
+              date={this.props.date}
+              squats={this.props.squats}
+              benchPress={this.props.benchPress}
+              barbellRows={this.props.barbellRows}
+              overheadPress={this.props.overheadPress}
+              deadlifts={this.props.deadlifts}
+              isTypeA={this.props.isTypeA}
+              onWorkoutUpdate={this.props.onWorkoutUpdate}
+              onWorkoutDelete={this.props.onWorkoutDelete}
+              submitter={false}
+            />
+          ) : (
+            <div>
+              {dataFields}
+            </div>
+          )
+        }
+        <button
+          className="btn btn-default"
+          onClick={this.toggleEditingMode}
+        >
+          Edit
+        </button>
       </div>
     );
   }
