@@ -168,12 +168,14 @@ module.exports = function(database) {
         }
         // Catch MySQL warnings
         if (result.affectedRows === 0 || result.warningCount > 0) {
-          console.log('No error thrown, but failed to delete row');
+          console.log('No error thrown, but failed to update row');
           dbUtils.showWarnings(database, function(err, result) {
             if (err) {
               throw err;
             }
-            console.log('Warning: ' + result[0].Message);
+            if (result) {
+              console.log(`Warning: ${result[0].Message}`);
+            }
           });
           res.json({
             status: 'failure',
@@ -207,7 +209,9 @@ module.exports = function(database) {
             if (err) {
               throw err;
             }
-            console.log('Warning: ' + result[0].Message);
+            if (result) {
+              console.log(`Warning: ${result[0].Message}`);
+            }
           });
           res.json({
             status: 'failure',
