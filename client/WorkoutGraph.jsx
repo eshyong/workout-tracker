@@ -1,9 +1,9 @@
 'use strict';
 
 // External dependencies
-var moment = require('moment'),
-    LineChart = require('react-d3-basic').LineChart,
-    React = require('react');
+const moment = require('moment');
+const LineTooltip = require('react-d3-tooltip').LineTooltip;
+const React = require('react');
 
 // ISO 8601 date format
 const dateFormat = d3.time.format('%Y-%m-%dT%H:%M:%S.%LZ');
@@ -36,7 +36,7 @@ var WorkoutGraph = React.createClass({
     return (
       <div className="WorkoutGraph">
         <h3>{this.props.title}</h3>
-        <LineChart
+        <LineTooltip
           width={this.props.width}
           height={this.props.height}
           margins={this.props.margins}
